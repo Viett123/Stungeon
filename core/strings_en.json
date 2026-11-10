@@ -52,12 +52,10 @@
   "miss": "Your attack misses.",
   "press_continue": "Press Enter to continue",
 
-  "effect_power_up": "War Cry! Your next attack hits harder.",
-  "effect_reveal": "Reveal! Your next multiple-choice question has fewer choices.",
-  "effect_evade": "Evasion! The next enemy attack will miss.",
+  "utility_used": "You use {move}. (It has no effect yet.)",
 
   "enemy_hits": "The {enemy} hits you for {damage}.",
-  "enemy_misses": "The {enemy} attacks, but you dodge!",
+  "enemy_misses": "The {enemy} attacks, but it does no damage!",
 
   "victory_fight": "You defeated the {enemy}!",
   "defeat_fight": "You were defeated by the {enemy}...",

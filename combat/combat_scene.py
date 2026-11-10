@@ -70,7 +70,8 @@ class CombatScene(Scene):
             return
         result = self.battle.choose_move(move["id"])
         if result.get("utility"):
-            self.show_message([(t(f"effect_{result['effect']}"), settings.COLOR_HIGHLIGHT)], self.enemy_turn)
+            # TODO(B): once combat/effects.py has real effects, show what the move did here.
+            self.show_message([(t("utility_used", move=move["name"]), settings.COLOR_HIGHLIGHT)], self.enemy_turn)
         else:
             self.start_question()
 
@@ -97,7 +98,7 @@ class CombatScene(Scene):
 
     def enemy_turn(self):
         out = self.battle.enemy_turn()
-        if out["evaded"]:
+        if out["damage"] == 0:   # e.g. an effect cancelled the attack
             lines = [(t("enemy_misses", enemy=self.enemy.name), settings.COLOR_GOOD)]
         else:
             lines = [(t("enemy_hits", enemy=self.enemy.name, damage=out["damage"]), settings.COLOR_BAD)]
