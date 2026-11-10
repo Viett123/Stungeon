@@ -1,14 +1,9 @@
 """Question engine (owner: C). No pygame here.
 
-How a question is picked (README rules 4 and 5):
-  1. Keep only questions from Einheiten 1..floor with the wanted difficulty.
-  2. Pick a TOPIC first, weighted so low-mastery topics come up more often.
-     (Without this, grammar would almost never appear: ~70 grammar vs ~1,000 vocab questions.)
-  3. Pick a random question inside that topic.
-  weakest=True (ultimate moves, bosses) only uses the player's 3 weakest topics.
+What is finished here (plumbing): loading the bank, keeping floors cumulative,
+shuffling the answers, checking answers, counting right and wrong per topic.
 
-`topic` may be one topic name or a list of them (an enemy's topics). If none of those
-topics has a question at this floor and difficulty, any topic is used instead.
+What is NOT finished (owner C): choosing WHICH question to ask. See _choose() below.
 """
 import json
 import random
@@ -21,7 +16,7 @@ _UMLAUTS = {"ä": "ae", "ö": "oe", "ü": "ue"}   # many keyboards have no umlau
 
 
 def normalise(text):
-    """Make answers comparable: ignore case and extra spaces, accept ae/oe/ue/ss."""
+    """Make answers comparable: ignore case and extra spaces, accept ae/oe/ue/ss (README rule 2)."""
     text = " ".join(str(text).split()).casefold()   # casefold also turns ß into ss
     for umlaut, plain in _UMLAUTS.items():
         text = text.replace(umlaut, plain)
@@ -34,38 +29,44 @@ class QuestionEngine:
         self.questions = bank["questions"]
         self.topics = sorted({q["topic"] for q in self.questions})
         self.rng = rng or random.Random()
-        self.tracker = tracker            # a KnowledgeTracker, or None
-        self.stats = defaultdict(lambda: {"asked": 0, "correct": 0})   # topic -> counts
+        self.tracker = tracker            # a KnowledgeTracker (ai/mastery.py), or None
+        self.stats = defaultdict(lambda: {"asked": 0, "correct": 0})   # topic -> counts, for the end screen
 
     # --- picking -----------------------------------------------------------
-    def _pool(self, floor, difficulty):
-        return [q for q in self.questions if q["einheit"] <= floor and q["difficulty"] == difficulty]
-
-    def _mastery(self, topic):
-        return self.tracker.mastery(topic) if self.tracker else 0.5
-
     def next_question(self, floor, difficulty, topic=None, weakest=False) -> dict:
-        pool = self._pool(floor, difficulty)
+        """Return one question for this floor and difficulty.
+
+        topic   - one topic name, or a list of them (an enemy's topics), or None for any
+        weakest - True for ultimate moves and bosses: prefer the player's weakest topics
+        """
+        # Floor n uses Einheiten 1 to n (README rule 5: cumulative floors).
+        pool = [q for q in self.questions if q["einheit"] <= floor and q["difficulty"] == difficulty]
         if not pool:
             raise ValueError(f"no {difficulty} question for floor {floor}")
-        by_topic = defaultdict(list)
-        for q in pool:
-            by_topic[q["topic"]].append(q)
-
         wanted = [topic] if isinstance(topic, str) else list(topic or [])
-        candidates = [t for t in wanted if t in by_topic] or sorted(by_topic)
-        if weakest:
-            candidates = sorted(candidates, key=self._mastery)[:3]
 
-        # Lower mastery -> bigger weight. +0.1 so a mastered topic still shows up sometimes.
-        weights = [1.0 - self._mastery(t) + 0.1 for t in candidates]
-        chosen_topic = self.rng.choices(candidates, weights=weights)[0]
-
-        question = dict(self.rng.choice(by_topic[chosen_topic]))   # a copy, never change the bank
+        question = dict(self._choose(pool, wanted, weakest))   # a copy, so the bank never changes
         if "choices" in question:
-            # Correct answers are listed first in the file, so always shuffle.
+            # Correct answers are listed first in the file, so always shuffle (README rule 1).
             question["choices"] = self.rng.sample(question["choices"], len(question["choices"]))
         return question
+
+    def _choose(self, pool, wanted_topics, weakest) -> dict:
+        """Pick one question out of `pool`. THIS IS THE PART OWNER C WRITES.
+
+        PLACEHOLDER: picks any question at random and ignores wanted_topics and weakest.
+        Because the bank has ~1,000 vocabulary questions and ~70 grammar questions,
+        this placeholder almost never asks grammar. That is the problem to solve.
+
+        TODO(C), from questions/README.md:
+          - rule 4: pick a TOPIC first, weighted by low mastery (self.tracker.mastery(topic)),
+            then a question inside that topic
+          - use wanted_topics (the enemy's topics) when the pool has questions for them
+          - rule 5: when weakest is True, draw mostly from the player's weakest topics
+        Always return one of the dicts in `pool`. Use self.rng (not the random module),
+        so a run with the same seed asks the same questions.
+        """
+        return self.rng.choice(pool)
 
     # --- checking ----------------------------------------------------------
     def check_answer(self, question, given) -> bool:
@@ -80,7 +81,7 @@ class QuestionEngine:
         stats["asked"] += 1
         stats["correct"] += int(bool(correct))
         if self.tracker:
-            self.tracker.update(question["topic"], correct)
+            self.tracker.update(question["topic"], correct)   # owner C: see ai/mastery.py
 
     def to_typed(self, question) -> dict:
         """Blind debuff: turn a multiple-choice question into a typed one (README rule 3)."""
