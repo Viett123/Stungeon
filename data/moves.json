@@ -1,0 +1,30 @@
+{
+  "_note": "Tiers come from the handoff notes. Resource costs are not decided yet (D).",
+  "tiers": {
+    "basic":    {"difficulty": "easy",   "damage": 10, "questions": 1, "unlock_level": 1},
+    "skill":    {"difficulty": "medium", "damage": 25, "questions": 1, "unlock_level": 1},
+    "utility":  {"difficulty": null,     "damage": 0,  "questions": 0, "unlock_level": 2},
+    "power":    {"difficulty": "hard",   "damage": 50, "questions": 1, "unlock_level": 3},
+    "ultimate": {"difficulty": "hard",   "damage": 35, "questions": 3, "bonus_damage": 45,
+                 "weakest_topics": true, "unlock_level": 5}
+  },
+  "moves": [
+    {"id": "slash",            "name": "Slash",            "class": "warrior", "tier": "basic"},
+    {"id": "shield_bash",      "name": "Shield Bash",      "class": "warrior", "tier": "skill"},
+    {"id": "berserker_cleave", "name": "Berserker Cleave", "class": "warrior", "tier": "power"},
+    {"id": "titans_wrath",     "name": "Titan's Wrath",    "class": "warrior", "tier": "ultimate"},
+    {"id": "war_cry",          "name": "War Cry",          "class": "warrior", "tier": "utility"},
+
+    {"id": "arcane_bolt",      "name": "Arcane Bolt",      "class": "mage",    "tier": "basic"},
+    {"id": "frost_lance",      "name": "Frost Lance",      "class": "mage",    "tier": "skill"},
+    {"id": "fireball",         "name": "Fireball",         "class": "mage",    "tier": "power"},
+    {"id": "meteor_storm",     "name": "Meteor Storm",     "class": "mage",    "tier": "ultimate"},
+    {"id": "reveal",           "name": "Reveal",           "class": "mage",    "tier": "utility"},
+
+    {"id": "quick_shot",       "name": "Quick Shot",       "class": "archer",  "tier": "basic"},
+    {"id": "piercing_arrow",   "name": "Piercing Arrow",   "class": "archer",  "tier": "skill"},
+    {"id": "poison_arrow",     "name": "Poison Arrow",     "class": "archer",  "tier": "power"},
+    {"id": "arrow_rain",       "name": "Arrow Rain",       "class": "archer",  "tier": "ultimate"},
+    {"id": "evasion",          "name": "Evasion",          "class": "archer",  "tier": "utility"}
+  ]
+}

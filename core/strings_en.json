@@ -1,0 +1,11 @@
+{
+  "window_title": "Stungeon",
+  "title": "Stungeon",
+  "subtitle": "Learn German. Survive the dungeon.",
+  "press_start": "Press Enter to start",
+  "press_quit": "Esc to quit",
+  "dungeon_hint": "Arrow keys or WASD to move  -  Esc for the title screen",
+  "floor_label": "Floor {n}",
+  "on_stairs": "You found the stairs (the next floor is not built yet)",
+  "error_returned": "Something went wrong. The error was saved to logs/error.log."
+}

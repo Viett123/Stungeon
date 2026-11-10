@@ -1,0 +1,8 @@
+{
+  "_note": "base_hp and base_resource are placeholder numbers until D balances them.",
+  "classes": {
+    "warrior": {"name": "Warrior", "resource": "Rage", "base_hp": 100, "base_resource": 100},
+    "mage": {"name": "Mage", "resource": "Mana", "base_hp": 100, "base_resource": 100},
+    "archer": {"name": "Archer", "resource": "Focus", "base_hp": 100, "base_resource": 100}
+  }
+}
