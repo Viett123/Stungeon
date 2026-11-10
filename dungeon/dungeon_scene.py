@@ -85,6 +85,7 @@ class DungeonScene(Scene):
             return
         player = self.run.player
         player.gold += result["gold"]
+        # TODO(D): healing after a fight is a placeholder rule (the number is in data/progression.json).
         player.heal(round(player.max_hp * load_data("progression.json")["heal_after_fight"]))
         self.floor.enemies.remove(map_enemy)
         self.say(t("fight_won", enemy=self.enemy_info[map_enemy["id"]].name, xp=result["xp"], gold=result["gold"]))
@@ -104,6 +105,7 @@ class DungeonScene(Scene):
             return
         self.run.floor_number += 1
         player = self.run.player
+        # TODO(D): healing on a new floor is a placeholder rule, like the one above.
         player.heal(round(player.max_hp * rules["heal_on_new_floor"]))
         self.game.scenes.replace(DungeonScene(self.game, [t("new_floor", n=self.run.floor_number)]))
 

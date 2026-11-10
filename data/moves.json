@@ -1,5 +1,5 @@
 {
-  "_note": "Tiers come from the handoff notes. cost = resource spent (also when the answer is wrong); gain = resource earned on use. Costs are first guesses (D tunes them).",
+  "_note": "PLACEHOLDER numbers written by Claude so the game can run. Owner D: replace them and delete this line. Move names, tiers, damage and unlock levels come from docs/HANDOFF.md. cost and gain are placeholders. cost = resource spent (also when the answer is wrong); gain = resource earned on use. What a utility move does is decided in combat/effects.py.",
   "tiers": {
     "basic":    {"difficulty": "easy",   "damage": 10, "questions": 1, "unlock_level": 1, "cost": 0,  "gain": 15},
     "skill":    {"difficulty": "medium", "damage": 25, "questions": 1, "unlock_level": 1, "cost": 15, "gain": 0},
@@ -13,18 +13,18 @@
     {"id": "shield_bash",      "name": "Shield Bash",      "class": "warrior", "tier": "skill"},
     {"id": "berserker_cleave", "name": "Berserker Cleave", "class": "warrior", "tier": "power"},
     {"id": "titans_wrath",     "name": "Titan's Wrath",    "class": "warrior", "tier": "ultimate"},
-    {"id": "war_cry",          "name": "War Cry",          "class": "warrior", "tier": "utility", "effect": "power_up"},
+    {"id": "war_cry",          "name": "War Cry",          "class": "warrior", "tier": "utility"},
 
     {"id": "arcane_bolt",      "name": "Arcane Bolt",      "class": "mage",    "tier": "basic"},
     {"id": "frost_lance",      "name": "Frost Lance",      "class": "mage",    "tier": "skill"},
     {"id": "fireball",         "name": "Fireball",         "class": "mage",    "tier": "power"},
     {"id": "meteor_storm",     "name": "Meteor Storm",     "class": "mage",    "tier": "ultimate"},
-    {"id": "reveal",           "name": "Reveal",           "class": "mage",    "tier": "utility", "effect": "reveal"},
+    {"id": "reveal",           "name": "Reveal",           "class": "mage",    "tier": "utility"},
 
     {"id": "quick_shot",       "name": "Quick Shot",       "class": "archer",  "tier": "basic"},
     {"id": "piercing_arrow",   "name": "Piercing Arrow",   "class": "archer",  "tier": "skill"},
     {"id": "poison_arrow",     "name": "Poison Arrow",     "class": "archer",  "tier": "power"},
     {"id": "arrow_rain",       "name": "Arrow Rain",       "class": "archer",  "tier": "ultimate"},
-    {"id": "evasion",          "name": "Evasion",          "class": "archer",  "tier": "utility", "effect": "evade"}
+    {"id": "evasion",          "name": "Evasion",          "class": "archer",  "tier": "utility"}
   ]
 }

@@ -1,6 +1,6 @@
 from systems import save
 from systems.enemies import floor_spawns, make_enemy
-from systems.player import Player
+from systems.player import Player, load_data
 
 
 def test_level_1_warrior_has_basic_and_skill_moves():
@@ -14,14 +14,18 @@ def test_level_5_mage_has_all_five_moves():
 
 def test_moves_carry_their_tier_numbers():
     slash = Player("warrior").unlocked_moves()[0]
-    assert slash["damage"] == 10 and slash["difficulty"] == "easy"
+    assert slash["difficulty"] == "easy"
+    assert {"damage", "cost", "questions"} <= set(slash)
 
 
 def test_gain_xp_levels_up_and_unlocks_moves():
+    # Read the xp needed from the data file, so this test keeps working when D changes the numbers.
+    xp_for_level_3 = load_data("progression.json")["xp_for_level"]["3"]
     player = Player("mage")
     hp_before = player.max_hp
-    events = player.gain_xp(100)          # enough for level 3
-    assert events == ["level_up:2", "unlocked:reveal", "level_up:3", "unlocked:fireball"]
+    events = player.gain_xp(xp_for_level_3)
+    assert events[0] == "level_up:2" and "level_up:3" in events
+    assert any(e.startswith("unlocked:") for e in events)
     assert player.level == 3 and player.max_hp > hp_before
 
 

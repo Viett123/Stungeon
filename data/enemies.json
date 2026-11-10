@@ -1,5 +1,5 @@
 {
-  "_note": "Owner D. First-guess numbers, tuned with a simulation so a player who gets ~80% right usually wins. topics = what the enemy asks about (empty = any topic). color is the placeholder square until there is art.",
+  "_note": "PLACEHOLDER numbers written by Claude so the game can run. Owner D: replace them and delete this line. Every enemy, name, number and topic list here is a placeholder. topics = what the enemy asks about (empty = any topic). color is the square drawn until there is art.",
   "enemies": {
     "vocab_slime":     {"name": "Vocab Slime",     "hp": 30, "damage": 6,  "xp": 15, "gold": 5,
                         "topics": ["vocabulary"], "color": [110, 200, 120]},
