@@ -1,0 +1,13 @@
+{
+  "_note": "Owner D. First-guess numbers, tuned with a simulation (see the PR).",
+  "xp_for_level": {"2": 40, "3": 100, "4": 180, "5": 280},
+  "max_level": 5,
+  "hp_per_level": 20,
+  "heal_on_new_floor": 0.5,
+  "heal_after_fight": 0.35,
+  "resource_per_turn": 5,
+  "last_floor": 3,
+  "power_up_multiplier": 1.5,
+  "reveal_keeps_choices": 2,
+  "expected_answer_seconds": 20
+}

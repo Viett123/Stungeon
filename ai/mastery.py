@@ -1,7 +1,8 @@
 """Knowledge tracing per topic (owner: C). No pygame here.
 
-PLACEHOLDER: every topic starts at 0.5 and never changes.
-TODO(C): Bayesian Knowledge Tracing (prior, learn, slip, guess) updated after each answer.
+PLACEHOLDER: every topic stays at 0.5, so the question engine treats all topics the same.
+TODO(C): Bayesian Knowledge Tracing in update(): P(known) changes after each answer
+using four parameters (prior, learn, slip, guess). This is the part to write by hand.
 """
 
 
@@ -11,6 +12,9 @@ class KnowledgeTracker:
 
     def mastery(self, topic) -> float:
         return self._mastery.get(topic, 0.5)
+
+    def update(self, topic, correct) -> None:
+        pass   # TODO(C): the BKT update goes here
 
     def weakest(self, n, topics) -> list[str]:
         return sorted(topics, key=self.mastery)[:n]

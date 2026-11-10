@@ -11,9 +11,9 @@ class TitleScene(Scene):
     def handle_event(self, event):
         if event.type == pygame.KEYDOWN:
             if event.key in (pygame.K_RETURN, pygame.K_KP_ENTER):
-                from dungeon.dungeon_scene import DungeonScene
+                from ui.class_select import ClassSelectScene
                 self.game.message = ""
-                self.game.scenes.replace(DungeonScene(self.game, floor_number=1))
+                self.game.scenes.replace(ClassSelectScene(self.game))
             elif event.key == pygame.K_ESCAPE:
                 self.game.quit()
 

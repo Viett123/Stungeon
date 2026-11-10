@@ -1,8 +1,11 @@
 {
-  "_note": "base_hp and base_resource are placeholder numbers until D balances them.",
+  "_note": "First-guess numbers until D balances them. Everyone starts with half their resource.",
   "classes": {
-    "warrior": {"name": "Warrior", "resource": "Rage", "base_hp": 100, "base_resource": 100},
-    "mage": {"name": "Mage", "resource": "Mana", "base_hp": 100, "base_resource": 100},
-    "archer": {"name": "Archer", "resource": "Focus", "base_hp": 100, "base_resource": 100}
+    "warrior": {"name": "Warrior", "resource": "Rage",  "base_hp": 120, "max_resource": 100, "start_resource": 50,
+                "color": [210, 90, 70]},
+    "mage":    {"name": "Mage",    "resource": "Mana",  "base_hp": 100, "max_resource": 100, "start_resource": 50,
+                "color": [90, 140, 230]},
+    "archer":  {"name": "Archer",  "resource": "Focus", "base_hp": 110, "max_resource": 100, "start_resource": 50,
+                "color": [90, 200, 120]}
   }
 }

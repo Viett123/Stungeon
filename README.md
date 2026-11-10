@@ -11,7 +11,17 @@ pip install -r requirements.txt
 python main.py
 ```
 
-A window with the title screen should open. Press Enter to walk around floor 1.
+A window with the title screen should open.
+
+## How to play (prototype)
+
+1. Pick a class: Warrior, Mage or Archer.
+2. Walk with the arrow keys or WASD. Walk into an enemy to fight it.
+3. In a fight, pick a move with the number keys. Stronger moves ask harder German questions.
+   A wrong answer is a miss, but the move's cost is still spent, and the enemy still hits back.
+4. Beat the boss standing on the stairs, step on the stairs, and go down. Clear floor 3 to win.
+
+Typed answers ignore upper/lower case, and you can type ae/oe/ue/ss instead of ä/ö/ü/ß.
 
 Run the tests with `python -m pytest`.
 
