@@ -58,6 +58,19 @@ def _bfs_step(scene, goal, blocked):
     raise AssertionError(f"no path to {goal}")
 
 
+def next_goal(scene):
+    """Where the bot walks to: the first normal enemy in the list, then the boss, then the stairs.
+
+    It keeps the same target until that enemy is beaten. (Always walking to the NEAREST
+    enemy sounds smarter, but the bot can then bounce forever between two enemies.)
+    """
+    enemies = scene.floor.enemies
+    normal = [e["pos"] for e in enemies if not e["boss"]]
+    if normal:
+        return normal[0]
+    return enemies[0]["pos"] if enemies else scene.floor.stairs
+
+
 def play_combat_turn(game, scene):
     if scene.state == "choose":
         attacks = [m for m in scene.moves if m["affordable"] and m["questions"] > 0]
@@ -93,15 +106,12 @@ def test_bot_plays_a_whole_run(class_index):
                 answered += 1
             play_combat_turn(game, scene)
         elif isinstance(scene, DungeonScene):
-            enemies = scene.floor.enemies
-            goal = min((e["pos"] for e in enemies if not e["boss"]), default=None,
-                       key=lambda p: abs(p[0] - scene.player_pos[0]) + abs(p[1] - scene.player_pos[1]))
-            goal = goal or (enemies[0]["pos"] if enemies else scene.floor.stairs)
-            step(game, key(DIRECTIONS[first_step_towards(scene, goal)]))
+            step(game, key(DIRECTIONS[first_step_towards(scene, next_goal(scene))]))
         else:
             raise AssertionError(f"stuck on {type(scene).__name__}")
     else:
-        raise AssertionError("the run never ended")
+        # The seed makes the failing run repeatable: new_run(class_id, seed=...) gives the same floors.
+        raise AssertionError(f"the run never ended (seed {game.run_state.seed})")
 
     assert isinstance(game.scenes.current, EndScene)
     assert answered > 10
