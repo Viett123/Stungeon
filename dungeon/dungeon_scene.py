@@ -8,7 +8,10 @@ import pygame
 from core import settings
 from core.scene import Scene
 from core.strings import t
-from dungeon.floor import STAIRS, WALL, generate_floor
+from dungeon import sprites
+from dungeon.camera import Camera
+from dungeon.floor import STAIRS, generate_floor
+from dungeon.renderer import DungeonRenderer
 from systems.enemies import make_enemy
 from systems.player import load_data
 from ui import widgets
@@ -20,7 +23,8 @@ MOVE_KEYS = {
     pygame.K_RIGHT: (1, 0), pygame.K_d: (1, 0),
 }
 TOP = 48    # one tile row at the top for the status bar
-LEFT = (settings.SCREEN_W - 26 * settings.TILE) // 2
+# The part of the window where the dungeon is drawn: everything below the status bar.
+VIEW = pygame.Rect(0, TOP, settings.SCREEN_W, settings.SCREEN_H - TOP)
 
 
 class DungeonScene(Scene):
@@ -37,6 +41,22 @@ class DungeonScene(Scene):
         self.messages = []          # [(text, seconds left)]
         for m in messages or []:
             self.say(m)
+
+        # Drawing: build everything once here, never inside draw().
+        self.renderer = DungeonRenderer(self.floor)
+        self.camera = Camera(VIEW.width, VIEW.height, self.renderer.world_w, self.renderer.world_h)
+        self.camera.snap_to(*self.player_center())
+        font = game.fonts["small"]
+        player = self.run.player
+        self.player_image = sprites.character_sprite(f"player_{player.class_id}", player.color)
+        self.enemy_images = {
+            eid: sprites.character_sprite(f"enemy_{eid}", info.color, self.letter[eid], font, big=info.boss)
+            for eid, info in self.enemy_info.items()}
+
+    def player_center(self):
+        """The middle of the player's tile, in world pixels (what the camera follows)."""
+        x, y = self.player_pos
+        return x * settings.TILE + settings.TILE // 2, y * settings.TILE + settings.TILE // 2
 
     def say(self, message):
         self.messages.append([message, settings.MESSAGE_SECONDS])
@@ -114,30 +134,18 @@ class DungeonScene(Scene):
         for m in self.messages:
             m[1] -= dt
         self.messages = [m for m in self.messages if m[1] > 0]
+        self.camera.move_towards(*self.player_center(), dt)
 
     def draw(self, surface):
-        tile = settings.TILE
-        for y, row in enumerate(self.floor.grid):
-            for x, cell in enumerate(row):
-                if cell == WALL:
-                    continue
-                color = settings.COLOR_STAIRS if cell == STAIRS else settings.COLOR_FLOOR
-                pygame.draw.rect(surface, color, (LEFT + x * tile, TOP + y * tile, tile - 1, tile - 1))
+        characters = [(e["pos"][0], e["pos"][1], self.enemy_images[e["id"]]) for e in self.floor.enemies]
+        characters.append((self.player_pos[0], self.player_pos[1], self.player_image))
+        self.renderer.draw(surface, VIEW, self.camera, characters)
+        self.draw_hud(surface)
 
+    def draw_hud(self, surface):
+        """Status line at the top and messages at the bottom. Phase 3 replaces this with the UI kit."""
         small = self.game.fonts["small"]
-        for e in self.floor.enemies:
-            info = self.enemy_info[e["id"]]
-            x, y = e["pos"]
-            pad = 2 if e["boss"] else 8
-            rect = pygame.Rect(LEFT + x * tile + pad, TOP + y * tile + pad, tile - 2 * pad, tile - 2 * pad)
-            pygame.draw.rect(surface, info.color, rect, border_radius=6)
-            widgets.text(surface, small, self.letter[e["id"]], settings.COLOR_BG, rect.center, "center")
-
         player = self.run.player
-        px, py = self.player_pos
-        pygame.draw.rect(surface, player.color, (LEFT + px * tile + 8, TOP + py * tile + 8, tile - 16, tile - 16),
-                         border_radius=12)
-
         hud = t("hud", floor=self.run.floor_number, cls=player.class_name, level=player.level,
                 hp=player.hp, max_hp=player.max_hp, res=player.resource_name, r=player.resource,
                 max_r=player.max_resource, xp=player.xp, gold=player.gold)

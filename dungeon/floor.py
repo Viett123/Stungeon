@@ -1,6 +1,6 @@
 """Floor generation (owner: A). No drawing here.
 
-A floor is a grid of walls with up to 6 rooms carved out, joined left to right by
+A floor is a grid of walls with up to MAX_ROOMS rooms carved out, joined left to right by
 L-shaped corridors, so every room is reachable. The player starts in the left-most
 room; the stairs are in the right-most room, guarded by the floor's boss.
 Same floor_number + seed = the same floor every time.
@@ -14,7 +14,12 @@ FLOOR = 0
 WALL = 1
 STAIRS = 2
 
-WIDTH, HEIGHT = 26, 14   # 26 x 48 px = 1248 px wide; 14 rows leave room for the status bar
+# PLACEHOLDER sizes. TODO(A): choose the real floor size and room numbers.
+# The floor is bigger than the screen (about 27 x 14 tiles fit), so the camera scrolls.
+WIDTH, HEIGHT = 44, 26
+MAX_ROOMS = 9
+ROOM_W = (5, 9)   # smallest and biggest room width, in tiles
+ROOM_H = (4, 6)
 
 
 @dataclass
@@ -47,9 +52,9 @@ def _center(room):
 def _place_rooms(rng):
     rooms = []
     for _ in range(400):
-        if len(rooms) == 6:
+        if len(rooms) == MAX_ROOMS:
             break
-        w, h = rng.randint(4, 7), rng.randint(3, 5)
+        w, h = rng.randint(*ROOM_W), rng.randint(*ROOM_H)
         room = (rng.randint(1, WIDTH - w - 1), rng.randint(1, HEIGHT - h - 1), w, h)
         if not any(_overlaps(room, other) for other in rooms):
             rooms.append(room)
