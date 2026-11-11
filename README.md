@@ -15,11 +15,13 @@ A window with the title screen should open.
 
 ## How to play (prototype)
 
-1. Pick a class: Warrior, Mage or Archer.
+1. On the title menu choose New game (or Continue, or the Demo with F1), then pick a class.
 2. Walk with the arrow keys or WASD. Walk into an enemy to fight it.
 3. In a fight, pick a move with the number keys. Stronger moves ask harder German questions.
    A wrong answer is a miss, but the move's cost is still spent, and the enemy still hits back.
 4. Beat the boss standing on the stairs, step on the stairs, and go down. Clear floor 3 to win.
+5. Between floors there is a shop. Press I for your bag and Esc for the pause menu.
+   The game is saved every time a floor starts.
 
 Typed answers ignore upper/lower case, and you can type ae/oe/ue/ss instead of ä/ö/ü/ß.
 
@@ -32,3 +34,5 @@ See the Team Guides doc for roles, the shared contract and the git workflow, and
 
 Every module from the shared contract exists already as a placeholder that returns fake data.
 Look for `TODO(A)`, `TODO(B)`, `TODO(C)`, `TODO(D)` to find your part.
+
+To put the game on the exhibit laptop, see [docs/EXHIBIT.md](docs/EXHIBIT.md).

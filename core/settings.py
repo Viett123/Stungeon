@@ -1,9 +1,15 @@
 """Fixed technical settings. Balancing numbers do NOT go here: they go in data/*.json."""
+import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = ROOT / "data"
-LOG_DIR = ROOT / "logs"
+
+# Where the game may write files (logs). In a built exe (tools/build.py) the code lives in a
+# hidden folder, so we write next to Stungeon.exe instead, where people can find the log.
+FROZEN = getattr(sys, "frozen", False)
+WRITE_DIR = Path(sys.executable).parent if FROZEN else ROOT
+LOG_DIR = WRITE_DIR / "logs"
 
 SCREEN_W = 1280
 SCREEN_H = 720
