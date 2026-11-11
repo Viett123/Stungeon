@@ -18,11 +18,13 @@ To replace a placeholder, put a PNG with the right name in `assets/sprites/`. No
 | File in `assets/sprites/` | What it is |
 |---|---|
 | `tile_floor.png` | Floor |
+| `tile_floor_0.png` ... `tile_floor_15.png` | Optional other floor pictures (cracks, moss). Each one is used on about 1 tile in 16; tiles without their own picture use `tile_floor.png` |
 | `tile_wall_front.png` | Front face of a wall (the wall directly above a floor tile) |
 | `tile_wall_top.png` | Top of a wall, seen from above |
 | `tile_stairs.png` | Stairs down |
 | `player_warrior.png`, `player_mage.png`, `player_archer.png` | The player, one per class id in `data/classes.json` |
 | `enemy_<id>.png` | An enemy, where `<id>` is its id in `data/enemies.json`, e.g. `enemy_vocab_slime.png` |
+| `item_<id>.png` | An item's icon for the bag and the shop, where `<id>` is its id in `data/items.json`, e.g. `item_small_potion.png`. Art taller than 16 pixels is drawn smaller so it fits the slot |
 | `icon_<id>.png` | A move's icon (16 x 16) for the hotbar, where `<id>` is its id in `data/moves.json`, e.g. `icon_fireball.png` |
 
 The frames, bars and slots of the menus are drawn in code (`ui/theme.py`), so they need no art files.

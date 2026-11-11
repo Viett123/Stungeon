@@ -26,8 +26,23 @@ def _placeholder_icon(color, letters, font):
 def icon_for(name, color, letters, font):
     """The icon assets/sprites/<name>.png, or a placeholder if that file does not exist."""
     if name not in _icon_cache:
-        _icon_cache[name] = assets.load_sprite(name) or _placeholder_icon(color, letters, font)
+        _icon_cache[name] = _load_icon(name) or _placeholder_icon(color, letters, font)
     return _icon_cache[name]
+
+
+def _load_icon(name):
+    """Load the icon as big as possible while it still fits in a slot.
+
+    Most art is 16x16 and fits at 3 times its size. Tall art (a sword is 10x21) does
+    not, so it is tried at 2 times and then at its real size.
+    """
+    for factor in (3, 2, 1):
+        image = assets.load_sprite(name, factor)
+        if image is None:
+            return None
+        if image.get_width() <= ICON and image.get_height() <= ICON:
+            return image
+    return image
 
 
 def draw_slot(surface, rect, icon=None, key="", font=None, enabled=True, highlighted=False):

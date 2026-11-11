@@ -25,7 +25,8 @@ def screen():
     pygame.quit()
 
 
-def test_missing_art_gives_placeholders_of_the_right_size(screen):
+def test_missing_art_gives_placeholders_of_the_right_size(screen, tmp_path, monkeypatch):
+    monkeypatch.setattr(assets, "SPRITE_DIR", tmp_path)   # an empty folder: no art at all
     for name in ("tile_floor", "tile_wall_front", "tile_wall_top", "tile_stairs"):
         assert sprites.tile_sprite(name).get_size() == (TILE, TILE)
     hero = sprites.character_sprite("player_warrior", (200, 90, 70))
@@ -67,3 +68,30 @@ def test_floor_is_drawn_only_inside_the_view(screen):
     assert screen.get_at((5, 60))[:3] != marker               # the view was drawn
     assert screen.get_clip() == screen.get_rect()             # the clip was reset afterwards
     assert renderer.map_image.get_size() == (floor.width * TILE, floor.height * TILE)
+
+
+def test_floor_variants_use_their_own_picture_or_the_normal_floor(screen, tmp_path, monkeypatch):
+    monkeypatch.setattr(assets, "SPRITE_DIR", tmp_path)
+    for name, color in (("tile_floor", (10, 20, 30)), ("tile_floor_3", (200, 100, 50))):
+        art = pygame.Surface((16, 16))
+        art.fill(color)
+        pygame.image.save(art, str(tmp_path / f"{name}.png"))
+    assert sprites.tile_sprite("tile_floor", variant=3).get_at((5, 5))[:3] == (200, 100, 50)
+    assert sprites.tile_sprite("tile_floor", variant=4).get_at((5, 5))[:3] == (10, 20, 30)
+
+
+def test_tall_item_art_is_shrunk_to_fit_a_slot(screen, tmp_path, monkeypatch):
+    from ui import slots
+    monkeypatch.setattr(assets, "SPRITE_DIR", tmp_path)
+    monkeypatch.setattr(slots, "_icon_cache", {})
+    pygame.image.save(pygame.Surface((10, 21)), str(tmp_path / "item_sword.png"))    # like the pack's swords
+    pygame.image.save(pygame.Surface((16, 16)), str(tmp_path / "item_flask.png"))
+    font = pygame.font.Font(None, 26)
+    assert slots.icon_for("item_sword", (0, 0, 0), "Sw", font).get_size() == (20, 42)   # 2 times, not 3
+    assert slots.icon_for("item_flask", (0, 0, 0), "Fl", font).get_size() == (48, 48)
+
+
+def test_every_art_file_in_the_repo_loads(screen):
+    """Catches a broken or misnamed PNG in assets/sprites/ before the exhibit does."""
+    for path in sorted(assets.SPRITE_DIR.glob("*.png")):
+        assert assets.load_sprite(path.stem) is not None, path.name

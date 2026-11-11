@@ -11,6 +11,7 @@ from core import settings
 from dungeon import sprites, tiles
 
 TILE = settings.TILE
+FLOOR_VARIANTS = 16
 SHADOW_HEIGHT = 12            # pixels of shadow a wall casts on the floor below it
 SHADOW_COLOR = (0, 0, 0, 70)  # black, mostly see-through
 
@@ -47,8 +48,10 @@ class DungeonRenderer:
 
     def _tile_image(self, look, x, y):
         if look == tiles.LOOK_FLOOR:
-            # A different variant per position, so the floor does not look like a repeated stamp.
-            return sprites.tile_sprite("tile_floor", variant=(x * 7 + y * 13) % 8)
+            # A variant number from 0 to 15 that looks random but is always the same for the
+            # same position. Only a few variants have their own picture (cracked floor), so
+            # most tiles are plain and the cracks are scattered.
+            return sprites.tile_sprite("tile_floor", variant=(x * 73 + y * 151 + x * y * 7) % FLOOR_VARIANTS)
         return sprites.tile_sprite(_SPRITE_FOR_LOOK[look])
 
     # --- every frame -------------------------------------------------------

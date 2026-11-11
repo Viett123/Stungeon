@@ -79,7 +79,12 @@ _TILE_PLACEHOLDERS = {
 
 def tile_sprite(name, variant=0):
     """A 48x48 tile. name is tile_floor, tile_wall_front, tile_wall_top or tile_stairs."""
-    image = assets.load_sprite(name)
+    if name == "tile_floor":
+        # A special floor picture for this variant (tile_floor_0.png, tile_floor_1.png, ...)
+        # if there is one, otherwise the normal tile_floor.png.
+        image = assets.load_sprite(f"tile_floor_{variant}") or assets.load_sprite("tile_floor")
+    else:
+        image = assets.load_sprite(name)
     if image is not None:
         return image
     if name == "tile_floor":
