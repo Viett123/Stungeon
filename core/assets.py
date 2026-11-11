@@ -31,6 +31,16 @@ def load_sprite(name, factor=settings.TILE_SCALE):
     return _cache[key]
 
 
+def load_frames(name, factor=settings.TILE_SCALE):
+    """Return the animation frames <name>_0.png, <name>_1.png, ... as a list (empty if there are none)."""
+    frames = []
+    while True:
+        image = load_sprite(f"{name}_{len(frames)}", factor)
+        if image is None:
+            return frames
+        frames.append(image)
+
+
 def _read(path, factor):
     if not path.exists():
         return None

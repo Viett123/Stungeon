@@ -13,7 +13,8 @@ from core import assets, settings
 SRC = settings.TILE_SRC   # 16: size of one tile in the art
 
 # Placeholder palette (R, G, B)
-VOID = (14, 12, 12)
+VOID = (34, 34, 34)          # the colour behind everything; matches the art pack's walls
+WALL_LINE = (176, 158, 138)  # the light stone line on top of and beside walls
 FLOOR = (78, 69, 59)
 FLOOR_SPECKS = [(66, 58, 50), (90, 80, 68), (72, 66, 60)]
 WALL_BRICK = (92, 80, 68)
@@ -70,25 +71,42 @@ def _stairs_placeholder():
     return image
 
 
+def _line_placeholder(rect):
+    """A see-through tile with one light stone line on it (wall caps, sides and corners)."""
+    def draw():
+        image = _blank()
+        pygame.draw.rect(image, OUTLINE, pygame.Rect(rect).inflate(2, 2))
+        pygame.draw.rect(image, WALL_LINE, rect)
+        return image
+    return draw
+
+
 _TILE_PLACEHOLDERS = {
     "tile_wall_front": _wall_front_placeholder,
     "tile_wall_top": _wall_top_placeholder,
     "tile_stairs": _stairs_placeholder,
+    "tile_wall_cap": _line_placeholder((0, 12, 16, 3)),          # along the bottom
+    "tile_wall_side_left": _line_placeholder((12, 0, 3, 16)),    # along the right edge
+    "tile_wall_side_right": _line_placeholder((1, 0, 3, 16)),    # along the left edge
+    "tile_wall_corner_left": _line_placeholder((12, 12, 3, 4)),  # bottom-right corner
+    "tile_wall_corner_right": _line_placeholder((1, 12, 3, 4)),  # bottom-left corner
 }
 
 
-def tile_sprite(name, variant=0):
-    """A 48x48 tile. name is tile_floor, tile_wall_front, tile_wall_top or tile_stairs."""
-    if name == "tile_floor":
-        # A special floor picture for this variant (tile_floor_0.png, tile_floor_1.png, ...)
-        # if there is one, otherwise the normal tile_floor.png.
-        image = assets.load_sprite(f"tile_floor_{variant}") or assets.load_sprite("tile_floor")
-    else:
-        image = assets.load_sprite(name)
+def tile_sprite(name, variant=None):
+    """A 48x48 tile, e.g. tile_floor, tile_wall_front, tile_wall_cap, tile_stairs.
+
+    With a variant number, the picture <name>_<variant>.png is used if it exists
+    (a cracked floor, a wall with a banner). Otherwise the normal <name>.png.
+    """
+    image = None
+    if variant is not None:
+        image = assets.load_sprite(f"{name}_{variant}")
+    image = image or assets.load_sprite(name)
     if image is not None:
         return image
     if name == "tile_floor":
-        return assets.scale_up(_floor_placeholder(variant))
+        return assets.scale_up(_floor_placeholder(variant or 0))
     return assets.scale_up(_TILE_PLACEHOLDERS[name]())
 
 
@@ -110,17 +128,36 @@ def _character_placeholder(color):
     return image
 
 
-def character_sprite(name, color, letter="", font=None, big=False):
-    """A character sprite. Bosses (big=True) are drawn 4 times bigger instead of 3.
+def character_frames(name, action, color, letter="", font=None, big=False):
+    """The animation frames of a character for one action ("idle", "run" or "hit").
 
-    letter is drawn on placeholder bodies so enemies can be told apart before there is art.
+    Looks for <name>_<action>_0.png, _1.png, ... If the character has no frames for
+    this action, its idle frames are used; if it has no art at all, one placeholder.
+    Bosses (big=True) are drawn 4 times bigger instead of 3.
     """
     factor = settings.TILE_SCALE + 1 if big else settings.TILE_SCALE
-    image = assets.load_sprite(name, factor)
-    if image is not None:
-        return image
+    frames = assets.load_frames(f"{name}_{action}", factor) or assets.load_frames(f"{name}_idle", factor)
+    if frames:
+        return frames
+    still = assets.load_sprite(name, factor)   # a single picture without animation
+    if still is not None:
+        return [still]
     image = assets.scale_up(_character_placeholder(color), factor)
     if letter and font:
+        # The letter tells enemies apart while there is no art.
         mark = font.render(letter, True, OUTLINE)
         image.blit(mark, mark.get_rect(center=(image.get_width() // 2, 12 * factor)))
-    return image
+    return [image]
+
+
+def chest_frames():
+    """Frames of a chest opening: the first is closed, the last is fully open."""
+    frames = assets.load_frames("chest")
+    if frames:
+        return frames
+    closed, opened = _blank(), _blank()
+    for image, lid in ((closed, (150, 100, 40)), (opened, (60, 40, 20))):
+        pygame.draw.rect(image, OUTLINE, (1, 4, 14, 11))
+        pygame.draw.rect(image, (120, 76, 30), (2, 8, 12, 6))
+        pygame.draw.rect(image, lid, (2, 5, 12, 3))
+    return [assets.scale_up(closed), assets.scale_up(opened)]

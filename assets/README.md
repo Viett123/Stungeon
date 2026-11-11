@@ -7,8 +7,11 @@ To replace a placeholder, put a PNG with the right name in `assets/sprites/`. No
 
 - Pixel art, drawn small. The game makes every sprite 3 times bigger (bosses 4 times).
 - Tiles are exactly **16 x 16** pixels.
-- Characters are **16 pixels wide** and up to about 24 tall. They stand with their feet at the
+- Characters are **16 pixels wide** and up to about 28 tall. They stand with their feet at the
   bottom of their tile, so a tall sprite overlaps the tile above it.
+- Draw characters **facing right**. The game mirrors them when they walk left.
+- An animation is several files with the same name and a number at the end, starting at 0.
+  All frames of one animation must be the same size. Any number of frames works.
 - Use a transparent background for characters.
 - Only our own art or CC0 art. **List every file in [CREDITS.md](CREDITS.md)** with author, license and link.
 - Do not copy art from any commercial game.
@@ -18,12 +21,19 @@ To replace a placeholder, put a PNG with the right name in `assets/sprites/`. No
 | File in `assets/sprites/` | What it is |
 |---|---|
 | `tile_floor.png` | Floor |
-| `tile_floor_0.png` ... `tile_floor_15.png` | Optional other floor pictures (cracks, moss). Each one is used on about 1 tile in 16; tiles without their own picture use `tile_floor.png` |
-| `tile_wall_front.png` | Front face of a wall (the wall directly above a floor tile) |
-| `tile_wall_top.png` | Top of a wall, seen from above |
+| `tile_floor_0.png` ... `tile_floor_31.png` | Optional other floor pictures (cracks, a skull). Each one is used on about 1 tile in 32; the rest use `tile_floor.png` |
+| `tile_wall_front.png` | The brick face of a wall |
+| `tile_wall_front_0.png` ... `tile_wall_front_19.png` | Optional other brick pictures (a banner, a hole). Each one is used on about 1 brick in 20 |
+| `tile_wall_cap.png` | The stone strip on top of a brick face. Mostly see-through, with the strip along the bottom edge |
+| `tile_wall_side_left.png`, `tile_wall_side_right.png` | The thin line beside a room: on the right edge of the picture for `left`, on the left edge for `right` |
+| `tile_wall_corner_left.png`, `tile_wall_corner_right.png` | The small piece where a side line meets a cap |
 | `tile_stairs.png` | Stairs down |
-| `player_warrior.png`, `player_mage.png`, `player_archer.png` | The player, one per class id in `data/classes.json` |
-| `enemy_<id>.png` | An enemy, where `<id>` is its id in `data/enemies.json`, e.g. `enemy_vocab_slime.png` |
+| `chest_0.png`, `chest_1.png`, ... | A chest opening: the first picture is closed, the last is fully open |
+| `player_<class>_idle_0.png`, `_1.png`, ... | The player standing, one set per class id in `data/classes.json` (`warrior`, `mage`, `archer`) |
+| `player_<class>_run_0.png`, ... | The player walking. Without these, the idle pictures are used |
+| `player_<class>_hit_0.png`, ... | The player being hurt (shown in a fight) |
+| `enemy_<id>_idle_0.png`, ... and `enemy_<id>_run_0.png`, ... | An enemy, where `<id>` is its id in `data/enemies.json`, e.g. `enemy_vocab_slime_idle_0.png` |
+| `player_<class>.png`, `enemy_<id>.png` | One still picture, used only if there are no `_idle_` pictures |
 | `item_<id>.png` | An item's icon for the bag and the shop, where `<id>` is its id in `data/items.json`, e.g. `item_small_potion.png`. Art taller than 16 pixels is drawn smaller so it fits the slot |
 | `icon_<id>.png` | A move's icon (16 x 16) for the hotbar, where `<id>` is its id in `data/moves.json`, e.g. `icon_fireball.png` |
 
