@@ -23,5 +23,9 @@ To replace a placeholder, put a PNG with the right name in `assets/sprites/`. No
 | `tile_stairs.png` | Stairs down |
 | `player_warrior.png`, `player_mage.png`, `player_archer.png` | The player, one per class id in `data/classes.json` |
 | `enemy_<id>.png` | An enemy, where `<id>` is its id in `data/enemies.json`, e.g. `enemy_vocab_slime.png` |
+| `icon_<id>.png` | A move's icon (16 x 16) for the hotbar, where `<id>` is its id in `data/moves.json`, e.g. `icon_fireball.png` |
+
+The frames, bars and slots of the menus are drawn in code (`ui/theme.py`), so they need no art files.
+A real font is still missing: the game uses pygame's built-in font until someone picks a CC0 pixel font.
 
 A broken image file does not crash the game: it is written to `logs/error.log` and the placeholder is used.

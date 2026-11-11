@@ -4,7 +4,7 @@ import pygame
 from core import settings
 from core.scene import Scene
 from core.strings import t
-from ui import widgets
+from ui import theme, widgets
 
 
 class EndScene(Scene):
@@ -28,21 +28,22 @@ class EndScene(Scene):
     def draw(self, surface):
         f = self.game.fonts
         cx = settings.SCREEN_W // 2
+        theme.draw_frame(surface, (240, 50, 800, 620))
         title = t("you_won") if self.won else t("game_over")
         widgets.text(surface, f["title"] if not self.won else f["big"], title,
-                     settings.COLOR_GOOD if self.won else settings.COLOR_BAD, (cx, 110), "center")
+                     theme.GOOD if self.won else theme.BAD, (cx, 130), "center")
         p = self.player
         widgets.text(surface, f["normal"], t("summary_floor", floor=self.floor, level=p.level, cls=p.class_name),
-                     settings.COLOR_TEXT, (cx, 210), "center")
+                     theme.TEXT, (cx, 220), "center")
         percent = round(100 * self.correct / self.asked) if self.asked else 0
         widgets.text(surface, f["normal"], t("summary_answers", correct=self.correct, asked=self.asked, percent=percent),
-                     settings.COLOR_TEXT, (cx, 250), "center")
+                     theme.TEXT, (cx, 260), "center")
         if self.weak:
-            widgets.text(surface, f["normal"], t("summary_topics"), settings.COLOR_HIGHLIGHT, (cx, 320), "center")
-            y = 360
+            widgets.text(surface, f["normal"], t("summary_topics"), theme.GOLD, (cx, 330), "center")
+            y = 370
             for topic, s in self.weak:
                 widgets.text(surface, f["small"], t("summary_topic_line", topic=topic.replace("_", " "),
                                                     correct=s["correct"], asked=s["asked"]),
-                             settings.COLOR_DIM, (cx, y), "center")
+                             theme.TEXT_DIM, (cx, y), "center")
                 y += 32
-        widgets.text(surface, f["small"], t("back_to_title"), settings.COLOR_DIM, (cx, 660), "center")
+        widgets.text(surface, f["small"], t("back_to_title"), theme.TEXT_DIM, (cx, 630), "center")

@@ -5,6 +5,7 @@ from core import settings
 from core.game import draw_text
 from core.scene import Scene
 from core.strings import t
+from ui import theme
 
 
 class TitleScene(Scene):
@@ -20,9 +21,10 @@ class TitleScene(Scene):
     def draw(self, surface):
         f = self.game.fonts
         cx = settings.SCREEN_W // 2
-        draw_text(surface, f["title"], t("title"), settings.COLOR_TEXT, (cx, 250))
-        draw_text(surface, f["normal"], t("subtitle"), settings.COLOR_DIM, (cx, 320))
-        draw_text(surface, f["big"], t("press_start"), settings.COLOR_TEXT, (cx, 450))
-        draw_text(surface, f["normal"], t("press_quit"), settings.COLOR_DIM, (cx, 500))
+        theme.draw_frame(surface, (340, 150, 600, 420))
+        draw_text(surface, f["title"], t("title"), theme.GOLD, (cx, 260))
+        draw_text(surface, f["normal"], t("subtitle"), theme.TEXT_DIM, (cx, 330))
+        draw_text(surface, f["big"], t("press_start"), theme.TEXT, (cx, 440))
+        draw_text(surface, f["normal"], t("press_quit"), theme.TEXT_DIM, (cx, 490))
         if self.game.message:
-            draw_text(surface, f["normal"], self.game.message, settings.COLOR_STAIRS, (cx, 640))
+            draw_text(surface, f["normal"], self.game.message, theme.BAD, (cx, 640))

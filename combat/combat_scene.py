@@ -2,23 +2,31 @@
 
 The rules live in combat/battle.py. This file only draws and reads input.
 States:
-  "choose"   - pick a move
+  "choose"   - pick a move from the hotbar
   "question" - answer the question (multiple choice, tick-all, or typed)
   "message"  - show feedback; Enter runs the next step (self.next_step)
 """
 import pygame
 
 from combat.battle import Battle
-from core import settings
 from core.scene import Scene
 from core.strings import t
+from dungeon import sprites
 from questions.engine import answer_text
-from ui import widgets
+from ui import hud, move_info, theme, widgets
+from ui.button import Button
+from ui.hotbar import Hotbar
+from ui.text_input import TextInput
 
 NUMBER_KEYS = [pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4, pygame.K_5,
                pygame.K_6, pygame.K_7, pygame.K_8, pygame.K_9]
 ENTER_KEYS = (pygame.K_RETURN, pygame.K_KP_ENTER)
-PANEL = pygame.Rect(40, 300, 1200, 400)
+
+ENEMY_PANEL = pygame.Rect(410, 12, 460, 212)
+CONTENT = pygame.Rect(140, 236, 1000, 384)     # the big panel: move details, question or feedback
+INSIDE = theme.inner(CONTENT)
+CHOICE_HEIGHT = 36
+CHOICE_GAP = 4
 
 
 def topic_name(topic):
@@ -33,18 +41,24 @@ class CombatScene(Scene):
         self.enemy = enemy
         self.on_end = on_end   # called once with the result dict, see finish()
         self.battle = Battle(player, enemy, run.engine, run.floor_number, habits=run.habits, rng=run.rng)
+        # In a fight every enemy is drawn big, like a boss on the map.
+        self.enemy_image = sprites.character_sprite(f"enemy_{enemy.id}", enemy.color, big=True)
 
         self.state = "choose"
-        self.moves = self.battle.moves()
+        self.moves = []
+        self.selected = 0       # which hotbar slot is highlighted
+        self.hotbar = Hotbar()
+        self.refresh_moves()
         self.notice = ""        # e.g. "Not enough Rage."
         self.lines = []         # message lines: [(text, colour)]
         self.next_step = None   # what Enter does in the "message" state
-        self.typed = ""         # typed answer so far
+        self.input = TextInput()
         self.ticked = set()     # ticked choice numbers (multi_select)
         self.elapsed = 0.0      # seconds spent on the current question
         self.ignore_text = False
-        self.move_rects = []    # filled in by draw(), used for mouse clicks
-        self.choice_rects = []
+        self.question_font = game.fonts["big"]
+        self.question_lines = []
+        self.choice_buttons = []
 
     # --- flow --------------------------------------------------------------
     def finish(self, won, fled=False):
@@ -53,6 +67,13 @@ class CombatScene(Scene):
         self.game.scenes.pop()
         self.on_end(result)
 
+    def refresh_moves(self):
+        """Ask the battle which moves can be used now and show them in the hotbar."""
+        self.moves = self.battle.moves()
+        self.selected = min(self.selected, len(self.moves) - 1)
+        self.hotbar.set_entries(
+            move_info.hotbar_entries(self.moves, self.player.resource_name, self.game.fonts["small"]))
+
     def show_message(self, lines, next_step):
         self.state = "message"
         self.lines = lines
@@ -60,10 +81,11 @@ class CombatScene(Scene):
 
     def back_to_choose(self):
         self.state = "choose"
-        self.moves = self.battle.moves()
+        self.refresh_moves()
         self.notice = ""
 
     def pick_move(self, index):
+        self.selected = index
         move = self.moves[index]
         if not move["affordable"]:
             self.notice = t("not_enough", resource=self.player.resource_name)
@@ -71,94 +93,111 @@ class CombatScene(Scene):
         result = self.battle.choose_move(move["id"])
         if result.get("utility"):
             # TODO(B): once combat/effects.py has real effects, show what the move did here.
-            self.show_message([(t("utility_used", move=move["name"]), settings.COLOR_HIGHLIGHT)], self.enemy_turn)
+            self.show_message([(t("utility_used", move=move["name"]), theme.GOLD)], self.enemy_turn)
         else:
             self.start_question()
 
     def start_question(self):
         self.state = "question"
-        self.typed = ""
+        self.input.clear()
         self.ticked = set()
         self.elapsed = 0.0
         self.ignore_text = True   # the key that picked the move must not appear in the text box
+        self.layout_question()
+
+    def layout_question(self):
+        """Work out where the question text and its answers go. Done once per question, not per frame."""
+        question = self.battle.question
+        fonts = self.game.fonts
+        # Long questions get smaller text so they still fit.
+        self.question_font = fonts["big"] if len(question["question"]) < 60 else fonts["normal"]
+        self.question_lines = widgets.wrap(self.question_font, question["question"], INSIDE.width)
+        y = INSIDE.y + 30 + len(self.question_lines) * (self.question_font.get_height() + 6) + 8
+        self.choice_buttons = []
+        if question["type"] == "typed":
+            self.input.rect = pygame.Rect(INSIDE.x, y + 8, INSIDE.width, 52)
+            return
+        for choice in question["choices"]:
+            self.choice_buttons.append(Button((INSIDE.x, y, INSIDE.width, CHOICE_HEIGHT), choice))
+            y += CHOICE_HEIGHT + CHOICE_GAP
 
     def submit(self, given):
         out = self.battle.answer(given, self.elapsed)
         question = out["question"]
-        lines = [(t("correct"), settings.COLOR_GOOD) if out["correct"] else (t("wrong"), settings.COLOR_BAD)]
+        lines = [(t("correct"), theme.GOOD) if out["correct"] else (t("wrong"), theme.BAD)]
         if not out["correct"]:
-            lines.append((t("the_answer", answer=answer_text(question)), settings.COLOR_TEXT))
+            lines.append((t("the_answer", answer=answer_text(question)), theme.TEXT))
         if question.get("explanation"):
-            lines.append((question["explanation"], settings.COLOR_DIM))
+            lines.append((question["explanation"], theme.TEXT_DIM))
         if not out["done"]:
             self.show_message(lines, self.start_question)
             return
-        lines.append((t("damage_dealt", damage=out["damage"]) if out["damage"] else t("miss"), settings.COLOR_HIGHLIGHT))
+        lines.append((t("damage_dealt", damage=out["damage"]) if out["damage"] else t("miss"), theme.GOLD))
         self.show_message(lines, self.victory if self.battle.won else self.enemy_turn)
 
     def enemy_turn(self):
         out = self.battle.enemy_turn()
         if out["damage"] == 0:   # e.g. an effect cancelled the attack
-            lines = [(t("enemy_misses", enemy=self.enemy.name), settings.COLOR_GOOD)]
+            lines = [(t("enemy_misses", enemy=self.enemy.name), theme.GOOD)]
         else:
-            lines = [(t("enemy_hits", enemy=self.enemy.name, damage=out["damage"]), settings.COLOR_BAD)]
+            lines = [(t("enemy_hits", enemy=self.enemy.name, damage=out["damage"]), theme.BAD)]
         if out["taunt"]:
-            lines.append((t(out["taunt"]), settings.COLOR_HIGHLIGHT))
+            lines.append((t(out["taunt"]), theme.GOLD))
         self.show_message(lines, self.defeat if self.battle.lost else self.back_to_choose)
 
     def victory(self):
-        self.show_message([(t("victory_fight", enemy=self.enemy.name), settings.COLOR_GOOD)],
+        self.show_message([(t("victory_fight", enemy=self.enemy.name), theme.GOOD)],
                           lambda: self.finish(won=True))
 
     def defeat(self):
-        self.show_message([(t("defeat_fight", enemy=self.enemy.name), settings.COLOR_BAD)],
+        self.show_message([(t("defeat_fight", enemy=self.enemy.name), theme.BAD)],
                           lambda: self.finish(won=False))
 
     # --- input -------------------------------------------------------------
     def handle_event(self, event):
         if self.state == "choose":
-            self._input_choose(event)
+            self.input_choose(event)
         elif self.state == "question":
-            self._input_question(event)
-        elif self.state == "message":
-            if event.type == pygame.KEYDOWN and event.key in ENTER_KEYS + (pygame.K_SPACE,):
-                self.next_step()
-            elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                self.next_step()
+            self.input_question(event)
+        elif event.type == pygame.KEYDOWN and event.key in ENTER_KEYS + (pygame.K_SPACE,):
+            self.next_step()
+        elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            self.next_step()
 
-    def _input_choose(self, event):
+    def input_choose(self, event):
         if event.type == pygame.KEYDOWN:
             if event.key in NUMBER_KEYS[: len(self.moves)]:
                 self.pick_move(NUMBER_KEYS.index(event.key))
+            elif event.key in (pygame.K_LEFT, pygame.K_a):
+                self.selected = (self.selected - 1) % len(self.moves)
+            elif event.key in (pygame.K_RIGHT, pygame.K_d):
+                self.selected = (self.selected + 1) % len(self.moves)
+            elif event.key in ENTER_KEYS:
+                self.pick_move(self.selected)
             elif event.key == pygame.K_ESCAPE and not self.enemy.boss:
                 self.finish(won=False, fled=True)
+        elif event.type == pygame.MOUSEMOTION:
+            hovered = self.hotbar.index_at(event.pos)
+            if hovered is not None:
+                self.selected = hovered   # pointing at a slot shows its details in the panel
         elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-            for i, rect in enumerate(self.move_rects):
-                if rect.collidepoint(event.pos):
-                    self.pick_move(i)
+            clicked = self.hotbar.index_at(event.pos)
+            if clicked is not None:
+                self.pick_move(clicked)
 
-    def _input_question(self, event):
+    def input_question(self, event):
         question = self.battle.question
-        kind = question["type"]
-        choices = question.get("choices", [])
-
-        if kind == "typed":
-            if event.type == pygame.TEXTINPUT and not self.ignore_text:
-                self.typed += event.text
-            elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_BACKSPACE:
-                    self.typed = self.typed[:-1]
-                elif event.key in ENTER_KEYS and self.typed.strip():
-                    self.submit(self.typed)
+        if question["type"] == "typed":
+            self.input_typed(event)
             return
-
+        choices = question["choices"]
         picked = None
         if event.type == pygame.KEYDOWN and event.key in NUMBER_KEYS[: len(choices)]:
             picked = NUMBER_KEYS.index(event.key)
         elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-            picked = next((i for i, r in enumerate(self.choice_rects) if r.collidepoint(event.pos)), None)
+            picked = next((i for i, b in enumerate(self.choice_buttons) if b.hit(event.pos)), None)
 
-        if kind == "multi_select":
+        if question["type"] == "multi_select":
             if picked is not None:
                 self.ticked ^= {picked}   # tick or untick
             elif event.type == pygame.KEYDOWN and event.key in ENTER_KEYS and self.ticked:
@@ -166,114 +205,97 @@ class CombatScene(Scene):
         elif picked is not None:          # multiple_choice
             self.submit(choices[picked])
 
+    def input_typed(self, event):
+        if event.type == pygame.TEXTINPUT and self.ignore_text:
+            return
+        if event.type == pygame.KEYDOWN and event.key in ENTER_KEYS:
+            if self.input.text.strip():
+                self.submit(self.input.text)
+            return
+        self.input.handle_event(event)
+
     # --- every frame -------------------------------------------------------
     def update(self, dt):
         self.ignore_text = False
+        self.input.update(dt)
         if self.state == "question":
             self.elapsed += dt
 
     def draw(self, surface):
-        f = self.game.fonts
-        self._draw_fighters(surface, f)
-        widgets.panel(surface, PANEL)
+        fonts = self.game.fonts
+        hud.draw_player_panel(surface, fonts, self.player)
+        self.draw_enemy(surface, fonts)
+        theme.draw_frame(surface, CONTENT)
         if self.state == "choose":
-            self._draw_choose(surface, f)
+            self.draw_choose(surface, fonts)
         elif self.state == "question":
-            self._draw_question(surface, f)
+            self.draw_question(surface, fonts)
         else:
-            self._draw_message(surface, f)
+            self.draw_message(surface, fonts)
+        choosing = self.state == "choose"
+        self.hotbar.draw(surface, fonts, pygame.mouse.get_pos(),
+                         selected=self.selected if choosing else None, active=choosing)
 
-    def _draw_fighters(self, surface, f):
-        cx = settings.SCREEN_W // 2
-        e = self.enemy
-        name = f"{e.name}  ({t('boss_tag')})" if e.boss else e.name
-        widgets.text(surface, f["big"], name, settings.COLOR_TEXT, (cx, 40), "center")
-        widgets.bar(surface, (cx - 200, 70, 400, 22), e.hp, e.max_hp, settings.COLOR_HP)
-        widgets.text(surface, f["small"], t("hp_label", hp=e.hp, max_hp=e.max_hp), settings.COLOR_TEXT,
-                     (cx, 81), "center")
-        size = 110 if e.boss else 80
-        pygame.draw.rect(surface, e.color, (cx - size // 2, 105, size, size), border_radius=12)
+    def draw_enemy(self, surface, fonts):
+        inside = theme.draw_frame(surface, ENEMY_PANEL)
+        enemy = self.enemy
+        name = f"{enemy.name}  ({t('boss_tag')})" if enemy.boss else enemy.name
+        widgets.text(surface, fonts["normal"], name, theme.GOLD, (inside.centerx, inside.y), "midtop")
+        widgets.bar(surface, (inside.x, inside.y + 30, inside.width, 22), enemy.hp, enemy.max_hp,
+                    theme.HP, theme.HP_BACK, t("hp_label", hp=enemy.hp, max_hp=enemy.max_hp), fonts["small"])
+        surface.blit(self.enemy_image, self.enemy_image.get_rect(midbottom=(inside.centerx, inside.bottom)))
 
-        p = self.player
-        widgets.text(surface, f["normal"], t("player_label", cls=p.class_name, level=p.level),
-                     settings.COLOR_TEXT, (60, 226))
-        widgets.bar(surface, (60, 262, 400, 18), p.hp, p.max_hp, settings.COLOR_HP)
-        widgets.text(surface, f["small"], t("hp_label", hp=p.hp, max_hp=p.max_hp), settings.COLOR_TEXT,
-                     (460, 232), "topright")
-        widgets.bar(surface, (820, 262, 400, 18), p.resource, p.max_resource, settings.COLOR_RESOURCE)
-        widgets.text(surface, f["small"], t("res_label", res=p.resource_name, r=p.resource, max_r=p.max_resource),
-                     settings.COLOR_TEXT, (1220, 232), "topright")
+    def hint(self, surface, fonts, string, color=theme.TEXT_DIM):
+        widgets.text(surface, fonts["small"], string, color, INSIDE.bottomleft, "bottomleft")
 
-    def _move_detail(self, move):
-        if move["questions"] == 0:
-            damage = t("move_no_question")
-        elif move["questions"] > 1:
-            damage = t("move_damage_ultimate", damage=move["damage"], bonus=move.get("bonus_damage", 0))
+    def draw_choose(self, surface, fonts):
+        widgets.text(surface, fonts["small"], t("combat_choose"), theme.TEXT_DIM, INSIDE.topleft)
+        y = INSIDE.y + 40
+        lines = move_info.move_lines(self.moves[self.selected], self.player.resource_name)
+        for i, (line, color) in enumerate(lines):
+            font = fonts["big"] if i == 0 else fonts["normal"]
+            widgets.text(surface, font, line, color, (INSIDE.x, y))
+            y += font.get_height() + 12
+        if self.notice:
+            self.hint(surface, fonts, self.notice, theme.BAD)
         else:
-            damage = t("move_damage", damage=move["damage"])
-        return t("move_detail", tier=t(f"tier_{move['tier']}"), damage=damage, cost=move["cost"])
+            key = "combat_choose_hint_boss" if self.enemy.boss else "combat_choose_hint"
+            self.hint(surface, fonts, t(key, n=len(self.moves)))
 
-    def _draw_choose(self, surface, f):
-        x, y = PANEL.x + 24, PANEL.y + 18
-        widgets.text(surface, f["normal"], t("combat_choose", n=len(self.moves)), settings.COLOR_TEXT, (x, y))
-        self.move_rects = []
-        y += 46
-        for i, move in enumerate(self.moves):
-            rect = pygame.Rect(x, y, PANEL.width - 48, 50)
-            self.move_rects.append(rect)
-            color = settings.COLOR_TEXT if move["affordable"] else settings.COLOR_DISABLED
-            pygame.draw.rect(surface, (44, 38, 56), rect, border_radius=6)
-            widgets.text(surface, f["normal"], t("move_line", number=i + 1, name=move["name"]), color,
-                         (rect.x + 16, rect.centery), "midleft")
-            widgets.text(surface, f["small"], self._move_detail(move), color,
-                         (rect.right - 16, rect.centery), "midright")
-            y += 58
-        hint = t("combat_choose_hint_boss") if self.enemy.boss else t("combat_choose_hint")
-        widgets.text(surface, f["small"], self.notice or hint,
-                     settings.COLOR_BAD if self.notice else settings.COLOR_DIM, (x, PANEL.bottom - 34))
-
-    def _draw_question(self, surface, f):
-        q = self.battle.question
+    def draw_question(self, surface, fonts):
+        question = self.battle.question
         move = self.battle.move
-        x, y = PANEL.x + 24, PANEL.y + 18
-        widgets.text(surface, f["small"], t("question_header", move=move["name"], topic=topic_name(q["topic"])),
-                     settings.COLOR_DIM, (x, y))
+        small = fonts["small"]
+        widgets.text(surface, small, t("question_header", move=move["name"], topic=topic_name(question["topic"])),
+                     theme.TEXT_DIM, INSIDE.topleft)
         if move["questions"] > 1:
-            done = move["questions"] - self.battle.remaining + 1
-            widgets.text(surface, f["small"], t("question_count", i=done, n=move["questions"]),
-                         settings.COLOR_HIGHLIGHT, (PANEL.centerx, y), "midtop")
-        widgets.text(surface, f["small"], t("seconds", s=int(self.elapsed)), settings.COLOR_DIM,
-                     (PANEL.right - 24, y), "topright")
-        font = f["big"] if len(q["question"]) < 70 else f["normal"]   # long questions get smaller text
-        y = widgets.wrapped(surface, font, q["question"], settings.COLOR_TEXT, (x, y + 36), PANEL.width - 48)
+            number = move["questions"] - self.battle.remaining + 1
+            widgets.text(surface, small, t("question_count", i=number, n=move["questions"]),
+                         theme.GOLD, (INSIDE.centerx, INSIDE.y), "midtop")
+        widgets.text(surface, small, t("seconds", s=int(self.elapsed)), theme.TEXT_DIM, INSIDE.topright, "topright")
 
-        self.choice_rects = []
-        if q["type"] == "typed":
-            box = pygame.Rect(x, y + 20, PANEL.width - 48, 56)
-            pygame.draw.rect(surface, (50, 44, 64), box, border_radius=6)
-            pygame.draw.rect(surface, settings.COLOR_HIGHLIGHT, box, width=2, border_radius=6)
-            cursor = "|" if int(self.elapsed * 2) % 2 == 0 else ""
-            widgets.text(surface, f["big"], self.typed + cursor, settings.COLOR_TEXT, (box.x + 14, box.centery), "midleft")
-            hint = t("hint_typed")
-        else:
-            y += 8
-            for i, choice in enumerate(q["choices"]):
-                rect = pygame.Rect(x, y, PANEL.width - 48, 38)
-                self.choice_rects.append(rect)
-                ticked = q["type"] == "multi_select" and i in self.ticked
-                pygame.draw.rect(surface, (70, 60, 90) if ticked else (44, 38, 56), rect, border_radius=6)
-                mark = "[x] " if ticked else ("[  ] " if q["type"] == "multi_select" else "")
-                widgets.text(surface, f["normal"], f"{i + 1}. {mark}{choice}",
-                             settings.COLOR_HIGHLIGHT if ticked else settings.COLOR_TEXT,
-                             (rect.x + 16, rect.centery), "midleft")
-                y += 42
-            n = len(q["choices"])
-            hint = t("hint_multi", n=n) if q["type"] == "multi_select" else t("hint_choice", n=n)
-        widgets.text(surface, f["small"], hint, settings.COLOR_DIM, (x, PANEL.bottom - 34))
+        y = INSIDE.y + 30
+        for line in self.question_lines:
+            widgets.text(surface, self.question_font, line, theme.TEXT, (INSIDE.x, y))
+            y += self.question_font.get_height() + 6
 
-    def _draw_message(self, surface, f):
-        x, y = PANEL.x + 24, PANEL.y + 24
+        if question["type"] == "typed":
+            self.input.draw(surface, fonts["big"])
+            self.hint(surface, fonts, t("hint_typed"))
+            return
+        multi = question["type"] == "multi_select"
+        mouse = pygame.mouse.get_pos()
+        for i, button in enumerate(self.choice_buttons):
+            ticked = multi and i in self.ticked
+            mark = ("[x] " if ticked else "[  ] ") if multi else ""
+            button.label = f"{i + 1}. {mark}{question['choices'][i]}"
+            button.draw(surface, fonts["normal"], mouse, selected=ticked)
+        count = len(self.choice_buttons)
+        self.hint(surface, fonts, t("hint_multi", n=count) if multi else t("hint_choice", n=count))
+
+    def draw_message(self, surface, fonts):
+        y = INSIDE.y + 6
         for i, (line, color) in enumerate(self.lines):
-            font = f["big"] if i == 0 else f["normal"]
-            y = widgets.wrapped(surface, font, line, color, (x, y), PANEL.width - 48) + 8
-        widgets.text(surface, f["small"], t("press_continue"), settings.COLOR_DIM, (x, PANEL.bottom - 34))
+            font = fonts["big"] if i == 0 else fonts["normal"]
+            y = widgets.wrapped(surface, font, line, color, (INSIDE.x, y), INSIDE.width) + 8
+        self.hint(surface, fonts, t("press_continue"))
