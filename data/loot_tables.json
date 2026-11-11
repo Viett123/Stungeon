@@ -3,7 +3,7 @@
   "chest_gold": [5, 20],
   "tables": {
     "enemy": [{"item": "small_potion", "chance": 0.35}],
-    "chest": [{"item": "small_potion", "chance": 0.6}, {"item": "tonic", "chance": 0.4}, {"item": "old_sword", "chance": 0.15}],
+    "chest": [{"item": "small_potion", "chance": 0.6}, {"item": "tonic", "chance": 0.4}, {"item": "old_sword", "chance": 0.1}, {"item": "apprentice_staff", "chance": 0.1}, {"item": "hunting_bow", "chance": 0.1}],
     "boss":  [{"item": "small_potion", "chance": 1.0}, {"item": "tonic", "chance": 0.5}]
   }
 }

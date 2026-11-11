@@ -16,8 +16,9 @@ from dungeon.actor import make_actor
 from dungeon.camera import Camera
 from dungeon.floor import STAIRS, generate_floor
 from dungeon.renderer import DungeonRenderer
+from dungeon.weapon import held_weapon
 from systems import inventory, items
-from systems.enemies import chase_rules, make_enemy
+from systems.enemies import chase_rules, floor_theme, make_enemy
 from systems.loot import roll_chest_gold, roll_loot
 from ui import hud, move_info, theme
 from ui.hotbar import Hotbar
@@ -57,12 +58,16 @@ class DungeonScene(Scene):
 
     def make_pictures(self):
         """Build everything that is drawn, once, so draw() never loads a file."""
-        self.renderer = DungeonRenderer(self.floor)
+        theme = floor_theme(self.run.floor_number)
+        self.renderer = DungeonRenderer(self.floor, theme["folder"], theme["background"])
         self.camera = Camera(VIEW.width, VIEW.height, self.renderer.world_w, self.renderer.world_h)
         font = self.game.fonts["small"]
         player = self.run.player
         self.player_actor = make_actor(f"player_{player.class_id}", self.player_pos, player.color)
         self.camera.snap_to(*self.player_actor.center())
+        self.weapon_id = None       # which weapon the picture below shows
+        self.weapon = None
+        self.refresh_weapon()
         enemy_speed = TILE / self.chase["seconds_per_step"]   # the glide takes exactly one step
         for e in self.floor.enemies:
             info = self.enemy_info[e["id"]]
@@ -74,6 +79,13 @@ class DungeonScene(Scene):
         self.chest_frames = sprites.chest_frames()
         for chest in self.floor.chests:
             chest["time"] = 0.0     # seconds since it was opened, for the opening animation
+
+    def refresh_weapon(self):
+        """Make the picture of the equipped weapon again if the player changed it in the bag."""
+        equipped = self.run.player.equipped.get("weapon")
+        if equipped != self.weapon_id:
+            self.weapon_id = equipped
+            self.weapon = held_weapon(self.run.player, settings.TILE_SCALE)
 
     def refresh_hotbar(self):
         """Show the player's moves in the hotbar. Called at the start and after a level up."""
@@ -229,6 +241,7 @@ class DungeonScene(Scene):
         for chest in self.floor.chests:
             if chest["opened"]:
                 chest["time"] += dt
+        self.refresh_weapon()
         self.walk_while_key_held(dt)
         if self.game.scenes.current is not self:
             return                              # the step above opened another screen
@@ -249,6 +262,8 @@ class DungeonScene(Scene):
             # A little higher than a character on the same tile, so the player is drawn over an open chest.
             things.append((x * TILE + TILE // 2, (y + 1) * TILE - 1, self.chest_image(chest)))
         things.append((*self.player_actor.feet(), self.player_actor.image()))
+        if self.weapon:
+            things.append(self.weapon.thing(*self.player_actor.feet(), self.player_actor.facing_left))
         self.renderer.draw(surface, VIEW, self.camera, things)
         self.draw_hud(surface)
 

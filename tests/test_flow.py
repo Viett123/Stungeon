@@ -129,6 +129,7 @@ def test_bag_uses_a_potion_and_equips_and_takes_off(game):
     flow.start_new_run(game, "warrior")
     player = game.run_state.player
     weapon = next(i for i, item in ITEMS.items() if item.get("slot") == "weapon")
+    player.equipped.clear()                            # put the starting weapon away for this test
     inventory.add_item(player, POTION)
     inventory.add_item(player, weapon)
     player.take_damage(30)

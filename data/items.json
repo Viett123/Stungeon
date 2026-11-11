@@ -9,6 +9,10 @@
                      "effect": {"type": "resource", "amount": 40}, "text": "Restores 40 of your class resource.", "color": [62, 104, 178]},
     "old_sword":    {"name": "Old Sword", "kind": "equipment", "slot": "weapon", "rarity": "common", "price": 40,
                      "text": "A placeholder weapon. It does nothing yet.", "color": [130, 130, 136]},
+    "apprentice_staff": {"name": "Apprentice Staff", "kind": "equipment", "slot": "weapon", "rarity": "common", "price": 40,
+                     "text": "A placeholder weapon. It does nothing yet.", "color": [150, 60, 60]},
+    "hunting_bow":  {"name": "Hunting Bow", "kind": "equipment", "slot": "weapon", "rarity": "common", "price": 40,
+                     "text": "A placeholder weapon. It does nothing yet.", "color": [150, 100, 50]},
     "leather_vest": {"name": "Leather Vest", "kind": "equipment", "slot": "armor", "rarity": "common", "price": 40,
                      "text": "A placeholder armour. It does nothing yet.", "color": [120, 90, 60]}
   }

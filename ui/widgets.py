@@ -58,12 +58,21 @@ def dim(surface):
     surface.blit(_dim_cover, (0, 0))
 
 
-def bar(surface, rect, value, maximum, color, back, label="", font=None):
-    """A bar that shows value out of maximum (HP, resource), with an optional label on it."""
+def bar(surface, rect, value, maximum, color, back, label="", font=None, trail=None):
+    """A bar that shows value out of maximum (HP, resource), with an optional label on it.
+
+    trail: a value a little behind `value` (see ui/anim.py Trail). The part between
+    the two is drawn pale, so a sudden loss stays visible for a moment.
+    """
     rect = pygame.Rect(rect)
     pygame.draw.rect(surface, theme.OUTLINE, rect)
     inside = rect.inflate(-4, -4)
     pygame.draw.rect(surface, back, inside)
+    if trail is not None and maximum > 0 and trail > value:
+        lost = inside.copy()
+        lost.width = round(inside.width * min(trail, maximum) / maximum)
+        pale = tuple(min(255, c + 90) for c in color)      # a lighter shade of the bar's own colour
+        pygame.draw.rect(surface, pale, lost)
     if maximum > 0 and value > 0:
         filled = inside.copy()
         filled.width = max(1, round(inside.width * min(value, maximum) / maximum))
@@ -72,4 +81,6 @@ def bar(surface, rect, value, maximum, color, back, label="", font=None):
         lighter = tuple(min(255, c + 40) for c in color)
         pygame.draw.line(surface, lighter, filled.topleft, (filled.right - 1, filled.top))
     if label and font:
+        # A dark copy one pixel lower keeps the label readable on any bar colour.
+        text(surface, font, label, theme.OUTLINE, (rect.centerx + 1, rect.centery + 1), "center")
         text(surface, font, label, theme.TEXT, rect.center, "center")

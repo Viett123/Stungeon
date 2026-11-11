@@ -9,12 +9,15 @@ States:
 import pygame
 
 from combat.battle import Battle
+from core import assets, settings
 from core.scene import Scene
 from core.strings import t
 from dungeon.actor import make_actor
+from dungeon.weapon import held_weapon
 from questions.engine import answer_text
 from systems.loot import roll_loot
 from ui import hud, move_info, theme, widgets
+from ui.anim import FloatingText, Trail
 from ui.button import Button
 from ui.hotbar import Hotbar
 from ui.text_input import TextInput
@@ -26,6 +29,8 @@ ENTER_KEYS = (pygame.K_RETURN, pygame.K_KP_ENTER)
 ENEMY_PANEL = pygame.Rect(410, 12, 460, 212)
 PLAYER_ART = pygame.Rect(938, 12, 202, 212)     # the player's picture, right of the enemy
 HURT_SECONDS = 0.6
+ATTACK_SECONDS = 0.35      # how long the weapon swing and the hit sparks last
+FIGHTER_SCALE = settings.TILE_SCALE + 1   # fighters are drawn 4 times the art size, like bosses
 CONTENT = pygame.Rect(140, 236, 1000, 384)     # the big panel: move details, question or feedback
 INSIDE = theme.inner(CONTENT)
 CHOICE_HEIGHT = 36
@@ -50,6 +55,11 @@ class CombatScene(Scene):
         self.player_actor = make_actor(f"player_{player.class_id}", (0, 0), player.color, big=True)
         self.player_actor.facing_left = True
         self.hurt = 0.0         # seconds left to show the player's "hit" picture
+        self.weapon = held_weapon(player, FIGHTER_SCALE)
+        self.enemy_trail = Trail(enemy.hp)
+        self.attack = 0.0       # seconds left of the player's attack (weapon swing + sparks on the enemy)
+        self.sparks = assets.load_frames("effect_hit", FIGHTER_SCALE)
+        self.floating = []      # damage numbers that rise and fade
 
         self.state = "choose"
         self.moves = []
@@ -66,6 +76,11 @@ class CombatScene(Scene):
         self.question_font = game.fonts["big"]
         self.question_lines = []
         self.choice_buttons = []
+
+    def float_text(self, string, color, panel):
+        """Show a rising, fading text over one of the fighter panels."""
+        font = self.game.fonts["big"]
+        self.floating.append(FloatingText(font, string, color, (panel.centerx + 60, panel.centery)))
 
     # --- flow --------------------------------------------------------------
     def finish(self, won, fled=False):
@@ -141,6 +156,9 @@ class CombatScene(Scene):
             self.show_message(lines, self.start_question)
             return
         lines.append((t("damage_dealt", damage=out["damage"]) if out["damage"] else t("miss"), theme.GOLD))
+        if out["damage"]:
+            self.attack = ATTACK_SECONDS
+            self.float_text(f"-{out['damage']}", theme.GOLD, ENEMY_PANEL)
         self.show_message(lines, self.victory if self.battle.won else self.enemy_turn)
 
     def enemy_turn(self):
@@ -150,6 +168,7 @@ class CombatScene(Scene):
         else:
             lines = [(t("enemy_hits", enemy=self.enemy.name, damage=out["damage"]), theme.BAD)]
             self.hurt = HURT_SECONDS
+            self.float_text(f"-{out['damage']}", theme.BAD, PLAYER_ART)
         if out["taunt"]:
             lines.append((t(out["taunt"]), theme.GOLD))
         self.show_message(lines, self.defeat if self.battle.lost else self.back_to_choose)
@@ -230,6 +249,8 @@ class CombatScene(Scene):
         self.enemy_actor.update(dt)
         self.player_actor.update(dt)
         self.hurt = max(0.0, self.hurt - dt)
+        self.attack = max(0.0, self.attack - dt)
+        self.floating = [text for text in self.floating if text.alive()]
         if self.state == "question":
             self.elapsed += dt
 
@@ -248,6 +269,8 @@ class CombatScene(Scene):
         choosing = self.state == "choose"
         self.hotbar.draw(surface, fonts, pygame.mouse.get_pos(),
                          selected=self.selected if choosing else None, active=choosing)
+        for text in self.floating:
+            text.draw(surface)
 
     def draw_enemy(self, surface, fonts):
         inside = theme.draw_frame(surface, ENEMY_PANEL)
@@ -255,15 +278,26 @@ class CombatScene(Scene):
         name = f"{enemy.name}  ({t('boss_tag')})" if enemy.boss else enemy.name
         widgets.text(surface, fonts["normal"], name, theme.GOLD, (inside.centerx, inside.y), "midtop")
         widgets.bar(surface, (inside.x, inside.y + 30, inside.width, 22), enemy.hp, enemy.max_hp,
-                    theme.HP, theme.HP_BACK, t("hp_label", hp=enemy.hp, max_hp=enemy.max_hp), fonts["small"])
+                    theme.HP, theme.HP_BACK, t("hp_label", hp=enemy.hp, max_hp=enemy.max_hp), fonts["small"],
+                    trail=self.enemy_trail.follow(enemy.hp))
         image = self.enemy_actor.image()
-        surface.blit(image, image.get_rect(midbottom=(inside.centerx, inside.bottom)))
+        rect = image.get_rect(midbottom=(inside.centerx, inside.bottom))
+        surface.blit(image, rect)
+        if self.attack > 0 and self.sparks:
+            # Hit sparks over the enemy while the player's attack lands.
+            progress = 1 - self.attack / ATTACK_SECONDS
+            spark = self.sparks[min(int(progress * len(self.sparks)), len(self.sparks) - 1)]
+            surface.blit(spark, spark.get_rect(center=rect.center))
 
     def draw_player(self, surface):
         """The player's picture in its own small panel; it shows the "hit" frame right after being hurt."""
         inside = theme.draw_frame(surface, PLAYER_ART)
         image = self.player_actor.image("hit" if self.hurt > 0 else None)
-        surface.blit(image, image.get_rect(midbottom=(inside.centerx, inside.bottom)))
+        feet = (inside.centerx + 16, inside.bottom)
+        surface.blit(image, image.get_rect(midbottom=feet))
+        if self.weapon:
+            swing = 1 - self.attack / ATTACK_SECONDS if self.attack > 0 else None
+            self.weapon.draw(surface, feet, facing_left=True, swing=swing)
 
     def hint(self, surface, fonts, string, color=theme.TEXT_DIM):
         widgets.text(surface, fonts["small"], string, color, INSIDE.bottomleft, "bottomleft")

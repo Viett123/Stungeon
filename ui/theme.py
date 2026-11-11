@@ -18,6 +18,7 @@ SLOT_FILL = (38, 34, 36)
 TEXT = (226, 218, 200)
 TEXT_DIM = (150, 142, 130)
 GOLD = (218, 182, 100)
+GOLD_BRIGHT = (255, 232, 160)   # selected things pulse between GOLD and this
 GOOD = (124, 186, 110)
 BAD = (204, 84, 72)
 DISABLED = (96, 90, 88)
@@ -54,7 +55,11 @@ def draw_frame(surface, rect, highlight=False, fill=PANEL_FILL):
     pygame.draw.rect(surface, OUTLINE, rect)
     pygame.draw.rect(surface, STONE, rect.inflate(-4, -4))
     pygame.draw.rect(surface, STONE_LIGHT, rect.inflate(-4, -4), width=2)
-    pygame.draw.rect(surface, GOLD if highlight else METAL_DARK, rect.inflate(-14, -14))
+    line = METAL_DARK
+    if highlight:
+        from ui import anim              # imported here because ui/anim.py imports this file
+        line = anim.glow_gold()
+    pygame.draw.rect(surface, line, rect.inflate(-14, -14))
     pygame.draw.rect(surface, fill, rect.inflate(-18, -18))
     for corner in ("topleft", "topright", "bottomleft", "bottomright"):
         stud = pygame.Rect(0, 0, 10, 10)

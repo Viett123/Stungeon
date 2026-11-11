@@ -5,7 +5,7 @@ from dataclasses import dataclass, field
 from ai.habits import HabitTracker
 from ai.mastery import KnowledgeTracker
 from questions.engine import QuestionEngine
-from systems.player import Player
+from systems.player import Player, load_data
 
 SAVE_VERSION = 1   # raise this when the save format changes, so old saves are ignored
 
@@ -33,7 +33,11 @@ def _make_run(player, seed, tracker, floor_number=1, demo=False) -> Run:
 
 def new_run(class_id, seed=None, demo=False) -> Run:
     seed = random.randrange(1_000_000) if seed is None else seed
-    return _make_run(Player(class_id), seed, KnowledgeTracker(), demo=demo)
+    player = Player(class_id)
+    start_weapon = load_data("classes.json")["classes"][class_id].get("start_weapon")
+    if start_weapon:
+        player.equipped["weapon"] = start_weapon     # a new character holds its class weapon
+    return _make_run(player, seed, KnowledgeTracker(), demo=demo)
 
 
 # --- saving ------------------------------------------------------------------
