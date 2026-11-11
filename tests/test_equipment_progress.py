@@ -17,7 +17,7 @@ from questions.engine import QuestionEngine             # noqa: E402
 from systems import inventory, items, save              # noqa: E402
 from systems.enemies import make_enemy                  # noqa: E402
 from systems.player import Player, load_data            # noqa: E402
-from ui import item_info                                # noqa: E402
+from ui import item_info, topic_names                   # noqa: E402
 from ui.inventory_screen import InventoryScene          # noqa: E402
 from ui.stats_screen import StatsScene, mastery_color, xp_progress   # noqa: E402
 
@@ -128,7 +128,7 @@ def test_an_old_save_is_not_offered_for_continue(game):
     data = run_to_dict(new_run("mage", seed=3))
     save.save_game(data)
     assert flow.can_continue()
-    data["version"] = 1                                  # a save from before the equipment slots
+    data["version"] = 1                                  # a save from an older version of the game
     save.save_game(data)
     assert not flow.can_continue()
     game.go_to_title()
@@ -157,10 +157,12 @@ def test_progress_screen_lists_only_topics_of_the_floors_reached(game):
     game.scenes.current.handle_event(key(pygame.K_m))
     screen = game.scenes.current
     assert isinstance(screen, StatsScene)
-    shown = {topic for topic, _, _ in screen.rows}
-    assert shown == {q["topic"] for q in run.engine.questions if q["einheit"] == 1}
-    counts = next(c for topic, _, c in screen.rows if topic == question["topic"])
+    shown = {name for name, _, _ in screen.rows}
+    assert shown == {topic_names.label(q["topic"]) for q in run.engine.questions if q["einheit"] == 1}
+    asked_name, _, counts = screen.rows[0]                # asked topics come first
+    assert asked_name == topic_names.label(question["topic"])
     assert counts["correct"] == 1 and screen.streak == 1
+    assert screen.asked == 1 and screen.correct == 1
     screen.draw(game.screen)
     screen.handle_event(key(pygame.K_m))
     assert not isinstance(game.scenes.current, StatsScene)

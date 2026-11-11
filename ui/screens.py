@@ -4,7 +4,7 @@ import pygame
 from core import settings
 from core.scene import Scene
 from core.strings import t
-from ui import theme, widgets
+from ui import theme, topic_names, widgets
 
 
 class EndScene(Scene):
@@ -42,7 +42,7 @@ class EndScene(Scene):
             widgets.text(surface, f["normal"], t("summary_topics"), theme.GOLD, (cx, 330), "center")
             y = 370
             for topic, s in self.weak:
-                widgets.text(surface, f["small"], t("summary_topic_line", topic=topic.replace("_", " "),
+                widgets.text(surface, f["small"], t("summary_topic_line", topic=topic_names.label(topic),
                                                     correct=s["correct"], asked=s["asked"]),
                              theme.TEXT_DIM, (cx, y), "center")
                 y += 32

@@ -61,4 +61,4 @@ def test_shadow_falls_on_floor_directly_below_brick():
 def test_every_room_on_a_real_floor_has_brick_behind_it():
     floor = generate_floor(1, seed=3)
     for x, y, w, h in floor.rooms:
-        assert tiles.is_brick(floor.grid, x, y - 1)
+        assert tiles.is_brick(floor.grid, x + 1, y - 1)      # x + 1: a room's corner cell may be cut off

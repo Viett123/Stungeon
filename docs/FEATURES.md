@@ -35,6 +35,9 @@ In the order that matters most for the exhibit.
 | 14 | Questions checked by a German speaker | C + team | `questions/data/questions_german_b1_review.csv` | The check itself, and `meaning_vi` |
 | 15 | Own look: font, repainted art | D | Drop-in PNG names in `assets/README.md`; themes per floor | A CC0 pixel font; our own repaints |
 | 16 | Sound | D | Nothing yet | Needs CC0 sound files first; then a small loader |
+| 17 | Does an item cost your turn in a fight? | B | `effects.item_costs_turn()` (placeholder: yes) | The decision |
+| 18 | Elites, mini-bosses, traps, choices: real content | D | All in `data/` as placeholders: `enemies.json` (elite, miniboss), `choices.json`, `progression.json` (trap_damage) | Names, numbers, more choices |
+| 19 | Room kinds and their weights | A | `dungeon/floor.py`: start, boss, treasure, trap, den, normal; cut corners | Tuning, more kinds |
 
 ## 2. All 37 answers
 
@@ -65,7 +68,7 @@ In the order that matters most for the exhibit.
 | 11 | Armour reduces damage or gives time; special skills on high tiers | Slots done, effects Now (D + B) | Head, body, legs, shoes, two accessories. See Now 8 |
 | 12 | Rarity tiers; loot from monsters, bosses and chests | Done | Common to Legendary. Mythical: Later. End-of-floor reward chest: Later |
 | 13 | Gold, shop between floors; selling; wandering traders | Buying done | Selling has its rule (`shop.sell`) but no screen yet: small, could be Now. Traders: Later |
-| 14 | HP potions, buff potions, hint and skip scrolls, gamble scroll | Potions done | Scrolls: Now 13. Buff potions need buffs (Now 9). Gamble scroll: Later |
+| 14 | HP potions, buff potions, hint and skip scrolls, gamble scroll | Potions done | Potions can be used in a fight (I). Scrolls: Now 13. Buff potions need buffs (Now 9). Gamble scroll: Later |
 
 ### Buffs and debuffs
 
@@ -88,10 +91,10 @@ In the order that matters most for the exhibit.
 
 | # | Answer | Status | Notes |
 |---|---|---|---|
-| 22 | Random floors each run | Done | Rooms, corridors, chests, chasing monsters, a theme per floor |
+| 22 | Random floors each run | Done | Room kinds (treasure, trap, den), cut corners, chests, chasing monsters, elites, a mini-boss, fog of war, a minimap, a random theme per run |
 | 23 | One floor per Einheit, cumulative | Done | 3 floors for Einheiten 1 to 3 |
 | 24 | Roguelike (permadeath) and Checkpoint modes | Checkpoint done | Saved when a floor starts. Roguelike: Later |
-| 25 | Secret rooms; chests that need a hard question | Chests done | Plain chests. A question to open them, and secret rooms: Later |
+| 25 | Secret rooms; chests that need a hard question | Chests done | Plain chests, and a treasure room guarded by a mini-boss. A question to open them, and secret rooms: Later |
 
 ### Making it addictive
 
@@ -126,10 +129,27 @@ Kept from the design chat so nothing is lost. None of these is needed for the ex
 
 - **Character:** races, designing your own character, skill points, skill trees, weapon mastery.
 - **World:** hidden class dungeons with unique rewards, level gates on floors, secret rooms, question chests,
-  end-of-floor reward chests, wandering traders, spike traps, doors, fountains.
+  end-of-floor reward chests, wandering traders, doors, keys, fountains.
 - **Combat:** multi-phase bosses, bosses that learn across runs, NG+, topic debuffs cast by enemies,
-  gamble scroll, items used inside a fight, item slots in the hotbar.
+  gamble scroll, item slots in the hotbar.
 - **Modes:** Roguelike (permadeath), review room, daily challenge.
 - **Rewards:** achievements, titles with buffs, cosmetics, Mythical items, leaderboards.
 - **Learning:** question variation, My Materials uploads, other subjects.
 - **Look:** Vietnamese and German UI, attack animations drawn by us, armour art (none of the three packs has any).
+
+## 4. Added after the design chat (11 Nov 2026)
+
+These were not in the 37 answers. They were added because dungeon crawlers usually have them.
+
+| Feature | Status | Notes |
+|---|---|---|
+| Fog of war | Done | A room is shown when you enter it; corridors show a few cells around you |
+| Minimap | Done | Top right; shows explored cells, chests, monsters you have seen, guards in pink |
+| Hit effects | Done | Screen shake, the enemy flashes white, a short pause, damage numbers |
+| Room variety | Done, placeholder weights (A) | See Now 19 |
+| Elite monsters | Done, placeholder numbers (D) | A gold ring on the map; stronger, better loot |
+| Mini-boss | Done, placeholder content (D) | One per floor, guards the treasure room, uses the packs' big monsters |
+| Spike traps | Done, placeholder damage (D) | Only in trap rooms; the middle row and column are safe |
+| Choice between floors | Done, placeholder content (D) | Three of six choices; each has a risk or a reward |
+| Random theme per run | Done | Each floor lists themes in `data/enemies.json`; the run's seed picks one |
+| Sound, tutorial fight | Not started | Suggested for before the exhibit |

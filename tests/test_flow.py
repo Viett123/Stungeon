@@ -17,6 +17,7 @@ from core.title_scene import TitleScene             # noqa: E402
 from dungeon.dungeon_scene import DungeonScene      # noqa: E402
 from systems import inventory, save, shop           # noqa: E402
 from systems.player import load_data                # noqa: E402
+from ui.choice_screen import ChoiceScene            # noqa: E402
 from ui.class_select import ClassSelectScene        # noqa: E402
 from ui.inventory_screen import InventoryScene      # noqa: E402
 from ui.pause_menu import PauseScene                # noqa: E402
@@ -162,6 +163,8 @@ def test_shop_sells_an_item_then_leads_to_the_next_floor(game):
     assert player.inventory == [first]
 
     press(game, pygame.K_c)
+    assert isinstance(game.scenes.current, ChoiceScene)      # the risk-and-reward choice comes next
+    press(game, pygame.K_RETURN)
     assert isinstance(game.scenes.current, DungeonScene) and game.run_state.floor_number == 2
     assert save.load_game()["floor_number"] == 2       # the new floor was saved
 

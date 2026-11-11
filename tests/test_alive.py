@@ -12,7 +12,7 @@ from core import flow, settings                    # noqa: E402
 from core.game import Game                         # noqa: E402
 from dungeon import chase                          # noqa: E402
 from dungeon.actor import Actor, Animation         # noqa: E402
-from dungeon.floor import WALL, generate_floor     # noqa: E402
+from dungeon.floor import TREASURE_CHESTS, WALL, generate_floor     # noqa: E402
 from systems.enemies import chase_rules, floor_spawns   # noqa: E402
 
 TILE = settings.TILE
@@ -100,7 +100,8 @@ def test_a_real_path_from_astar_is_used_when_there_is_one(monkeypatch):
 @pytest.mark.parametrize("number", [1, 2, 3])
 def test_chests_are_on_free_floor_cells(number):
     floor = generate_floor(number, seed=11)
-    assert len(floor.chests) == floor_spawns(number)["chests"]
+    extra = TREASURE_CHESTS if "treasure" in floor.room_kinds else 0     # the treasure room adds its own
+    assert len(floor.chests) == floor_spawns(number)["chests"] + extra
     taken = {e["pos"] for e in floor.enemies} | {floor.start, floor.stairs}
     for chest in floor.chests:
         x, y = chest["pos"]
@@ -127,7 +128,8 @@ def frames(game, scene, seconds):
 
 def lone_enemy(scene, pos):
     """Keep one normal enemy and put it on pos, so the test controls what happens."""
-    enemy = next(e for e in scene.floor.enemies if not e["boss"])
+    enemy = next(e for e in scene.floor.enemies if not e["guard"])     # not a boss or mini-boss: they stand still
+    enemy["elite"] = False
     scene.floor.enemies[:] = [enemy]
     enemy["pos"] = pos
     return enemy

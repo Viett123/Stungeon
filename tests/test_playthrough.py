@@ -16,6 +16,7 @@ from combat.combat_scene import CombatScene      # noqa: E402
 from core.game import Game                        # noqa: E402
 from dungeon.dungeon_scene import DungeonScene    # noqa: E402
 from ui.screens import EndScene                   # noqa: E402
+from ui.choice_screen import ChoiceScene          # noqa: E402
 from ui.shop_screen import ShopScene              # noqa: E402
 
 DIRECTIONS = {(1, 0): pygame.K_RIGHT, (-1, 0): pygame.K_LEFT, (0, 1): pygame.K_DOWN, (0, -1): pygame.K_UP}
@@ -111,6 +112,8 @@ def test_bot_plays_a_whole_run(class_index):
             shops += 1
             step(game, key(pygame.K_RETURN))      # try to buy the first item
             step(game, key(pygame.K_c))           # go on to the next floor
+        elif isinstance(scene, ChoiceScene):
+            step(game, key(pygame.K_RETURN))      # take the first choice
         elif isinstance(scene, DungeonScene):
             step(game, key(DIRECTIONS[first_step_towards(scene, next_goal(scene))]))
         else:
