@@ -31,6 +31,12 @@ def change_player_damage(damage, battle) -> int:
     return damage
 
 
+def item_costs_turn(battle) -> bool:
+    """Called after the player used an item in a fight. Return True if that used up the turn."""
+    # TODO(B): placeholder rule: using an item costs your turn, so the enemy acts next.
+    return True
+
+
 def enemy_loses_turn(battle) -> bool:
     """Called before the enemy's turn. Return True to make the enemy skip it."""
     # TODO(B): design doc: after a wrong answer there is a chance that the enemy loses its turn too,

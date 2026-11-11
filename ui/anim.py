@@ -79,3 +79,26 @@ class FloatingText:
         self.image.set_alpha(round(255 * (1 - progress ** 2)))   # stays clear, then fades quickly
         x, y = self.center
         surface.blit(self.image, self.image.get_rect(center=(x, y - self.RISE * ease_out(progress))))
+
+
+class Shake:
+    """Shakes the screen for a moment: strong at first, then fading out."""
+
+    def __init__(self):
+        self.until = 0.0
+        self.seconds = 1.0
+        self.strength = 0
+
+    def start(self, strength, seconds):
+        """strength: how many pixels the picture jumps at most."""
+        self.strength = strength
+        self.seconds = seconds
+        self.until = now() + seconds
+
+    def offset(self):
+        """How far to move the whole picture right now: (x, y) in pixels, (0, 0) when not shaking."""
+        left = self.until - now()
+        if left <= 0:
+            return 0, 0
+        power = self.strength * left / self.seconds
+        return round(power * math.sin(now() * 90)), round(power * math.cos(now() * 70))

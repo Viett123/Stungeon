@@ -8,6 +8,7 @@ States:
 """
 import pygame
 
+from combat import effects
 from combat.battle import Battle
 from core import assets, settings
 from core.scene import Scene
@@ -15,9 +16,10 @@ from core.strings import t
 from dungeon.actor import make_actor
 from dungeon.weapon import held_weapon
 from questions.engine import answer_text
+from systems import inventory, items
 from systems.loot import roll_loot
-from ui import anim, hud, move_info, theme, widgets
-from ui.anim import FloatingText, Trail
+from ui import anim, hud, move_info, theme, topic_names, widgets
+from ui.anim import FloatingText, Shake, Trail
 from ui.button import Button
 from ui.hotbar import Hotbar
 from ui.text_input import TextInput
@@ -29,6 +31,8 @@ ENTER_KEYS = (pygame.K_RETURN, pygame.K_KP_ENTER)
 ENEMY_PANEL = pygame.Rect(410, 12, 460, 212)
 PLAYER_ART = pygame.Rect(938, 12, 202, 212)     # the player's picture, right of the enemy
 HURT_SECONDS = 0.6
+HIT_PAUSE = 0.07            # seconds everything freezes when a hit lands
+FLASH_SECONDS = 0.12        # seconds the enemy is drawn white after a hit
 ATTACK_SECONDS = 0.35      # how long the weapon swing and the hit sparks last
 FIGHTER_SCALE = settings.TILE_SCALE + 1   # fighters are drawn 4 times the art size, like bosses
 CONTENT = pygame.Rect(140, 236, 1000, 384)     # the big panel: move details, question or feedback
@@ -38,7 +42,7 @@ CHOICE_GAP = 4
 
 
 def topic_name(topic):
-    return topic.replace("_", " ")
+    return topic_names.label(topic)
 
 
 class CombatScene(Scene):
@@ -51,7 +55,8 @@ class CombatScene(Scene):
         self.battle = Battle(player, enemy, run.engine, run.floor_number, habits=run.habits, rng=run.rng)
         # In a fight both fighters are drawn big and animated. They stand still, so the
         # tile they are "on" does not matter; the player faces left, towards the enemy.
-        self.enemy_actor = make_actor(f"enemy_{enemy.id}", (0, 0), enemy.color, big=True)
+        self.enemy_actor = make_actor(f"enemy_{enemy.id}", (0, 0), enemy.color, big=not enemy.large_art)
+        self.enemy_name = t("elite_name", name=enemy.name) if enemy.elite else enemy.name
         self.player_actor = make_actor(f"player_{player.class_id}", (0, 0), player.color, big=True)
         self.player_actor.facing_left = True
         self.hurt = 0.0         # seconds left to show the player's "hit" picture
@@ -60,6 +65,17 @@ class CombatScene(Scene):
         self.attack = 0.0       # seconds left of the player's attack (weapon swing + sparks on the enemy)
         self.sparks = assets.load_frames("effect_hit", FIGHTER_SCALE)
         self.floating = []      # damage numbers that rise and fade
+        # "Juice": small effects that make a hit feel like a hit.
+        self.shake = Shake()    # the whole screen shakes for a moment
+        self.freeze = 0.0       # seconds everything stands still right after a hit
+        self.flash = 0.0        # seconds the enemy is drawn all white
+        self.white = {}         # white copies of the enemy's pictures, made the first time each is needed
+        self.buffer = pygame.Surface((settings.SCREEN_W, settings.SCREEN_H))   # used only while shaking
+        # Items that can be used in this fight (the "items" state).
+        self.item_ids = []
+        self.item_buttons = []
+        self.item_selected = 0
+        self.items_button = Button((INSIDE.right - 170, INSIDE.bottom - 44, 170, 40), t("items_button"))
 
         self.state = "choose"
         self.moves = []
@@ -120,6 +136,62 @@ class CombatScene(Scene):
         else:
             self.start_question()
 
+    # --- items ---------------------------------------------------------------
+    def open_items(self):
+        """Show the consumables in the bag as a list. Each kind is listed once, with how many there are."""
+        self.item_ids = []
+        for item_id in self.player.inventory:
+            if item_id not in self.item_ids and items.get_item(item_id)["kind"] == "consumable":
+                self.item_ids.append(item_id)
+        if not self.item_ids:
+            self.notice = t("items_none")
+            return
+        self.state = "items"
+        self.notice = ""
+        self.item_selected = min(self.item_selected, len(self.item_ids) - 1)
+        self.item_buttons = [Button((INSIDE.x, INSIDE.y + 44 + i * 46, 520, 40), "")
+                             for i in range(len(self.item_ids))]
+
+    def use_item(self, index):
+        item = items.get_item(self.item_ids[index])
+        if not inventory.use_item(self.player, item["id"]):
+            self.notice = t("item_no_effect", item=item["name"])     # e.g. a potion at full HP: keep it
+            return
+        lines = [(t("item_used", item=item["name"]), theme.GOLD)]
+        # TODO(B): whether an item costs the turn is decided in combat/effects.py.
+        self.show_message(lines, self.enemy_turn if effects.item_costs_turn(self.battle) else self.back_to_choose)
+
+    def input_items(self, event):
+        if event.type == pygame.KEYDOWN:
+            if event.key in (pygame.K_UP, pygame.K_w):
+                self.item_selected = (self.item_selected - 1) % len(self.item_ids)
+            elif event.key in (pygame.K_DOWN, pygame.K_s):
+                self.item_selected = (self.item_selected + 1) % len(self.item_ids)
+            elif event.key in ENTER_KEYS:
+                self.use_item(self.item_selected)
+            elif event.key in (pygame.K_ESCAPE, pygame.K_i):
+                self.back_to_choose()
+        elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            for i, button in enumerate(self.item_buttons):
+                if button.hit(event.pos):
+                    self.use_item(i)
+                    return
+
+    def draw_items(self, surface, fonts):
+        widgets.text(surface, fonts["small"], t("items_title"), theme.TEXT_DIM, INSIDE.topleft)
+        mouse = pygame.mouse.get_pos()
+        for i, (button, item_id) in enumerate(zip(self.item_buttons, self.item_ids)):
+            item = items.get_item(item_id)
+            button.label = t("item_line", name=item["name"], n=self.player.inventory.count(item_id))
+            button.draw(surface, fonts["normal"], mouse, selected=(i == self.item_selected))
+        selected = items.get_item(self.item_ids[self.item_selected])
+        widgets.wrapped(surface, fonts["small"], selected["text"], theme.TEXT, (INSIDE.x + 560, INSIDE.y + 52),
+                        INSIDE.right - INSIDE.x - 560)
+        if self.notice:
+            self.hint(surface, fonts, self.notice, theme.BAD)
+        else:
+            self.hint(surface, fonts, t("items_hint"))
+
     def start_question(self):
         self.state = "question"
         self.input.clear()
@@ -158,33 +230,39 @@ class CombatScene(Scene):
         lines.append((t("damage_dealt", damage=out["damage"]) if out["damage"] else t("miss"), theme.GOLD))
         if out["damage"]:
             self.attack = ATTACK_SECONDS
+            self.shake.start(strength=6, seconds=0.25)
+            self.freeze = HIT_PAUSE
+            self.flash = FLASH_SECONDS
             self.float_text(f"-{out['damage']}", theme.GOLD, ENEMY_PANEL)
         self.show_message(lines, self.victory if self.battle.won else self.enemy_turn)
 
     def enemy_turn(self):
         out = self.battle.enemy_turn()
         if out["damage"] == 0:   # e.g. an effect cancelled the attack
-            lines = [(t("enemy_misses", enemy=self.enemy.name), theme.GOOD)]
+            lines = [(t("enemy_misses", enemy=self.enemy_name), theme.GOOD)]
         else:
-            lines = [(t("enemy_hits", enemy=self.enemy.name, damage=out["damage"]), theme.BAD)]
+            lines = [(t("enemy_hits", enemy=self.enemy_name, damage=out["damage"]), theme.BAD)]
             self.hurt = HURT_SECONDS
+            self.shake.start(strength=10, seconds=0.3)
             self.float_text(f"-{out['damage']}", theme.BAD, PLAYER_ART)
         if out["taunt"]:
             lines.append((t(out["taunt"]), theme.GOLD))
         self.show_message(lines, self.defeat if self.battle.lost else self.back_to_choose)
 
     def victory(self):
-        self.show_message([(t("victory_fight", enemy=self.enemy.name), theme.GOOD)],
+        self.show_message([(t("victory_fight", enemy=self.enemy_name), theme.GOOD)],
                           lambda: self.finish(won=True))
 
     def defeat(self):
-        self.show_message([(t("defeat_fight", enemy=self.enemy.name), theme.BAD)],
+        self.show_message([(t("defeat_fight", enemy=self.enemy_name), theme.BAD)],
                           lambda: self.finish(won=False))
 
     # --- input -------------------------------------------------------------
     def handle_event(self, event):
         if self.state == "choose":
             self.input_choose(event)
+        elif self.state == "items":
+            self.input_items(event)
         elif self.state == "question":
             self.input_question(event)
         elif event.type == pygame.KEYDOWN and event.key in ENTER_KEYS + (pygame.K_SPACE,):
@@ -202,6 +280,8 @@ class CombatScene(Scene):
                 self.selected = (self.selected + 1) % len(self.moves)
             elif event.key in ENTER_KEYS:
                 self.pick_move(self.selected)
+            elif event.key == pygame.K_i:
+                self.open_items()
             elif event.key == pygame.K_ESCAPE and not self.enemy.boss:
                 self.finish(won=False, fled=True)
         elif event.type == pygame.MOUSEMOTION:
@@ -212,6 +292,8 @@ class CombatScene(Scene):
             clicked = self.hotbar.index_at(event.pos)
             if clicked is not None:
                 self.pick_move(clicked)
+            elif self.items_button.hit(event.pos):
+                self.open_items()
 
     def input_question(self, event):
         question = self.battle.question
@@ -245,6 +327,10 @@ class CombatScene(Scene):
     # --- every frame -------------------------------------------------------
     def update(self, dt):
         self.ignore_text = False
+        if self.freeze > 0:
+            self.freeze -= dt       # hit pause: nothing moves for a few frames
+            return
+        self.flash = max(0.0, self.flash - dt)
         self.input.update(dt)
         self.enemy_actor.update(dt)
         self.player_actor.update(dt)
@@ -255,6 +341,18 @@ class CombatScene(Scene):
             self.elapsed += dt
 
     def draw(self, surface):
+        offset = self.shake.offset()
+        if offset == (0, 0):
+            self.draw_scene(surface)
+            return
+        # Shaking: draw the whole screen onto a spare picture, then put that on the real
+        # screen a few pixels off. The spare picture is made once, not every frame.
+        self.buffer.fill(theme.BACKGROUND)
+        self.draw_scene(self.buffer)
+        surface.fill(theme.BACKGROUND)
+        surface.blit(self.buffer, offset)
+
+    def draw_scene(self, surface):
         fonts = self.game.fonts
         hud.draw_player_panel(surface, fonts, self.player)
         self.draw_enemy(surface, fonts)
@@ -262,13 +360,16 @@ class CombatScene(Scene):
         theme.draw_frame(surface, CONTENT)
         if self.state == "choose":
             self.draw_choose(surface, fonts)
+            self.items_button.draw(surface, fonts["small"], pygame.mouse.get_pos())
+        elif self.state == "items":
+            self.draw_items(surface, fonts)
         elif self.state == "question":
             self.draw_question(surface, fonts)
         else:
             self.draw_message(surface, fonts)
         if self.battle.engine.streak >= 2:
             widgets.text(surface, fonts["normal"], t("streak", n=self.battle.engine.streak), anim.glow_gold(),
-                         (CONTENT.right - 4, CONTENT.top - 6), "bottomright")
+                         (CONTENT.left + 4, CONTENT.top - 6), "bottomleft")   # in the gap under the status panel
         choosing = self.state == "choose"
         self.hotbar.draw(surface, fonts, pygame.mouse.get_pos(),
                          selected=self.selected if choosing else None, active=choosing)
@@ -278,19 +379,26 @@ class CombatScene(Scene):
     def draw_enemy(self, surface, fonts):
         inside = theme.draw_frame(surface, ENEMY_PANEL)
         enemy = self.enemy
-        name = f"{enemy.name}  ({t('boss_tag')})" if enemy.boss else enemy.name
+        name = f"{self.enemy_name}  ({t('boss_tag')})" if enemy.boss else self.enemy_name
         widgets.text(surface, fonts["normal"], name, theme.GOLD, (inside.centerx, inside.y), "midtop")
         widgets.bar(surface, (inside.x, inside.y + 30, inside.width, 22), enemy.hp, enemy.max_hp,
                     theme.HP, theme.HP_BACK, t("hp_label", hp=enemy.hp, max_hp=enemy.max_hp), fonts["small"],
                     trail=self.enemy_trail.follow(enemy.hp))
         image = self.enemy_actor.image()
         rect = image.get_rect(midbottom=(inside.centerx, inside.bottom))
-        surface.blit(image, rect)
+        surface.blit(self.white_copy(image) if self.flash > 0 else image, rect)
         if self.attack > 0 and self.sparks:
             # Hit sparks over the enemy while the player's attack lands.
             progress = 1 - self.attack / ATTACK_SECONDS
             spark = self.sparks[min(int(progress * len(self.sparks)), len(self.sparks) - 1)]
             surface.blit(spark, spark.get_rect(center=rect.center))
+
+    def white_copy(self, image):
+        """The same picture with every pixel white: the enemy flashes like this when it is hit."""
+        if id(image) not in self.white:
+            mask = pygame.mask.from_surface(image)
+            self.white[id(image)] = mask.to_surface(setcolor=(255, 255, 255, 255), unsetcolor=(0, 0, 0, 0))
+        return self.white[id(image)]
 
     def draw_player(self, surface):
         """The player's picture in its own small panel; it shows the "hit" frame right after being hurt."""
