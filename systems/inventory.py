@@ -1,11 +1,16 @@
 """Adding, removing, using and equipping items (owner: D). No pygame here.
 
 player.inventory is a list of item ids (the bag). The same id can be in it more than once.
-player.equipped is a dict from slot name to item id, e.g. {"weapon": "old_sword"}.
+player.equipped is a dict from slot name to item id, e.g. {"weapon": "old_sword", "head": "cloth_hood"}.
+
+An equipment item names the KIND of slot it fits in its "slot" field (data/items.json):
+weapon, head, body, legs, shoes or accessory. There are two accessory slots.
 """
 from systems import item_effects, items
 
-EQUIP_SLOTS = ["weapon", "armor"]
+ACCESSORY_SLOTS = ["accessory_1", "accessory_2"]
+EQUIP_SLOTS = ["weapon", "head", "body", "legs", "shoes"] + ACCESSORY_SLOTS
+SLOT_KINDS = ["weapon", "head", "body", "legs", "shoes", "accessory"]   # what an item's "slot" may say
 
 
 def is_full(player) -> bool:
@@ -39,6 +44,20 @@ def use_item(player, item_id) -> bool:
     return True
 
 
+def slot_for(player, item) -> str:
+    """The slot an equipment item goes into.
+
+    An accessory takes the first empty accessory slot. If both are full, it replaces
+    the one in the first slot.
+    """
+    if item["slot"] != "accessory":
+        return item["slot"]
+    for slot in ACCESSORY_SLOTS:
+        if slot not in player.equipped:
+            return slot
+    return ACCESSORY_SLOTS[0]
+
+
 def equip(player, item_id) -> bool:
     """Move equipment from the bag into its slot. What was in the slot goes back into the bag."""
     if item_id not in player.inventory:
@@ -46,11 +65,12 @@ def equip(player, item_id) -> bool:
     item = items.get_item(item_id)
     if item["kind"] != "equipment":
         return False
+    slot = slot_for(player, item)
     player.inventory.remove(item_id)
-    old = player.equipped.get(item["slot"])
+    old = player.equipped.get(slot)
     if old:
         player.inventory.append(old)   # always fits: we just took one item out
-    player.equipped[item["slot"]] = item_id
+    player.equipped[slot] = item_id
     return True
 
 

@@ -36,6 +36,15 @@ def continue_run(game) -> bool:
     return True
 
 
+def can_continue() -> bool:
+    """True if there is a saved run that this version of the game can load."""
+    try:
+        run_from_dict(save.load_game())
+    except (KeyError, TypeError, ValueError):
+        return False
+    return True
+
+
 def save_checkpoint(game):
     if not game.run_state.demo:
         save.save_game(run_to_dict(game.run_state))

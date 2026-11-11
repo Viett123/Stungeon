@@ -3,7 +3,6 @@ import pygame
 
 from core import flow, settings
 from core.strings import t
-from systems import save
 from ui import theme, widgets
 from ui.menu import MenuScene
 
@@ -12,7 +11,7 @@ class TitleScene(MenuScene):
     def __init__(self, game):
         options = [
             (t("menu_new_game"), self.new_game, True),
-            (t("menu_continue"), self.continue_game, save.has_save()),   # greyed out without a save
+            (t("menu_continue"), self.continue_game, flow.can_continue()),   # greyed out without a save
             (t("menu_demo"), lambda: flow.start_demo(game), True),
             (t("menu_quit"), game.quit, True),
         ]

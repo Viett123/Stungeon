@@ -39,6 +39,10 @@ is changed: it is the pack's plain floor with the pack's skull drawn on top.
 | `item_tonic.png` | `flask_blue.png` |
 | `item_old_sword.png`, `weapon_old_sword.png` | `weapon_rusty_sword.png` |
 | `item_apprentice_staff.png`, `weapon_apprentice_staff.png` | `weapon_red_magic_staff.png` |
+| `item_knight_sword.png`, `weapon_knight_sword.png` | `weapon_knight_sword.png` |
+| `item_war_axe.png`, `weapon_war_axe.png` | `weapon_axe.png` |
+| `item_oak_staff.png`, `weapon_oak_staff.png` | `weapon_green_magic_staff.png` |
+| `item_big_potion.png` | `flask_big_red.png` |
 
 ## 16x16 Dungeon Walls Reconfig by aekae13
 
@@ -73,6 +77,7 @@ Not used yet from these sheets: fountains, totems, spike traps, the wall monster
 
 ## Still drawn in code (no art file yet)
 
-- The Leather Vest item and all move icons.
+- All armour and accessory items (hood, vest, trousers, boots, ring, charm): none of the packs has such art.
+- All move icons.
 - All menu frames, bars and slots (`ui/theme.py`).
 - The font is pygame's built-in font.

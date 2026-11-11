@@ -11,7 +11,7 @@ from core.strings import t
 from systems import items, shop
 from ui import theme, widgets
 from ui.button import Button
-from ui.inventory_screen import item_icon
+from ui.item_info import item_icon, item_lines
 
 PANEL = pygame.Rect(190, 70, 900, 580)
 ROW_H, GAP = 52, 8
@@ -74,16 +74,16 @@ class ShopScene(Scene):
             affordable = self.player.gold >= shop.buy_price(item)
             row.label = ""
             row.draw(surface, fonts["normal"], mouse, selected=(i == self.selected))
-            surface.blit(icon, icon.get_rect(midleft=(row.rect.x + 6, row.rect.centery)))
+            surface.blit(icon, icon.get_rect(center=(row.rect.x + 32, row.rect.centery)))   # narrow icons stay centred
             widgets.text(surface, fonts["normal"], item["name"], theme.TEXT, (row.rect.x + 70, row.rect.centery), "midleft")
             widgets.text(surface, fonts["normal"], t("shop_price", price=shop.buy_price(item)),
                          theme.GOLD if affordable else theme.BAD, (row.rect.right - 14, row.rect.centery), "midright")
 
         item = self.stock[self.selected]
-        widgets.text(surface, fonts["normal"], item["name"], theme.GOLD, (self.side_x, inside.y + 74))
-        widgets.text(surface, small, t(f"rarity_{item['rarity']}"), theme.TEXT_DIM, (self.side_x, inside.y + 104))
-        widgets.wrapped(surface, small, item["text"], theme.TEXT, (self.side_x, inside.y + 138),
-                        inside.right - self.side_x)
+        (name, name_color), (kind, kind_color), (text, text_color) = item_lines(item)
+        widgets.text(surface, fonts["normal"], name, name_color, (self.side_x, inside.y + 74))
+        widgets.text(surface, small, kind, kind_color, (self.side_x, inside.y + 104))
+        widgets.wrapped(surface, small, text, text_color, (self.side_x, inside.y + 138), inside.right - self.side_x)
 
         self.leave.draw(surface, fonts["normal"], mouse)
         if self.message:

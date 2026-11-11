@@ -7,7 +7,7 @@ from ai.mastery import KnowledgeTracker
 from questions.engine import QuestionEngine
 from systems.player import Player, load_data
 
-SAVE_VERSION = 1   # raise this when the save format changes, so old saves are ignored
+SAVE_VERSION = 2   # raise this when the save format changes, so old saves are ignored
 
 
 @dataclass
