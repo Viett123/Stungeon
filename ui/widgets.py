@@ -1,6 +1,8 @@
 """Small drawing helpers shared by all screens (owner: B)."""
 import pygame
 
+from ui import theme
+
 # Characters the default font cannot draw (they would show as boxes) -> what to draw instead.
 # The question bank uses "→" in 162 plural questions.
 _REPLACEMENTS = {"→": "->"}
@@ -44,18 +46,18 @@ def wrapped(surface, font, string, color, topleft, width, line_gap=6):
     return y
 
 
-def bar(surface, rect, value, maximum, color, back=(50, 44, 60)):
-    """A filled bar, e.g. HP. rect = (x, y, w, h)."""
+def bar(surface, rect, value, maximum, color, back, label="", font=None):
+    """A bar that shows value out of maximum (HP, resource), with an optional label on it."""
     rect = pygame.Rect(rect)
-    pygame.draw.rect(surface, back, rect, border_radius=4)
+    pygame.draw.rect(surface, theme.OUTLINE, rect)
+    inside = rect.inflate(-4, -4)
+    pygame.draw.rect(surface, back, inside)
     if maximum > 0 and value > 0:
-        filled = rect.copy()
-        filled.width = max(1, round(rect.width * min(value, maximum) / maximum))
-        pygame.draw.rect(surface, color, filled, border_radius=4)
-
-
-def panel(surface, rect, color=(30, 25, 40), border=(80, 70, 100)):
-    rect = pygame.Rect(rect)
-    pygame.draw.rect(surface, color, rect, border_radius=8)
-    pygame.draw.rect(surface, border, rect, width=2, border_radius=8)
-    return rect
+        filled = inside.copy()
+        filled.width = max(1, round(inside.width * min(value, maximum) / maximum))
+        pygame.draw.rect(surface, color, filled)
+        # A lighter line along the top makes the bar look slightly rounded.
+        lighter = tuple(min(255, c + 40) for c in color)
+        pygame.draw.line(surface, lighter, filled.topleft, (filled.right - 1, filled.top))
+    if label and font:
+        text(surface, font, label, theme.TEXT, rect.center, "center")
