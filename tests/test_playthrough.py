@@ -16,6 +16,7 @@ from combat.combat_scene import CombatScene      # noqa: E402
 from core.game import Game                        # noqa: E402
 from dungeon.dungeon_scene import DungeonScene    # noqa: E402
 from ui.screens import EndScene                   # noqa: E402
+from ui.shop_screen import ShopScene              # noqa: E402
 
 DIRECTIONS = {(1, 0): pygame.K_RIGHT, (-1, 0): pygame.K_LEFT, (0, 1): pygame.K_DOWN, (0, -1): pygame.K_UP}
 NUMBERS = [pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4, pygame.K_5, pygame.K_6, pygame.K_7]
@@ -96,6 +97,7 @@ def test_bot_plays_a_whole_run(class_index):
     step(game, key(pygame.K_RETURN))                      # title -> class select
     step(game, key(NUMBERS[class_index]), key(pygame.K_RETURN))
     answered = 0
+    shops = 0
 
     for _ in range(20000):
         scene = game.scenes.current
@@ -105,6 +107,10 @@ def test_bot_plays_a_whole_run(class_index):
             if scene.state == "question":
                 answered += 1
             play_combat_turn(game, scene)
+        elif isinstance(scene, ShopScene):
+            shops += 1
+            step(game, key(pygame.K_RETURN))      # try to buy the first item
+            step(game, key(pygame.K_c))           # go on to the next floor
         elif isinstance(scene, DungeonScene):
             step(game, key(DIRECTIONS[first_step_towards(scene, next_goal(scene))]))
         else:
@@ -115,5 +121,7 @@ def test_bot_plays_a_whole_run(class_index):
 
     assert isinstance(game.scenes.current, EndScene)
     assert answered > 10
+    if game.scenes.current.won:
+        assert shops == 2                         # one shop after floor 1 and one after floor 2
     assert game.run_state.engine.stats   # questions were reported
     pygame.quit()

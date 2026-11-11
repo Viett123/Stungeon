@@ -5,13 +5,14 @@ stairs, and you go down to the next floor. Enemies don't move yet (TODO(C): A* c
 """
 import pygame
 
-from core import settings
+from core import flow, settings
 from core.scene import Scene
 from core.strings import t
 from dungeon import sprites
 from dungeon.camera import Camera
 from dungeon.floor import STAIRS, generate_floor
 from dungeon.renderer import DungeonRenderer
+from systems import inventory, items
 from systems.enemies import make_enemy
 from systems.player import load_data
 from ui import hud, move_info, theme
@@ -31,7 +32,7 @@ class DungeonScene(Scene):
     def __init__(self, game, messages=None):
         super().__init__(game)
         self.run = game.run_state
-        self.floor = generate_floor(self.run.floor_number, seed=self.run.seed)
+        self.floor = generate_floor(self.run.floor_number, seed=self.run.seed, demo=self.run.demo)
         self.player_pos = self.floor.start
         # Enemy data (names, colours) loaded once here, not in draw().
         self.enemy_info = {e["id"]: make_enemy(e["id"]) for e in self.floor.enemies}
@@ -77,7 +78,11 @@ class DungeonScene(Scene):
         if event.type != pygame.KEYDOWN:
             return
         if event.key == pygame.K_ESCAPE:
-            self.game.go_to_title()
+            from ui.pause_menu import PauseScene
+            self.game.scenes.push(PauseScene(self.game))
+        elif event.key == pygame.K_i:
+            from ui.inventory_screen import InventoryScene
+            self.game.scenes.push(InventoryScene(self.game))
         elif event.key in MOVE_KEYS:
             dx, dy = MOVE_KEYS[event.key]
             self.try_move(self.player_pos[0] + dx, self.player_pos[1] + dy)
@@ -94,7 +99,7 @@ class DungeonScene(Scene):
             return
         self.player_pos = (x, y)
         if self.floor.grid[y][x] == STAIRS:
-            self.next_floor()
+            flow.leave_floor(self.game)   # shop, next floor or the end screen: see core/flow.py
 
     # --- fights ------------------------------------------------------------
     def start_fight(self, map_enemy):
@@ -110,8 +115,7 @@ class DungeonScene(Scene):
             self.say(t("fled"))
             return
         if not result["won"]:
-            from ui.screens import EndScene
-            self.game.scenes.replace(EndScene(self.game, won=False))
+            flow.finish_run(self.game, won=False)
             return
         player = self.run.player
         player.gold += result["gold"]
@@ -127,18 +131,10 @@ class DungeonScene(Scene):
                 name = next(m["name"] for m in player.unlocked_moves() if m["id"] == value)
                 self.say(t("new_move", name=name))
         self.refresh_hotbar()   # a level up may have unlocked a new move
-
-    def next_floor(self):
-        rules = load_data("progression.json")
-        if self.run.floor_number >= rules["last_floor"]:
-            from ui.screens import EndScene
-            self.game.scenes.replace(EndScene(self.game, won=True))
-            return
-        self.run.floor_number += 1
-        player = self.run.player
-        # TODO(D): healing on a new floor is a placeholder rule, like the one above.
-        player.heal(round(player.max_hp * rules["heal_on_new_floor"]))
-        self.game.scenes.replace(DungeonScene(self.game, [t("new_floor", n=self.run.floor_number)]))
+        for item_id in result["loot"]:
+            name = items.get_item(item_id)["name"]
+            added = inventory.add_item(player, item_id)
+            self.say(t("loot_found", item=name) if added else t("loot_bag_full", item=name))
 
     # --- every frame -------------------------------------------------------
     def update(self, dt):

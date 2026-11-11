@@ -46,6 +46,18 @@ def wrapped(surface, font, string, color, topleft, width, line_gap=6):
     return y
 
 
+_dim_cover = None   # made once, the first time dim() is used
+
+
+def dim(surface):
+    """Darken everything drawn so far, so a menu on top of the game is easy to read."""
+    global _dim_cover
+    if _dim_cover is None or _dim_cover.get_size() != surface.get_size():
+        _dim_cover = pygame.Surface(surface.get_size(), pygame.SRCALPHA)
+        _dim_cover.fill((0, 0, 0, 170))
+    surface.blit(_dim_cover, (0, 0))
+
+
 def bar(surface, rect, value, maximum, color, back, label="", font=None):
     """A bar that shows value out of maximum (HP, resource), with an optional label on it."""
     rect = pygame.Rect(rect)

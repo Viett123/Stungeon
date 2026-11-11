@@ -1,8 +1,7 @@
 """Choose Warrior, Mage or Archer, then start a new run (owner: B)."""
 import pygame
 
-from core import settings
-from core.run import new_run
+from core import flow, settings
 from core.scene import Scene
 from core.strings import t
 from systems.player import Player, load_data
@@ -37,9 +36,7 @@ class ClassSelectScene(Scene):
         return pygame.transform.scale(icon, (32, 32))
 
     def start(self):
-        from dungeon.dungeon_scene import DungeonScene
-        self.game.run_state = new_run(CLASS_IDS[self.selected])
-        self.game.scenes.replace(DungeonScene(self.game))
+        flow.start_new_run(self.game, CLASS_IDS[self.selected])
 
     def handle_event(self, event):
         if event.type == pygame.KEYDOWN:

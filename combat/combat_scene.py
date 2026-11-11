@@ -13,6 +13,7 @@ from core.scene import Scene
 from core.strings import t
 from dungeon import sprites
 from questions.engine import answer_text
+from systems.loot import roll_loot
 from ui import hud, move_info, theme, widgets
 from ui.button import Button
 from ui.hotbar import Hotbar
@@ -62,8 +63,9 @@ class CombatScene(Scene):
 
     # --- flow --------------------------------------------------------------
     def finish(self, won, fled=False):
+        loot = roll_loot(self.enemy.loot_table, self.game.run_state.rng) if won else []
         result = {"won": won, "fled": fled,
-                  "xp": self.enemy.xp if won else 0, "gold": self.enemy.gold if won else 0, "loot": []}
+                  "xp": self.enemy.xp if won else 0, "gold": self.enemy.gold if won else 0, "loot": loot}
         self.game.scenes.pop()
         self.on_end(result)
 

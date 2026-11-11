@@ -6,7 +6,7 @@ from core.strings import t
 from ui import theme, widgets
 
 PLAYER_PANEL = pygame.Rect(12, 12, 330, 128)
-MESSAGE_WIDTH = 720
+MESSAGE_WIDTH = 520
 LINE_HEIGHT = 26
 
 
@@ -38,7 +38,10 @@ def draw_messages(surface, fonts, lines, bottom):
     if not lines:
         return
     height = len(lines) * LINE_HEIGHT + 2 * theme.FRAME_PAD + 4
-    rect = pygame.Rect(0, 0, MESSAGE_WIDTH, height)
+    # Wide enough for the longest line, but never narrower than MESSAGE_WIDTH.
+    longest = max(fonts["small"].size(widgets.drawable(line))[0] for line, _ in lines)
+    width = max(MESSAGE_WIDTH, longest + 2 * theme.FRAME_PAD + 24)
+    rect = pygame.Rect(0, 0, width, height)
     rect.midbottom = (settings.SCREEN_W // 2, bottom)
     inside = theme.draw_frame(surface, rect)
     y = inside.y + 2
