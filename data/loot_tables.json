@@ -4,6 +4,8 @@
   "tables": {
     "enemy": [{"item": "small_potion", "chance": 0.35}],
     "chest": [{"item": "small_potion", "chance": 0.6}, {"item": "tonic", "chance": 0.4}, {"item": "old_sword", "chance": 0.08}, {"item": "apprentice_staff", "chance": 0.08}, {"item": "hunting_bow", "chance": 0.08}, {"item": "cloth_hood", "chance": 0.1}, {"item": "worn_boots", "chance": 0.1}, {"item": "wool_trousers", "chance": 0.1}, {"item": "copper_ring", "chance": 0.08}, {"item": "lucky_charm", "chance": 0.05}],
+    "elite": [{"item": "small_potion", "chance": 1.0}, {"item": "tonic", "chance": 0.5}],
+    "miniboss": [{"item": "big_potion", "chance": 1.0}, {"item": "lucky_charm", "chance": 0.4}, {"item": "war_axe", "chance": 0.3}],
     "boss":  [{"item": "small_potion", "chance": 1.0}, {"item": "tonic", "chance": 0.5}, {"item": "knight_sword", "chance": 0.25}]
   }
 }

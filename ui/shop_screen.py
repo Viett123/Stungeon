@@ -50,10 +50,10 @@ class ShopScene(Scene):
             elif event.key in ENTER_KEYS:
                 self.buy_selected()
             elif event.key in (pygame.K_c, pygame.K_ESCAPE):
-                flow.go_to_next_floor(self.game)
+                flow.offer_choice(self.game)
         elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             if self.leave.hit(event.pos):
-                flow.go_to_next_floor(self.game)
+                flow.offer_choice(self.game)
                 return
             for i, row in enumerate(self.rows):
                 if row.hit(event.pos):

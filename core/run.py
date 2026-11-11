@@ -7,7 +7,7 @@ from ai.mastery import KnowledgeTracker
 from questions.engine import QuestionEngine
 from systems.player import Player, load_data
 
-SAVE_VERSION = 2   # raise this when the save format changes, so old saves are ignored
+SAVE_VERSION = 3   # raise this when the save format changes, so old saves are ignored
 
 
 @dataclass
@@ -20,6 +20,9 @@ class Run:
     floor_number: int = 1
     rng: random.Random = field(default_factory=random.Random)
     demo: bool = False   # exhibit demo: fewer enemies, never saved
+    # Changes to a floor chosen between floors (see systems/choices.py), e.g. {"extra_chests": 2}.
+    modifiers: dict = field(default_factory=dict)        # for the floor the player is on
+    next_modifiers: dict = field(default_factory=dict)   # collected for the next floor
 
 
 def _make_run(player, seed, tracker, floor_number=1, demo=False) -> Run:
@@ -55,6 +58,7 @@ def run_to_dict(run) -> dict:
         "player": player,
         "mastery": run.tracker.to_dict(),
         "stats": dict(run.engine.stats),
+        "modifiers": dict(run.modifiers),
         # TODO(C): the HabitTracker is not saved yet. Add to_dict/from_dict to it if it should be.
     }
 
@@ -69,6 +73,7 @@ def run_from_dict(data) -> Run:
         # Set the fields after creating the player, so a saved 0 (e.g. no resource left) stays 0.
         setattr(player, name, saved[name])
     run = _make_run(player, data["seed"], KnowledgeTracker.from_dict(data["mastery"]), data["floor_number"])
+    run.modifiers = dict(data["modifiers"])
     for topic, counts in data["stats"].items():
         run.engine.stats[topic] = dict(counts)
     return run

@@ -35,6 +35,10 @@ is changed: it is the pack's plain floor with the pack's skull drawn on top.
 | `enemy_boss_floor_1_idle_N`, `_run_N` | `doc_idle_anim_fN`, `doc_run_anim_fN` |
 | `enemy_boss_floor_2_idle_N`, `_run_N` | `orc_shaman_idle_anim_fN`, `orc_shaman_run_anim_fN` |
 | `enemy_boss_floor_3_idle_N`, `_run_N` | `chort_idle_anim_fN`, `chort_run_anim_fN` |
+| `enemy_mini_floor_1_idle_N`, `_run_N` | `big_zombie_idle_anim_fN`, `big_zombie_run_anim_fN` |
+| `enemy_mini_floor_2_idle_N`, `_run_N` | `ogre_idle_anim_fN`, `ogre_run_anim_fN` |
+| `enemy_mini_floor_3_idle_N`, `_run_N` | `big_demon_idle_anim_fN`, `big_demon_run_anim_fN` |
+| `tile_spikes.png` | `floor_spikes_anim_f3.png` |
 | `item_small_potion.png` | `flask_red.png` |
 | `item_tonic.png` | `flask_blue.png` |
 | `item_old_sword.png`, `weapon_old_sword.png` | `weapon_rusty_sword.png` |
@@ -70,10 +74,10 @@ The corner pieces are the bottom 4 pixel rows of the side lines.
 
 | Files | Cut from |
 |---|---|
-| `assets/sprites/jungle/*.png` (20 files) | `omnibo_jungledungeon - copia.png` |
-| `assets/sprites/desert/*.png` (20 files) | `omnibo_dessert_dungeon.png` |
+| `assets/sprites/jungle/*.png` (21 files, with the spikes) | `omnibo_jungledungeon - copia.png` |
+| `assets/sprites/desert/*.png` (21 files, with the spikes) | `omnibo_dessert_dungeon.png` |
 
-Not used yet from these sheets: fountains, totems, spike traps, the wall monster.
+Not used yet from these sheets: fountains, totems, the wall monster.
 
 ## Still drawn in code (no art file yet)
 

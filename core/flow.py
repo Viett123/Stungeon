@@ -3,7 +3,7 @@
 Scenes call these functions instead of creating each other directly, so the order
 of the game is written down in one place:
 
-  title menu -> class select -> floor 1 -> (shop) -> floor 2 -> (shop) -> floor 3 -> end screen
+  title menu -> class select -> floor 1 -> shop -> choice -> floor 2 -> shop -> choice -> floor 3 -> end screen
 
 The game is saved every time a floor starts (never in demo mode).
 Scene classes are imported inside the functions, because those files import this one.
@@ -65,12 +65,20 @@ def leave_floor(game):
         from ui.shop_screen import ShopScene
         game.scenes.replace(ShopScene(game))
     else:
-        go_to_next_floor(game)
+        offer_choice(game)
+
+
+def offer_choice(game):
+    """After the shop: the risk-and-reward choice. It then leads to the next floor."""
+    from ui.choice_screen import ChoiceScene
+    game.scenes.replace(ChoiceScene(game))
 
 
 def go_to_next_floor(game):
     run = game.run_state
     run.floor_number += 1
+    # What the player chose between the floors now becomes this floor's modifiers.
+    run.modifiers, run.next_modifiers = run.next_modifiers, {}
     enter_floor(game, [t("new_floor", n=run.floor_number)])
 
 

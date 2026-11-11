@@ -9,6 +9,8 @@ To replace a placeholder, put a PNG with the right name in `assets/sprites/`. No
 - Tiles are exactly **16 x 16** pixels.
 - Characters are **16 pixels wide** and up to about 28 tall. They stand with their feet at the
   bottom of their tile, so a tall sprite overlaps the tile above it.
+- A big monster may be **32 pixels wide**. Then set `"large_art": true` for it in `data/enemies.json`,
+  so the game does not make it even bigger.
 - Draw characters **facing right**. The game mirrors them when they walk left.
 - An animation is several files with the same name and a number at the end, starting at 0.
   All frames of one animation must be the same size. Any number of frames works.
@@ -28,6 +30,7 @@ To replace a placeholder, put a PNG with the right name in `assets/sprites/`. No
 | `tile_wall_side_left.png`, `tile_wall_side_right.png` | The thin line beside a room: on the right edge of the picture for `left`, on the left edge for `right` |
 | `tile_wall_corner_left.png`, `tile_wall_corner_right.png` | The small piece where a side line meets a cap |
 | `tile_stairs.png` | Stairs down |
+| `tile_spikes.png` | Spikes of a trap room, see-through around the spikes; drawn on top of the floor |
 | `chest_0.png`, `chest_1.png`, ... | A chest opening: the first picture is closed, the last is fully open |
 | `player_<class>_idle_0.png`, `_1.png`, ... | The player standing, one set per class id in `data/classes.json` (`warrior`, `mage`, `archer`) |
 | `player_<class>_run_0.png`, ... | The player walking. Without these, the idle pictures are used |

@@ -81,7 +81,17 @@ def _line_placeholder(rect):
     return draw
 
 
+def _spikes_placeholder():
+    """Six small grey spikes on a see-through tile."""
+    image = _blank()
+    for x in (3, 8, 13):
+        for y in (4, 11):
+            pygame.draw.polygon(image, (190, 190, 200), [(x - 2, y + 3), (x, y - 2), (x + 2, y + 3)])
+    return image
+
+
 _TILE_PLACEHOLDERS = {
+    "tile_spikes": _spikes_placeholder,
     "tile_wall_front": _wall_front_placeholder,
     "tile_wall_top": _wall_top_placeholder,
     "tile_stairs": _stairs_placeholder,
@@ -164,3 +174,11 @@ def chest_frames():
         pygame.draw.rect(image, (120, 76, 30), (2, 8, 12, 6))
         pygame.draw.rect(image, lid, (2, 5, 12, 3))
     return [assets.scale_up(closed), assets.scale_up(opened)]
+
+
+def elite_aura():
+    """A soft gold ring drawn on the floor under an elite enemy, so it stands out."""
+    image = pygame.Surface((54, 22), pygame.SRCALPHA)
+    pygame.draw.ellipse(image, (230, 190, 90, 110), image.get_rect())
+    pygame.draw.ellipse(image, (255, 230, 150, 200), image.get_rect(), width=3)
+    return image

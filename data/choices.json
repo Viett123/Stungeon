@@ -1,0 +1,18 @@
+{
+  "_note": "PLACEHOLDER written by Claude. Owner D: replace these and delete this line. Between two floors the player picks one of `offered` random choices. Each choice has a name, a text and effects. Effects the game understands (systems/choices.py): gold (get gold), item (get an item id), lose_hp (lose HP now, never below 1), max_hp (raise max HP), next_floor (changes for the next floor: elite_bonus is added to the elite chance, extra_chests and extra_enemies are added to the counts). Nothing here heals: only items heal.",
+  "offered": 3,
+  "choices": [
+    {"id": "field_rations", "name": "Field Rations", "text": "Take a small potion for the road. Safe and simple.",
+     "effects": {"item": "small_potion"}},
+    {"id": "blood_pact", "name": "Blood Pact", "text": "Lose 25 HP now. Gain 60 gold.",
+     "effects": {"lose_hp": 25, "gold": 60}},
+    {"id": "heavy_training", "name": "Heavy Training", "text": "Lose 20 HP now. Your maximum HP grows by 15 for good.",
+     "effects": {"lose_hp": 20, "max_hp": 15}},
+    {"id": "sealed_vault", "name": "Sealed Vault", "text": "The next floor has 2 more chests, but elite monsters are much more common.",
+     "effects": {"next_floor": {"extra_chests": 2, "elite_bonus": 0.3}}},
+    {"id": "greedy_shortcut", "name": "Greedy Shortcut", "text": "Gain 40 gold now. The next floor has 3 more monsters.",
+     "effects": {"gold": 40, "next_floor": {"extra_enemies": 3}}},
+    {"id": "quiet_path", "name": "Quiet Path", "text": "Nothing gained, nothing lost. Elite monsters are rarer on the next floor.",
+     "effects": {"next_floor": {"elite_bonus": -0.15}}}
+  ]
+}

@@ -34,6 +34,10 @@ class DungeonRenderer:
         self.world_h = floor.height * TILE
         self.map_image = self._draw_map()
         self.cap_image = self._draw_caps()
+        # Fog of war: a picture as big as the floor, solid at first. Seeing a cell punches
+        # a see-through hole into it (see reveal).
+        self.fog_image = pygame.Surface((self.world_w, self.world_h), pygame.SRCALPHA)
+        self.fog_image.fill(self.background)
 
     # --- once per floor ----------------------------------------------------
     def _draw_map(self):
@@ -48,7 +52,15 @@ class DungeonRenderer:
                     image.blit(self._tile_image(name, x, y), (x * TILE, y * TILE))
                 if tiles.in_wall_shadow(grid, x, y):
                     image.blit(shadow, (x * TILE, y * TILE))
+        spikes = sprites.tile_sprite("tile_spikes", folder=self.folder)
+        for x, y in self.floor.traps:
+            image.blit(spikes, (x * TILE, y * TILE))
         return image
+
+    def reveal(self, cells):
+        """Remove the fog from these (x, y) cells."""
+        for x, y in cells:
+            self.fog_image.fill((0, 0, 0, 0), (x * TILE, y * TILE, TILE, TILE))
 
     def _tile_image(self, name, x, y):
         if name == tiles.FLOOR:
@@ -87,4 +99,5 @@ class DungeonRenderer:
             surface.blit(image, image.get_rect(midbottom=(view.x + x, view.y + y - 3 - lift)))
 
         surface.blit(self.cap_image, (view.x + map_x, view.y + map_y))
+        surface.blit(self.fog_image, (view.x + map_x, view.y + map_y))
         surface.set_clip(None)

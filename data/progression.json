@@ -4,5 +4,6 @@
   "max_level": 5,
   "hp_per_level": 20,
   "last_floor": 3,
+  "trap_damage": 8,
   "expected_answer_seconds": 20
 }

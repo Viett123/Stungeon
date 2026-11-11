@@ -11,7 +11,7 @@ import pygame
 from core import flow, settings
 from core.scene import Scene
 from core.strings import t
-from dungeon import chase, sprites
+from dungeon import chase, fog, sprites
 from dungeon.actor import make_actor
 from dungeon.camera import Camera
 from dungeon.floor import STAIRS, generate_floor
@@ -20,8 +20,10 @@ from dungeon.weapon import held_weapon
 from systems import inventory, items
 from systems.enemies import chase_rules, floor_theme, make_enemy
 from systems.loot import roll_chest_gold, roll_loot
+from systems.player import load_data
 from ui import hud, move_info, theme
 from ui.hotbar import Hotbar
+from ui.minimap import Minimap
 
 MOVE_KEYS = {
     pygame.K_UP: (0, -1), pygame.K_w: (0, -1),
@@ -40,11 +42,13 @@ class DungeonScene(Scene):
     def __init__(self, game, messages=None):
         super().__init__(game)
         self.run = game.run_state
-        self.floor = generate_floor(self.run.floor_number, seed=self.run.seed, demo=self.run.demo)
+        self.floor = generate_floor(self.run.floor_number, seed=self.run.seed, demo=self.run.demo,
+                                    modifiers=self.run.modifiers)
         self.player_pos = self.floor.start
         self.chase = chase_rules()
         # Enemy data (names, colours) loaded once here, not in draw().
         self.enemy_info = {e["id"]: make_enemy(e["id"]) for e in self.floor.enemies}
+        self.seen = set()           # cells the player has seen (fog of war)
         self.messages = []          # [[text, seconds left]]
         for m in messages or []:
             self.say(m)
@@ -58,7 +62,7 @@ class DungeonScene(Scene):
 
     def make_pictures(self):
         """Build everything that is drawn, once, so draw() never loads a file."""
-        theme = floor_theme(self.run.floor_number)
+        theme = floor_theme(self.run.floor_number, self.run.seed)
         self.renderer = DungeonRenderer(self.floor, theme["folder"], theme["background"])
         self.camera = Camera(VIEW.width, VIEW.height, self.renderer.world_w, self.renderer.world_h)
         font = self.game.fonts["small"]
@@ -74,11 +78,22 @@ class DungeonScene(Scene):
             # Map letter: first letter of the name, skipping "The" (only used without art).
             letter = next(word for word in info.name.split() if word != "The")[0]
             e["actor"] = make_actor(f"enemy_{e['id']}", e["pos"], info.color, letter, font,
-                                    big=info.boss, speed=enemy_speed)
+                                    big=info.boss and not info.large_art, speed=enemy_speed)
             e.update(awake=False, timer=0.0, rest=0.0)
+        self.aura = sprites.elite_aura()
+        self.minimap = Minimap(self.floor, (settings.SCREEN_W - 12, 74))
+        self.look_around()
         self.chest_frames = sprites.chest_frames()
         for chest in self.floor.chests:
             chest["time"] = 0.0     # seconds since it was opened, for the opening animation
+
+    def look_around(self):
+        """Fog of war: mark what the player sees from here and lift the fog from new cells."""
+        new_cells = fog.cells_in_view(self.floor, self.player_pos) - self.seen
+        if new_cells:
+            self.seen |= new_cells
+            self.renderer.reveal(new_cells)
+            self.minimap.reveal(new_cells)
 
     def refresh_weapon(self):
         """Make the picture of the equipped weapon again if the player changed it in the bag."""
@@ -148,8 +163,21 @@ class DungeonScene(Scene):
             return
         self.player_pos = (x, y)
         self.player_actor.move_to((x, y))
+        self.look_around()
+        if (x, y) in self.floor.traps and self.step_on_spikes():
+            return
         if self.floor.grid[y][x] == STAIRS:
             flow.leave_floor(self.game)   # shop, next floor or the end screen: see core/flow.py
+
+    def step_on_spikes(self):
+        """Spikes hurt. Returns True if they ended the run."""
+        # TODO(D): the trap damage is a placeholder number in data/progression.json.
+        damage = self.run.player.take_damage(load_data("progression.json")["trap_damage"])
+        self.say(t("trap_hit", damage=damage))
+        if not self.run.player.alive:
+            flow.finish_run(self.game, won=False)
+            return True
+        return False
 
     # --- chests ------------------------------------------------------------
     def open_chest(self, chest):
@@ -172,8 +200,8 @@ class DungeonScene(Scene):
         for e in self.floor.enemies:
             e["actor"].update(dt)
         for e in self.floor.enemies:
-            if e["boss"]:
-                continue                       # the boss guards the stairs and never leaves them
+            if e["guard"]:
+                continue                       # bosses and mini-bosses guard their spot and never leave it
             if e["rest"] > 0:
                 e["rest"] -= dt                # standing still after the player ran away
                 continue
@@ -212,7 +240,8 @@ class DungeonScene(Scene):
         def on_end(result):
             self.after_fight(map_enemy, result)
 
-        self.game.scenes.push(CombatScene(self.game, self.run.player, make_enemy(map_enemy["id"]), on_end))
+        enemy = make_enemy(map_enemy["id"], elite=map_enemy["elite"])
+        self.game.scenes.push(CombatScene(self.game, self.run.player, enemy, on_end))
 
     def after_fight(self, map_enemy, result):
         if result["fled"]:
@@ -225,7 +254,10 @@ class DungeonScene(Scene):
         player = self.run.player
         player.gold += result["gold"]
         self.floor.enemies.remove(map_enemy)
-        self.say(t("fight_won", enemy=self.enemy_info[map_enemy["id"]].name, xp=result["xp"], gold=result["gold"]))
+        name = self.enemy_info[map_enemy["id"]].name
+        if map_enemy["elite"]:
+            name = t("elite_name", name=name)
+        self.say(t("fight_won", enemy=name, xp=result["xp"], gold=result["gold"]))
         for event in player.gain_xp(result["xp"]):
             kind, value = event.split(":")
             if kind == "level_up":
@@ -259,9 +291,18 @@ class DungeonScene(Scene):
         return self.chest_frames[frame]
 
     def draw(self, surface):
-        things = [(*e["actor"].feet(), e["actor"].image()) for e in self.floor.enemies]
+        things = []
+        for e in self.floor.enemies:
+            if e["pos"] not in self.seen:
+                continue                        # still hidden in the fog
+            feet_x, feet_y = e["actor"].feet()
+            if e["elite"]:
+                things.append((feet_x, feet_y - 1, self.aura, -10))   # a gold ring on the floor under it
+            things.append((feet_x, feet_y, e["actor"].image()))
         for chest in self.floor.chests:
             x, y = chest["pos"]
+            if chest["pos"] not in self.seen:
+                continue
             # A little higher than a character on the same tile, so the player is drawn over an open chest.
             things.append((x * TILE + TILE // 2, (y + 1) * TILE - 1, self.chest_image(chest)))
         things.append((*self.player_actor.feet(), self.player_actor.image()))
@@ -277,4 +318,5 @@ class DungeonScene(Scene):
         hud.draw_floor_label(surface, fonts, self.run.floor_number)
         lines = [(message, theme.GOLD) for message, _ in self.messages]
         hud.draw_messages(surface, fonts, lines, bottom=self.hotbar.rects[0].top - 20)
+        self.minimap.draw(surface, self.seen, self.player_pos)
         self.hotbar.draw(surface, fonts, pygame.mouse.get_pos())
