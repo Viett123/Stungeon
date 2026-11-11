@@ -1,9 +1,11 @@
-"""Draws a floor and the characters on it (owner: A).
+"""Draws a floor and the things on it (owner: A).
 
-The floor never changes while you walk on it, so it is drawn ONCE onto one big image
-(self.map_image) when the floor starts. Every frame we only copy the visible part of
-that image to the screen and then draw the characters on top. That is much faster than
-drawing a thousand tiles 60 times a second.
+The floor never changes while you walk on it, so it is drawn ONCE when the floor
+starts, onto two big images:
+  map_image  - floors, brick walls and wall side lines
+  cap_image  - the stone strips on top of walls. They are drawn AFTER the characters,
+               so someone standing behind a wall is partly hidden by it.
+Every frame we only copy the visible part of those images to the screen.
 """
 import pygame
 
@@ -11,15 +13,15 @@ from core import settings
 from dungeon import sprites, tiles
 
 TILE = settings.TILE
-FLOOR_VARIANTS = 16
+FLOOR_VARIANTS = 32           # 1 tile in 32 gets each special floor picture (tile_floor_0.png, ...)
+WALL_VARIANTS = 20            # 1 brick in 20 gets each special wall picture (tile_wall_front_0.png, ...)
 SHADOW_HEIGHT = 12            # pixels of shadow a wall casts on the floor below it
 SHADOW_COLOR = (0, 0, 0, 70)  # black, mostly see-through
 
-_SPRITE_FOR_LOOK = {
-    tiles.LOOK_WALL_FRONT: "tile_wall_front",
-    tiles.LOOK_WALL_TOP: "tile_wall_top",
-    tiles.LOOK_STAIRS: "tile_stairs",
-}
+
+def _variant(x, y, count):
+    """A number from 0 to count-1 that looks random but is always the same for the same cell."""
+    return (x * 73 + y * 151 + x * y * 7) % count
 
 
 class DungeonRenderer:
@@ -28,6 +30,7 @@ class DungeonRenderer:
         self.world_w = floor.width * TILE
         self.world_h = floor.height * TILE
         self.map_image = self._draw_map()
+        self.cap_image = self._draw_caps()
 
     # --- once per floor ----------------------------------------------------
     def _draw_map(self):
@@ -38,37 +41,45 @@ class DungeonRenderer:
         grid = self.floor.grid
         for y in range(self.floor.height):
             for x in range(self.floor.width):
-                look = tiles.tile_look(grid, x, y)
-                if look == tiles.LOOK_VOID:
-                    continue
-                image.blit(self._tile_image(look, x, y), (x * TILE, y * TILE))
+                for name in tiles.base_tiles(grid, x, y):
+                    image.blit(self._tile_image(name, x, y), (x * TILE, y * TILE))
                 if tiles.in_wall_shadow(grid, x, y):
                     image.blit(shadow, (x * TILE, y * TILE))
         return image
 
-    def _tile_image(self, look, x, y):
-        if look == tiles.LOOK_FLOOR:
-            # A variant number from 0 to 15 that looks random but is always the same for the
-            # same position. Only a few variants have their own picture (cracked floor), so
-            # most tiles are plain and the cracks are scattered.
-            return sprites.tile_sprite("tile_floor", variant=(x * 73 + y * 151 + x * y * 7) % FLOOR_VARIANTS)
-        return sprites.tile_sprite(_SPRITE_FOR_LOOK[look])
+    def _tile_image(self, name, x, y):
+        if name == tiles.FLOOR:
+            return sprites.tile_sprite(name, _variant(x, y, FLOOR_VARIANTS))
+        if name == tiles.BRICK:
+            return sprites.tile_sprite(name, _variant(x, y, WALL_VARIANTS))
+        return sprites.tile_sprite(name)
+
+    def _draw_caps(self):
+        image = pygame.Surface((self.world_w, self.world_h), pygame.SRCALPHA)   # see-through
+        cap = sprites.tile_sprite(tiles.CAP)
+        for y in range(self.floor.height):
+            for x in range(self.floor.width):
+                if tiles.has_cap(self.floor.grid, x, y):
+                    image.blit(cap, (x * TILE, y * TILE))
+        return image
 
     # --- every frame -------------------------------------------------------
-    def draw(self, surface, view, camera, characters):
+    def draw(self, surface, view, camera, things):
         """Draw the visible part of the floor into the rectangle `view` on `surface`.
 
-        characters: list of (tile_x, tile_y, image). They stand with their feet at the
-        bottom of their tile; a tall image overlaps the tile above it.
+        things: list of (feet_x, feet_y, image) in world pixels: characters and chests.
+        The image stands with its bottom middle on that point, so a tall image
+        overlaps the tile above it.
         """
-        surface.set_clip(view)   # nothing may be drawn outside the view (e.g. over the status bar)
+        surface.set_clip(view)   # nothing may be drawn outside the view
         surface.fill(sprites.VOID, view)
         map_x, map_y = camera.to_screen(0, 0)
         surface.blit(self.map_image, (view.x + map_x, view.y + map_y))
 
-        # Draw characters higher on the screen first, so the ones in front overlap them.
-        for tile_x, tile_y, image in sorted(characters, key=lambda c: c[1]):
-            feet_x, feet_y = camera.to_screen(tile_x * TILE + TILE // 2, (tile_y + 1) * TILE)
-            rect = image.get_rect(midbottom=(view.x + feet_x, view.y + feet_y - 3))
-            surface.blit(image, rect)
+        # Draw things higher on the screen first, so the ones in front overlap them.
+        for feet_x, feet_y, image in sorted(things, key=lambda thing: thing[1]):
+            x, y = camera.to_screen(feet_x, feet_y)
+            surface.blit(image, image.get_rect(midbottom=(view.x + x, view.y + y - 3)))
+
+        surface.blit(self.cap_image, (view.x + map_x, view.y + map_y))
         surface.set_clip(None)

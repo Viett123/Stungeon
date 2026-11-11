@@ -27,12 +27,16 @@ def screen():
 
 def test_missing_art_gives_placeholders_of_the_right_size(screen, tmp_path, monkeypatch):
     monkeypatch.setattr(assets, "SPRITE_DIR", tmp_path)   # an empty folder: no art at all
-    for name in ("tile_floor", "tile_wall_front", "tile_wall_top", "tile_stairs"):
+    for name in ("tile_floor", "tile_wall_front", "tile_stairs", "tile_wall_cap", "tile_wall_side_left",
+                 "tile_wall_side_right", "tile_wall_corner_left", "tile_wall_corner_right"):
         assert sprites.tile_sprite(name).get_size() == (TILE, TILE)
-    hero = sprites.character_sprite("player_warrior", (200, 90, 70))
-    boss = sprites.character_sprite("enemy_boss", (200, 90, 70), big=True)
-    assert hero.get_width() == TILE and hero.get_height() > TILE     # taller than one tile
-    assert boss.get_width() > hero.get_width()
+    for action in ("idle", "run", "hit"):
+        hero = sprites.character_frames("player_warrior", action, (200, 90, 70))
+        assert len(hero) == 1                                            # one placeholder picture
+        assert hero[0].get_width() == TILE and hero[0].get_height() > TILE   # taller than one tile
+    boss = sprites.character_frames("enemy_boss", "idle", (200, 90, 70), big=True)
+    assert boss[0].get_width() > TILE
+    assert len(sprites.chest_frames()) >= 2
 
 
 def test_a_real_art_file_is_used_instead_of_the_placeholder(screen, tmp_path, monkeypatch):
@@ -61,13 +65,23 @@ def test_floor_is_drawn_only_inside_the_view(screen):
 
     marker = (1, 2, 3)
     screen.fill(marker)
-    hero = sprites.character_sprite("player_warrior", (200, 90, 70))
-    renderer.draw(screen, view, camera, [(start_x, start_y, hero)])
+    hero = sprites.character_frames("player_warrior", "idle", (200, 90, 70))[0]
+    feet = (start_x * TILE + TILE // 2, (start_y + 1) * TILE)
+    renderer.draw(screen, view, camera, [(*feet, hero)])
 
     assert screen.get_at((5, 5))[:3] == marker                # the status bar area is untouched
     assert screen.get_at((5, 60))[:3] != marker               # the view was drawn
     assert screen.get_clip() == screen.get_rect()             # the clip was reset afterwards
     assert renderer.map_image.get_size() == (floor.width * TILE, floor.height * TILE)
+    assert renderer.cap_image.get_size() == renderer.map_image.get_size()
+
+
+def test_animation_frames_are_found_and_missing_actions_fall_back_to_idle(screen, tmp_path, monkeypatch):
+    monkeypatch.setattr(assets, "SPRITE_DIR", tmp_path)
+    for i in range(3):
+        pygame.image.save(pygame.Surface((16, 20)), str(tmp_path / f"enemy_bat_idle_{i}.png"))
+    assert len(sprites.character_frames("enemy_bat", "idle", (0, 0, 0))) == 3
+    assert len(sprites.character_frames("enemy_bat", "run", (0, 0, 0))) == 3     # no run frames: idle is used
 
 
 def test_floor_variants_use_their_own_picture_or_the_normal_floor(screen, tmp_path, monkeypatch):
