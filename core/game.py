@@ -23,7 +23,9 @@ class Game:
             "title": pygame.font.Font(None, 96),
             "big": pygame.font.Font(None, 48),
             "normal": pygame.font.Font(None, 32),
+            "small": pygame.font.Font(None, 26),
         }
+        self.run_state = None   # the current playthrough (core/run.py), set on the class select screen
 
         settings.LOG_DIR.mkdir(exist_ok=True)
         logging.basicConfig(filename=settings.LOG_DIR / "error.log", level=logging.ERROR,

@@ -1,8 +1,11 @@
 {
-  "_note": "base_hp and base_resource are placeholder numbers until D balances them.",
+  "_note": "PLACEHOLDER numbers written by Claude so the game can run. Owner D: replace them and delete this line. Names and resources come from docs/HANDOFF.md; base_hp, max_resource, start_resource, start_weapon (the item a new character has equipped) and color are placeholders.",
   "classes": {
-    "warrior": {"name": "Warrior", "resource": "Rage", "base_hp": 100, "base_resource": 100},
-    "mage": {"name": "Mage", "resource": "Mana", "base_hp": 100, "base_resource": 100},
-    "archer": {"name": "Archer", "resource": "Focus", "base_hp": 100, "base_resource": 100}
+    "warrior": {"name": "Warrior", "resource": "Rage",  "base_hp": 120, "max_resource": 100, "start_resource": 50, "start_weapon": "old_sword",
+                "color": [210, 90, 70]},
+    "mage":    {"name": "Mage",    "resource": "Mana",  "base_hp": 100, "max_resource": 100, "start_resource": 50, "start_weapon": "apprentice_staff",
+                "color": [90, 140, 230]},
+    "archer":  {"name": "Archer",  "resource": "Focus", "base_hp": 110, "max_resource": 100, "start_resource": 50, "start_weapon": "hunting_bow",
+                "color": [90, 200, 120]}
   }
 }

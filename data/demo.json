@@ -1,4 +1,5 @@
 {
-  "_note": "Owner D. Settings for the ~10 minute exhibit demo run.",
-  "enabled": false
+  "_note": "PLACEHOLDER written by Claude. Owner D: choose the real demo settings and delete this line. The demo starts from the title menu with one key press, uses this class and seed (so every demo run has the same floors), has fewer enemies, and is never saved.",
+  "class": "warrior",
+  "seed": 2026
 }

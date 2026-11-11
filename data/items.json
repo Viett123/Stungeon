@@ -1,4 +1,22 @@
 {
-  "_note": "Owner D. Rarities: Common, Uncommon, Rare, Epic, Legendary.",
-  "items": []
+  "_note": "PLACEHOLDER items, texts and numbers written by Claude so the bag and shop can be tried. Owner D: replace them and delete this line. kind is consumable or equipment. Equipment needs a slot: weapon, head, body, legs, shoes or accessory (there are two accessory slots). Equipment has no effect yet: that rule is for D and B to write. effect is read by systems/item_effects.py. Rarities from docs/HANDOFF.md: common, uncommon, rare, epic, legendary.",
+  "inventory_size": 20,
+  "sell_ratio": 0.5,
+  "items": {
+    "small_potion": {"name": "Small Potion", "kind": "consumable", "rarity": "common", "price": 15, "effect": {"type": "heal", "amount": 40}, "text": "Restores 40 HP.", "color": [170, 50, 44]},
+    "big_potion": {"name": "Big Potion", "kind": "consumable", "rarity": "uncommon", "price": 35, "effect": {"type": "heal", "amount": 100}, "text": "Restores 100 HP.", "color": [200, 60, 50]},
+    "tonic": {"name": "Tonic", "kind": "consumable", "rarity": "common", "price": 15, "effect": {"type": "resource", "amount": 40}, "text": "Restores 40 of your class resource.", "color": [62, 104, 178]},
+    "old_sword": {"name": "Old Sword", "kind": "equipment", "slot": "weapon", "rarity": "common", "price": 40, "text": "A worn blade with a chipped edge. It does nothing yet.", "color": [130, 130, 136]},
+    "knight_sword": {"name": "Knight Sword", "kind": "equipment", "slot": "weapon", "rarity": "rare", "price": 120, "text": "A well-kept sword from the castle guard. It does nothing yet.", "color": [150, 160, 180]},
+    "war_axe": {"name": "War Axe", "kind": "equipment", "slot": "weapon", "rarity": "uncommon", "price": 80, "text": "Heavy, and not at all subtle. It does nothing yet.", "color": [140, 110, 90]},
+    "apprentice_staff": {"name": "Apprentice Staff", "kind": "equipment", "slot": "weapon", "rarity": "common", "price": 40, "text": "A beginner's staff with a red stone. It does nothing yet.", "color": [150, 60, 60]},
+    "oak_staff": {"name": "Oak Staff", "kind": "equipment", "slot": "weapon", "rarity": "uncommon", "price": 80, "text": "Old oak with a green stone that hums. It does nothing yet.", "color": [70, 130, 80]},
+    "hunting_bow": {"name": "Hunting Bow", "kind": "equipment", "slot": "weapon", "rarity": "common", "price": 40, "text": "A simple bow for small game. It does nothing yet.", "color": [150, 100, 50]},
+    "cloth_hood": {"name": "Cloth Hood", "kind": "equipment", "slot": "head", "rarity": "common", "price": 30, "text": "Keeps the dungeon dust out of your hair. It does nothing yet.", "color": [110, 100, 130]},
+    "leather_vest": {"name": "Leather Vest", "kind": "equipment", "slot": "body", "rarity": "common", "price": 40, "text": "Stiff leather that smells of the last owner. It does nothing yet.", "color": [120, 90, 60]},
+    "wool_trousers": {"name": "Wool Trousers", "kind": "equipment", "slot": "legs", "rarity": "common", "price": 30, "text": "Warm and itchy. It does nothing yet.", "color": [90, 100, 120]},
+    "worn_boots": {"name": "Worn Boots", "kind": "equipment", "slot": "shoes", "rarity": "common", "price": 30, "text": "They have walked many floors. It does nothing yet.", "color": [100, 80, 60]},
+    "copper_ring": {"name": "Copper Ring", "kind": "equipment", "slot": "accessory", "rarity": "common", "price": 35, "text": "A plain ring that turns your finger green. It does nothing yet.", "color": [180, 110, 70]},
+    "lucky_charm": {"name": "Lucky Charm", "kind": "equipment", "slot": "accessory", "rarity": "uncommon", "price": 60, "text": "Someone believed in it once. It does nothing yet.", "color": [200, 180, 80]}
+  }
 }

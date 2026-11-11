@@ -1,0 +1,8 @@
+{
+  "_note": "PLACEHOLDER written by Claude. Owner D/A: decide which floor looks like what. folder = the folder inside assets/sprites/ that holds this theme's tile pictures (empty = the pictures directly in assets/sprites/). A tile picture missing from the folder falls back to the normal one. background = the colour behind the walls. Which floor uses which theme is set in data/enemies.json (floors -> theme).",
+  "themes": {
+    "stone":  {"folder": "",       "background": [34, 34, 34]},
+    "jungle": {"folder": "jungle", "background": [0, 29, 26]},
+    "desert": {"folder": "desert", "background": [51, 0, 0]}
+  }
+}

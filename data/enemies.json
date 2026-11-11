@@ -1,4 +1,46 @@
 {
-  "_note": "Owner D. Empty until enemies are designed (one boss per floor).",
-  "enemies": []
+  "_note": "PLACEHOLDER numbers written by Claude so the game can run. Owner D: replace them and delete this line. Every enemy, name, number and topic list here is a placeholder. topics = what the enemy asks about (empty = any topic). color is the square drawn until there is art. count = normal enemies on a floor, chests = chests on a floor, theme = how the floor looks (see data/themes.json); a list means one of them is picked for each run. miniboss = the enemy that guards the treasure room. large_art = the enemy's pictures are 32 pixels wide, so it is not drawn extra big. loot = the table in loot_tables.json it drops from.",
+  "enemies": {
+    "vocab_slime":     {"name": "Vocab Slime",     "hp": 30, "damage": 6,  "xp": 15, "gold": 5,
+                        "topics": ["vocabulary"], "color": [110, 200, 120]},
+    "article_goblin":  {"name": "Article Goblin",  "hp": 40, "damage": 8,  "xp": 20, "gold": 8,
+                        "topics": ["articles"], "color": [200, 120, 80]},
+    "plural_bat":      {"name": "Plural Bat",      "hp": 45, "damage": 9,  "xp": 25, "gold": 10,
+                        "topics": ["plurals", "vocabulary"], "color": [150, 110, 200]},
+    "grammar_ghost":   {"name": "Grammar Ghost",   "hp": 50, "damage": 10, "xp": 30, "gold": 12,
+                        "topics": [], "color": [180, 190, 220]},
+
+    "mini_floor_1":    {"name": "The Hall Monitor", "hp": 70, "damage": 9, "xp": 45, "gold": 30, "large_art": true, "loot": "miniboss",
+                        "topics": ["vocabulary", "articles"], "color": [90, 150, 110]},
+    "mini_floor_2":    {"name": "The Prompter", "hp": 95, "damage": 11, "xp": 70, "gold": 45, "large_art": true, "loot": "miniboss",
+                        "topics": ["plurals", "articles"], "color": [120, 150, 90]},
+    "mini_floor_3":    {"name": "The Examiner", "hp": 120, "damage": 13, "xp": 100, "gold": 60, "large_art": true, "loot": "miniboss",
+                        "topics": [], "color": [170, 70, 60]},
+
+    "boss_floor_1":    {"name": "The Lecturer",    "hp": 90, "damage": 11, "xp": 60, "gold": 40, "boss": true,
+                        "topics": ["konjunktiv2_modalverben", "irgend_woerter", "um_zu", "nomen_verb", "articles"],
+                        "color": [230, 80, 80]},
+    "boss_floor_2":    {"name": "The Stage Director", "hp": 125, "damage": 13, "xp": 90, "gold": 60, "boss": true,
+                        "topics": ["infinitiv_mit_zu", "passiv_praesens", "verben_mit_praepositionen", "wechselpraepositionen", "plurals"],
+                        "color": [230, 80, 160]},
+    "boss_floor_3":    {"name": "The Conjunctive Wraith", "hp": 160, "damage": 15, "xp": 150, "gold": 100, "boss": true,
+                        "topics": ["konjunktiv2_praesens", "konjunktiv2_modalverben", "passiv_praeteritum", "deshalb_darum_deswegen", "komposita_artikel"],
+                        "color": [120, 60, 220]}
+  },
+  "floors": {
+    "1": {"theme": ["stone", "jungle"], "miniboss": "mini_floor_1", "count": 7, "chests": 2, "pool": ["vocab_slime", "article_goblin"], "boss": "boss_floor_1"},
+    "2": {"theme": ["jungle", "desert"], "miniboss": "mini_floor_2", "count": 9, "chests": 3, "pool": ["vocab_slime", "article_goblin", "plural_bat"], "boss": "boss_floor_2"},
+    "3": {"theme": ["desert", "stone"], "miniboss": "mini_floor_3", "count": 11, "chests": 3, "pool": ["article_goblin", "plural_bat", "grammar_ghost"], "boss": "boss_floor_3"}
+  },
+  "elite": {
+    "_note": "PLACEHOLDER. chance: share of normal enemies that are elite. hp, damage, xp, gold: an elite's numbers are the normal ones times these. loot: the table in loot_tables.json an elite drops from.",
+    "chance": 0.15, "hp": 1.6, "damage": 1.3, "xp": 2.0, "gold": 2.0, "loot": "elite"
+  },
+  "chase": {
+    "_note": "PLACEHOLDER. wake_radius: a monster starts chasing when the player is this many tiles away. sleep_radius: it gives up when the player is further away than this. seconds_per_step: how fast it walks. rest_after_flee: seconds it stands still after the player ran away from a fight.",
+    "wake_radius": 2,
+    "sleep_radius": 6,
+    "seconds_per_step": 0.35,
+    "rest_after_flee": 2.5
+  }
 }

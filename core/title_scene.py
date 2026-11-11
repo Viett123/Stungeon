@@ -1,28 +1,46 @@
-"""Title screen. Placeholder until B builds the real menu in ui/."""
+"""The title menu: New game, Continue, Demo, Quit (owner: lead)."""
 import pygame
 
-from core import settings
-from core.game import draw_text
-from core.scene import Scene
+from core import flow, settings
 from core.strings import t
+from ui import theme, widgets
+from ui.menu import MenuScene
 
 
-class TitleScene(Scene):
+class TitleScene(MenuScene):
+    def __init__(self, game):
+        options = [
+            (t("menu_new_game"), self.new_game, True),
+            (t("menu_continue"), self.continue_game, flow.can_continue()),   # greyed out without a save
+            (t("menu_demo"), lambda: flow.start_demo(game), True),
+            (t("menu_quit"), game.quit, True),
+        ]
+        super().__init__(game, t("title"), options, top=300)
+
+    def new_game(self):
+        from ui.class_select import ClassSelectScene
+        self.game.message = ""
+        self.game.scenes.replace(ClassSelectScene(self.game))
+
+    def continue_game(self):
+        if not flow.continue_run(self.game):
+            self.game.message = t("save_unusable")
+
     def handle_event(self, event):
-        if event.type == pygame.KEYDOWN:
-            if event.key in (pygame.K_RETURN, pygame.K_KP_ENTER):
-                from dungeon.dungeon_scene import DungeonScene
-                self.game.message = ""
-                self.game.scenes.replace(DungeonScene(self.game, floor_number=1))
-            elif event.key == pygame.K_ESCAPE:
-                self.game.quit()
+        # One key starts the exhibit demo straight from the title screen.
+        if event.type == pygame.KEYDOWN and event.key == pygame.K_F1:
+            flow.start_demo(self.game)
+        else:
+            super().handle_event(event)
+
+    def on_escape(self):
+        self.game.quit()
 
     def draw(self, surface):
-        f = self.game.fonts
+        super().draw(surface)
+        fonts = self.game.fonts
         cx = settings.SCREEN_W // 2
-        draw_text(surface, f["title"], t("title"), settings.COLOR_TEXT, (cx, 250))
-        draw_text(surface, f["normal"], t("subtitle"), settings.COLOR_DIM, (cx, 320))
-        draw_text(surface, f["big"], t("press_start"), settings.COLOR_TEXT, (cx, 450))
-        draw_text(surface, f["normal"], t("press_quit"), settings.COLOR_DIM, (cx, 500))
+        widgets.text(surface, fonts["small"], t("subtitle"), theme.TEXT_DIM, (cx, self.frame.y + 92), "center")
+        widgets.text(surface, fonts["small"], t("menu_hint"), theme.TEXT_DIM, (cx, 690), "center")
         if self.game.message:
-            draw_text(surface, f["normal"], self.game.message, settings.COLOR_STAIRS, (cx, 640))
+            widgets.text(surface, fonts["normal"], self.game.message, theme.BAD, (cx, 100), "center")

@@ -1,7 +1,7 @@
 """All on-screen text, loaded once from core/strings_en.json.
 
 Use:  from core.strings import t
-      t("floor_label", n=2)   ->  "Floor 2"
+      t("level_up", level=3)   ->  "Level up! You are now level 3."
 """
 import json
 from pathlib import Path

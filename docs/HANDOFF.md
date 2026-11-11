@@ -18,3 +18,10 @@ Read this first in any new chat or Claude Code session about Stungeon.
 - v1 scope: 3 floors, Checkpoint mode, loot (Common–Legendary), shop between floors, potions/scrolls, 3 buffs, 4 debuffs, 1 boss per floor, save per floor, demo mode (~10 min run).
 - Deferred: Roguelike mode, races, skill trees, weapon mastery, traders, gamble scroll, achievements/titles, daily challenges, cosmetics, review room, Mythical items, My Materials uploads, NG+, other subjects.
 - Rule: ai/, questions/, systems/ never import pygame (keeps logic testable and portable, e.g. to Godot later).
+
+## Updates after the handoff (11 Nov 2026)
+- What is built, what is next and what waits is tracked in docs/FEATURES.md. Read it before picking a task.
+- Team rule: nothing heals the player except items (no healing after fights, on new floors or on level ups).
+- Equipment slots: weapon, head, body, legs, shoes and two accessories.
+- Art: three CC0 packs, listed in assets/CREDITS.md. Floors use the themes stone, jungle and desert.
+- Running the game at the exhibit: docs/EXHIBIT.md.

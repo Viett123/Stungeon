@@ -1,12 +1,12 @@
 {
-  "_note": "Tiers come from the handoff notes. Resource costs are not decided yet (D).",
+  "_note": "PLACEHOLDER numbers written by Claude so the game can run. Owner D: replace them and delete this line. Move names, tiers, damage and unlock levels come from docs/HANDOFF.md. cost and gain are placeholders. cost = resource spent (also when the answer is wrong); gain = resource earned on use. What a utility move does is decided in combat/effects.py.",
   "tiers": {
-    "basic":    {"difficulty": "easy",   "damage": 10, "questions": 1, "unlock_level": 1},
-    "skill":    {"difficulty": "medium", "damage": 25, "questions": 1, "unlock_level": 1},
-    "utility":  {"difficulty": null,     "damage": 0,  "questions": 0, "unlock_level": 2},
-    "power":    {"difficulty": "hard",   "damage": 50, "questions": 1, "unlock_level": 3},
+    "basic":    {"difficulty": "easy",   "damage": 10, "questions": 1, "unlock_level": 1, "cost": 0,  "gain": 15},
+    "skill":    {"difficulty": "medium", "damage": 25, "questions": 1, "unlock_level": 1, "cost": 15, "gain": 0},
+    "utility":  {"difficulty": null,     "damage": 0,  "questions": 0, "unlock_level": 2, "cost": 20, "gain": 0},
+    "power":    {"difficulty": "hard",   "damage": 50, "questions": 1, "unlock_level": 3, "cost": 30, "gain": 0},
     "ultimate": {"difficulty": "hard",   "damage": 35, "questions": 3, "bonus_damage": 45,
-                 "weakest_topics": true, "unlock_level": 5}
+                 "weakest_topics": true, "unlock_level": 5, "cost": 60, "gain": 0}
   },
   "moves": [
     {"id": "slash",            "name": "Slash",            "class": "warrior", "tier": "basic"},
