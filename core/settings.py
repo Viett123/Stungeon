@@ -14,7 +14,7 @@ TILE_SCALE = 3
 TILE = TILE_SRC * TILE_SCALE  # 48 px on screen
 
 # Placeholder colours until real art exists (R, G, B)
-COLOR_BG = (18, 14, 24)
+COLOR_BG = (16, 14, 14)   # same as ui/theme.py BACKGROUND
 COLOR_TEXT = (235, 230, 220)
 COLOR_DIM = (140, 130, 150)
 COLOR_WALL = (60, 52, 72)

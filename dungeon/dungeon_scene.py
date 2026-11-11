@@ -14,7 +14,8 @@ from dungeon.floor import STAIRS, generate_floor
 from dungeon.renderer import DungeonRenderer
 from systems.enemies import make_enemy
 from systems.player import load_data
-from ui import widgets
+from ui import hud, move_info, theme
+from ui.hotbar import Hotbar
 
 MOVE_KEYS = {
     pygame.K_UP: (0, -1), pygame.K_w: (0, -1),
@@ -22,9 +23,8 @@ MOVE_KEYS = {
     pygame.K_LEFT: (-1, 0), pygame.K_a: (-1, 0),
     pygame.K_RIGHT: (1, 0), pygame.K_d: (1, 0),
 }
-TOP = 48    # one tile row at the top for the status bar
-# The part of the window where the dungeon is drawn: everything below the status bar.
-VIEW = pygame.Rect(0, TOP, settings.SCREEN_W, settings.SCREEN_H - TOP)
+# The dungeon fills the whole window. The status panel and hotbar are drawn on top of it.
+VIEW = pygame.Rect(0, 0, settings.SCREEN_W, settings.SCREEN_H)
 
 
 class DungeonScene(Scene):
@@ -41,6 +41,8 @@ class DungeonScene(Scene):
         self.messages = []          # [(text, seconds left)]
         for m in messages or []:
             self.say(m)
+        if self.run.floor_number == 1:
+            self.say(t("dungeon_hint"))   # explain the controls once, at the start of a run
 
         # Drawing: build everything once here, never inside draw().
         self.renderer = DungeonRenderer(self.floor)
@@ -52,6 +54,14 @@ class DungeonScene(Scene):
         self.enemy_images = {
             eid: sprites.character_sprite(f"enemy_{eid}", info.color, self.letter[eid], font, big=info.boss)
             for eid, info in self.enemy_info.items()}
+        self.hotbar = Hotbar()
+        self.refresh_hotbar()
+
+    def refresh_hotbar(self):
+        """Show the player's moves in the hotbar. Called at the start and after a level up."""
+        player = self.run.player
+        entries = move_info.hotbar_entries(player.unlocked_moves(), player.resource_name, self.game.fonts["small"])
+        self.hotbar.set_entries(entries)
 
     def player_center(self):
         """The middle of the player's tile, in world pixels (what the camera follows)."""
@@ -116,6 +126,7 @@ class DungeonScene(Scene):
             else:
                 name = next(m["name"] for m in player.unlocked_moves() if m["id"] == value)
                 self.say(t("new_move", name=name))
+        self.refresh_hotbar()   # a level up may have unlocked a new move
 
     def next_floor(self):
         rules = load_data("progression.json")
@@ -143,18 +154,10 @@ class DungeonScene(Scene):
         self.draw_hud(surface)
 
     def draw_hud(self, surface):
-        """Status line at the top and messages at the bottom. Phase 3 replaces this with the UI kit."""
-        small = self.game.fonts["small"]
-        player = self.run.player
-        hud = t("hud", floor=self.run.floor_number, cls=player.class_name, level=player.level,
-                hp=player.hp, max_hp=player.max_hp, res=player.resource_name, r=player.resource,
-                max_r=player.max_resource, xp=player.xp, gold=player.gold)
-        widgets.text(surface, self.game.fonts["normal"], hud, settings.COLOR_TEXT, (24, 14))
-        if self.messages:
-            y = settings.SCREEN_H - 30 * len(self.messages) - 10
-            for message, _ in self.messages:
-                widgets.text(surface, small, message, settings.COLOR_HIGHLIGHT, (settings.SCREEN_W // 2, y), "midtop")
-                y += 30
-        else:
-            widgets.text(surface, small, t("dungeon_hint"), settings.COLOR_DIM,
-                         (settings.SCREEN_W // 2, settings.SCREEN_H - 34), "midtop")
+        """Everything drawn on top of the dungeon: status panel, floor number, messages, hotbar."""
+        fonts = self.game.fonts
+        hud.draw_player_panel(surface, fonts, self.run.player)
+        hud.draw_floor_label(surface, fonts, self.run.floor_number)
+        lines = [(message, theme.GOLD) for message, _ in self.messages]
+        hud.draw_messages(surface, fonts, lines, bottom=self.hotbar.rects[0].top - 20)
+        self.hotbar.draw(surface, fonts, pygame.mouse.get_pos())
