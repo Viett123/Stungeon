@@ -107,6 +107,9 @@ class DungeonScene(Scene):
         elif event.key == pygame.K_i:
             from ui.inventory_screen import InventoryScene
             self.game.scenes.push(InventoryScene(self.game))
+        elif event.key == pygame.K_m:
+            from ui.stats_screen import StatsScene
+            self.game.scenes.push(StatsScene(self.game))
         elif event.key in MOVE_KEYS:
             self.held = 0.0
             self.step(*MOVE_KEYS[event.key])

@@ -31,6 +31,7 @@ class QuestionEngine:
         self.rng = rng or random.Random()
         self.tracker = tracker            # a KnowledgeTracker (ai/mastery.py), or None
         self.stats = defaultdict(lambda: {"asked": 0, "correct": 0})   # topic -> counts, for the end screen
+        self.streak = 0                   # right answers in a row; a wrong answer sets it back to 0
 
     # --- picking -----------------------------------------------------------
     def next_question(self, floor, difficulty, topic=None, weakest=False) -> dict:
@@ -80,6 +81,7 @@ class QuestionEngine:
         stats = self.stats[question["topic"]]
         stats["asked"] += 1
         stats["correct"] += int(bool(correct))
+        self.streak = self.streak + 1 if correct else 0
         if self.tracker:
             self.tracker.update(question["topic"], correct)   # owner C: see ai/mastery.py
 

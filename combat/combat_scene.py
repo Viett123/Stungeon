@@ -16,7 +16,7 @@ from dungeon.actor import make_actor
 from dungeon.weapon import held_weapon
 from questions.engine import answer_text
 from systems.loot import roll_loot
-from ui import hud, move_info, theme, widgets
+from ui import anim, hud, move_info, theme, widgets
 from ui.anim import FloatingText, Trail
 from ui.button import Button
 from ui.hotbar import Hotbar
@@ -266,6 +266,9 @@ class CombatScene(Scene):
             self.draw_question(surface, fonts)
         else:
             self.draw_message(surface, fonts)
+        if self.battle.engine.streak >= 2:
+            widgets.text(surface, fonts["normal"], t("streak", n=self.battle.engine.streak), anim.glow_gold(),
+                         (CONTENT.right - 4, CONTENT.top - 6), "bottomright")
         choosing = self.state == "choose"
         self.hotbar.draw(surface, fonts, pygame.mouse.get_pos(),
                          selected=self.selected if choosing else None, active=choosing)

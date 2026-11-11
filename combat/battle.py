@@ -32,6 +32,7 @@ class Battle:
         self.question = None   # the question on screen right now
         self.remaining = 0     # questions still to answer for this move
         self.results = []      # True/False per answered question of this move
+        self.seconds = []      # how long each of those answers took, for B's rules (faster = stronger)
 
     # --- state -------------------------------------------------------------
     @property
@@ -65,6 +66,7 @@ class Battle:
         self.move = move
         self.remaining = move["questions"]
         self.results = []
+        self.seconds = []
         self._next_question()
         return {"ok": True, "utility": False}
 
@@ -84,6 +86,7 @@ class Battle:
             self.habits.record_move(self.move["id"], self.move["tier"], seconds / self.expected_seconds, correct)
 
         self.results.append(correct)
+        self.seconds.append(seconds)
         self.remaining -= 1
         result = {"correct": correct, "question": question, "done": False, "damage": 0}
         if self.remaining > 0:
@@ -101,6 +104,8 @@ class Battle:
     # --- 3. enemy turn -----------------------------------------------------
     def enemy_turn(self) -> dict:
         """Returns {"damage": hp the player lost, "taunt": a strings key or None}."""
+        if effects.enemy_loses_turn(self):
+            return {"damage": 0, "taunt": None}
         amount = damage.enemy_damage(self.enemy, self.player)
         amount = effects.change_enemy_damage(amount, self)
         lost = self.player.take_damage(amount)

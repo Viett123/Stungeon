@@ -23,7 +23,19 @@ def change_question(question, battle) -> dict:
 def change_player_damage(damage, battle) -> int:
     """Called after combat/damage.py worked out the player's damage. Return the final number."""
     # TODO(B): e.g. a buff that makes the next attack stronger.
+    # TODO(B): two rules from the design doc can go here, the data is ready:
+    #   - "the faster you answer, the more critical the attack": battle.seconds is the list of
+    #     answer times for this move
+    #   - "a streak of correct answers multiplies damage": battle.engine.streak is the number of
+    #     right answers in a row (already shown on the fight screen)
     return damage
+
+
+def enemy_loses_turn(battle) -> bool:
+    """Called before the enemy's turn. Return True to make the enemy skip it."""
+    # TODO(B): design doc: after a wrong answer there is a chance that the enemy loses its turn too,
+    # so a miss is less frustrating. Use battle.rng for the chance and put the number in data/.
+    return False
 
 
 def change_enemy_damage(damage, battle) -> int:
