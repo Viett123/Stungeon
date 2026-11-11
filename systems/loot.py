@@ -10,3 +10,9 @@ def roll_loot(table_id, rng) -> list[str]:
     """
     table = load_data("loot_tables.json")["tables"].get(table_id, [])
     return [entry["item"] for entry in table if rng.random() < entry["chance"]]
+
+
+def roll_chest_gold(rng) -> int:
+    """How much gold a chest holds: a number between the two values of chest_gold."""
+    low, high = load_data("loot_tables.json")["chest_gold"]
+    return rng.randint(low, high)

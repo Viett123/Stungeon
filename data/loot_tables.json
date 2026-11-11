@@ -1,7 +1,9 @@
 {
-  "_note": "PLACEHOLDER written by Claude. Owner D: replace it and delete this line. Each table is a list of items with the chance (0 to 1) that the item drops. An enemy uses the table named in its \"loot\" field in enemies.json, or \"boss\" / \"enemy\" if it has none.",
+  "_note": "PLACEHOLDER written by Claude. Owner D: replace it and delete this line. Each table is a list of items with the chance (0 to 1) that the item drops. An enemy uses the table named in its \"loot\" field in enemies.json, or \"boss\" / \"enemy\" if it has none. A chest rolls on the \"chest\" table and also gives gold between the two chest_gold numbers.",
+  "chest_gold": [5, 20],
   "tables": {
     "enemy": [{"item": "small_potion", "chance": 0.25}],
+    "chest": [{"item": "small_potion", "chance": 0.6}, {"item": "tonic", "chance": 0.4}, {"item": "old_sword", "chance": 0.15}],
     "boss":  [{"item": "small_potion", "chance": 1.0}, {"item": "tonic", "chance": 0.5}]
   }
 }

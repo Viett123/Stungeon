@@ -5,7 +5,7 @@ from core import flow, settings
 from core.scene import Scene
 from core.strings import t
 from systems.player import Player, load_data
-from dungeon import sprites
+from dungeon.actor import make_actor
 from ui import move_info, slots, theme, widgets
 
 CLASS_IDS = ["warrior", "mage", "archer"]
@@ -24,7 +24,7 @@ class ClassSelectScene(Scene):
         self.cards = []   # rects, filled in by draw(), used for mouse clicks
         # Pictures are made once here, never inside draw().
         font = game.fonts["small"]
-        self.images = {cid: sprites.character_sprite(f"player_{cid}", p.color, big=True)
+        self.actors = {cid: make_actor(f"player_{cid}", (0, 0), p.color, big=True)
                        for cid, p in self.previews.items()}
         self.icons = {cid: [self.small_icon(move, font) for move in moves]
                       for cid, moves in self.preview_moves.items()}
@@ -57,6 +57,10 @@ class ClassSelectScene(Scene):
                         self.start()
                     self.selected = i
 
+    def update(self, dt):
+        for actor in self.actors.values():
+            actor.update(dt)     # keeps the idle animation playing
+
     def draw(self, surface):
         f = self.game.fonts
         cx = settings.SCREEN_W // 2
@@ -71,7 +75,7 @@ class ClassSelectScene(Scene):
             rect = pygame.Rect(left + i * (width + gap), 130, width, 510)
             theme.draw_frame(surface, rect, highlight=(i == self.selected))
             self.cards.append(rect)
-            image = self.images[cid]
+            image = self.actors[cid].image()
             surface.blit(image, image.get_rect(midbottom=(rect.centerx, rect.y + 120)))
             widgets.text(surface, f["big"], f"{i + 1}. {p.class_name}", theme.TEXT,
                          (rect.centerx, rect.y + 150), "center")

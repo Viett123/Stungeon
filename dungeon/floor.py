@@ -2,7 +2,8 @@
 
 A floor is a grid of walls with up to MAX_ROOMS rooms carved out, joined left to right by
 L-shaped corridors, so every room is reachable. The player starts in the left-most
-room; the stairs are in the right-most room, guarded by the floor's boss.
+room; the stairs are in the right-most room, guarded by the floor's boss. Normal
+enemies and a few chests are spread over the other rooms.
 Same floor_number + seed = the same floor every time.
 """
 import random
@@ -31,6 +32,7 @@ class Floor:
     start: tuple          # (x, y) where the player appears
     stairs: tuple         # (x, y)
     enemies: list = field(default_factory=list)   # [{"id": enemy id, "pos": (x, y), "boss": bool}]
+    chests: list = field(default_factory=list)    # [{"pos": (x, y), "opened": bool}]
     rooms: list = field(default_factory=list)     # [(x, y, w, h)]
 
     def is_walkable(self, x, y):
@@ -96,4 +98,9 @@ def generate_floor(floor_number, seed, demo=False) -> Floor:
     for pos in rng.sample(free, min(count, len(free))):
         enemies.append({"id": rng.choice(spawns["pool"]), "pos": pos, "boss": False})
 
-    return Floor(floor_number, WIDTH, HEIGHT, grid, start, stairs, enemies, rooms)
+    # Chests go on the cells that are still free, so never under an enemy or on the stairs.
+    taken = {e["pos"] for e in enemies}
+    free = [pos for pos in free if pos not in taken]
+    chests = [{"pos": pos, "opened": False} for pos in rng.sample(free, min(spawns.get("chests", 0), len(free)))]
+
+    return Floor(floor_number, WIDTH, HEIGHT, grid, start, stairs, enemies, chests, rooms)

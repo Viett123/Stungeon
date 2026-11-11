@@ -16,7 +16,8 @@ A window with the title screen should open.
 ## How to play (prototype)
 
 1. On the title menu choose New game (or Continue, or the Demo with F1), then pick a class.
-2. Walk with the arrow keys or WASD. Walk into an enemy to fight it.
+2. Walk with the arrow keys or WASD (hold a key to keep walking). Walk into an enemy to fight it.
+   Monsters that see you within 2 tiles run after you and attack. Walk into a chest to open it.
 3. In a fight, pick a move with the number keys. Stronger moves ask harder German questions.
    A wrong answer is a miss, but the move's cost is still spent, and the enemy still hits back.
 4. Beat the boss standing on the stairs, step on the stairs, and go down. Clear floor 3 to win.

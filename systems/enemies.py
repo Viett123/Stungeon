@@ -45,3 +45,8 @@ def make_enemy(enemy_id) -> Enemy:
 def floor_spawns(floor_number) -> dict:
     """{"count": n, "pool": [enemy ids], "boss": enemy id} for one floor."""
     return _data()["floors"][str(floor_number)]
+
+
+def chase_rules() -> dict:
+    """How monsters on the map chase the player: {"wake_radius", "sleep_radius", "seconds_per_step", "rest_after_flee"}."""
+    return _data()["chase"]

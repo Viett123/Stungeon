@@ -77,6 +77,7 @@
   "pause_resume": "Back to the game",
   "pause_inventory": "Bag",
   "pause_quit": "Quit to title",
+  "chest_gold": "You open the chest: +{gold} gold.",
   "loot_found": "You found: {item}.",
   "loot_bag_full": "You found {item}, but your bag is full.",
   "inv_title": "Bag",

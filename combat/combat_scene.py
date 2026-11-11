@@ -11,7 +11,7 @@ import pygame
 from combat.battle import Battle
 from core.scene import Scene
 from core.strings import t
-from dungeon import sprites
+from dungeon.actor import make_actor
 from questions.engine import answer_text
 from systems.loot import roll_loot
 from ui import hud, move_info, theme, widgets
@@ -24,6 +24,8 @@ NUMBER_KEYS = [pygame.K_1, pygame.K_2, pygame.K_3, pygame.K_4, pygame.K_5,
 ENTER_KEYS = (pygame.K_RETURN, pygame.K_KP_ENTER)
 
 ENEMY_PANEL = pygame.Rect(410, 12, 460, 212)
+PLAYER_ART = pygame.Rect(938, 12, 202, 212)     # the player's picture, right of the enemy
+HURT_SECONDS = 0.6
 CONTENT = pygame.Rect(140, 236, 1000, 384)     # the big panel: move details, question or feedback
 INSIDE = theme.inner(CONTENT)
 CHOICE_HEIGHT = 36
@@ -42,8 +44,12 @@ class CombatScene(Scene):
         self.enemy = enemy
         self.on_end = on_end   # called once with the result dict, see finish()
         self.battle = Battle(player, enemy, run.engine, run.floor_number, habits=run.habits, rng=run.rng)
-        # In a fight every enemy is drawn big, like a boss on the map.
-        self.enemy_image = sprites.character_sprite(f"enemy_{enemy.id}", enemy.color, big=True)
+        # In a fight both fighters are drawn big and animated. They stand still, so the
+        # tile they are "on" does not matter; the player faces left, towards the enemy.
+        self.enemy_actor = make_actor(f"enemy_{enemy.id}", (0, 0), enemy.color, big=True)
+        self.player_actor = make_actor(f"player_{player.class_id}", (0, 0), player.color, big=True)
+        self.player_actor.facing_left = True
+        self.hurt = 0.0         # seconds left to show the player's "hit" picture
 
         self.state = "choose"
         self.moves = []
@@ -143,6 +149,7 @@ class CombatScene(Scene):
             lines = [(t("enemy_misses", enemy=self.enemy.name), theme.GOOD)]
         else:
             lines = [(t("enemy_hits", enemy=self.enemy.name, damage=out["damage"]), theme.BAD)]
+            self.hurt = HURT_SECONDS
         if out["taunt"]:
             lines.append((t(out["taunt"]), theme.GOLD))
         self.show_message(lines, self.defeat if self.battle.lost else self.back_to_choose)
@@ -220,6 +227,9 @@ class CombatScene(Scene):
     def update(self, dt):
         self.ignore_text = False
         self.input.update(dt)
+        self.enemy_actor.update(dt)
+        self.player_actor.update(dt)
+        self.hurt = max(0.0, self.hurt - dt)
         if self.state == "question":
             self.elapsed += dt
 
@@ -227,6 +237,7 @@ class CombatScene(Scene):
         fonts = self.game.fonts
         hud.draw_player_panel(surface, fonts, self.player)
         self.draw_enemy(surface, fonts)
+        self.draw_player(surface)
         theme.draw_frame(surface, CONTENT)
         if self.state == "choose":
             self.draw_choose(surface, fonts)
@@ -245,7 +256,14 @@ class CombatScene(Scene):
         widgets.text(surface, fonts["normal"], name, theme.GOLD, (inside.centerx, inside.y), "midtop")
         widgets.bar(surface, (inside.x, inside.y + 30, inside.width, 22), enemy.hp, enemy.max_hp,
                     theme.HP, theme.HP_BACK, t("hp_label", hp=enemy.hp, max_hp=enemy.max_hp), fonts["small"])
-        surface.blit(self.enemy_image, self.enemy_image.get_rect(midbottom=(inside.centerx, inside.bottom)))
+        image = self.enemy_actor.image()
+        surface.blit(image, image.get_rect(midbottom=(inside.centerx, inside.bottom)))
+
+    def draw_player(self, surface):
+        """The player's picture in its own small panel; it shows the "hit" frame right after being hurt."""
+        inside = theme.draw_frame(surface, PLAYER_ART)
+        image = self.player_actor.image("hit" if self.hurt > 0 else None)
+        surface.blit(image, image.get_rect(midbottom=(inside.centerx, inside.bottom)))
 
     def hint(self, surface, fonts, string, color=theme.TEXT_DIM):
         widgets.text(surface, fonts["small"], string, color, INSIDE.bottomleft, "bottomleft")
