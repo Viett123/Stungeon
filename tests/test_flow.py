@@ -170,3 +170,22 @@ def test_the_last_floor_ends_the_run_instead_of_opening_a_shop(game):
     game.run_state.floor_number = load_data("progression.json")["last_floor"]
     flow.leave_floor(game)
     assert isinstance(game.scenes.current, EndScene) and game.scenes.current.won
+
+
+def test_only_items_heal_the_player(game):
+    """Team rule: no healing after a fight, on a new floor or on a level up."""
+    flow.start_new_run(game, "warrior")
+    player = game.run_state.player
+    player.take_damage(50)
+    hurt = player.hp
+
+    dungeon = game.scenes.current
+    enemy = next(e for e in dungeon.floor.enemies if not e["boss"])
+    dungeon.after_fight(enemy, {"won": True, "fled": False, "xp": 500, "gold": 1, "loot": []})
+    assert player.level > 1 and player.hp == hurt        # several level ups, still no healing
+
+    flow.go_to_next_floor(game)
+    assert player.hp == hurt
+
+    inventory.add_item(player, POTION)
+    assert inventory.use_item(player, POTION) and player.hp > hurt

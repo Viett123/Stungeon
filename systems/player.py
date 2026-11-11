@@ -87,8 +87,8 @@ class Player:
         while self.level < progression["max_level"] and self.xp >= progression["xp_for_level"][str(self.level + 1)]:
             before = {m["id"] for m in self.unlocked_moves()}
             self.level += 1
+            # Only max HP grows. Current HP stays: nothing heals the player except items.
             self.max_hp += progression["hp_per_level"]
-            self.hp += progression["hp_per_level"]
             events.append(f"level_up:{self.level}")
             events += [f"unlocked:{m['id']}" for m in self.unlocked_moves() if m["id"] not in before]
         return events

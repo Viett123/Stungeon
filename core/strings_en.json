@@ -13,7 +13,7 @@
   "xp_gold": "XP {xp}     Gold {gold}",
   "dungeon_hint": "Arrow keys or WASD to move  -  walk into an enemy to fight  -  I for your bag  -  Esc for the menu",
   "hotbar_hint": "Your moves. Hover a slot to read about it.",
-  "new_floor": "You go down to floor {n}. You recover some HP.",
+  "new_floor": "You go down to floor {n}.",
   "level_up": "Level up! You are now level {level}.",
   "new_move": "New move unlocked: {name}",
   "fight_won": "You beat the {enemy}: +{xp} XP, +{gold} gold.",

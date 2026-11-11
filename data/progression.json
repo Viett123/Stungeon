@@ -1,10 +1,8 @@
 {
-  "_note": "PLACEHOLDER numbers written by Claude so the game can run. Owner D: replace them and delete this line. heal_* = share of max HP healed. expected_answer_seconds is used to tell the HabitTracker if an answer was fast (owner C).",
+  "_note": "PLACEHOLDER numbers written by Claude so the game can run. Owner D: replace them and delete this line. Nothing heals the player except items (team decision, 11 Nov 2026). expected_answer_seconds is used to tell the HabitTracker if an answer was fast (owner C).",
   "xp_for_level": {"2": 40, "3": 100, "4": 180, "5": 280},
   "max_level": 5,
   "hp_per_level": 20,
-  "heal_on_new_floor": 0.5,
-  "heal_after_fight": 0.35,
   "last_floor": 3,
   "expected_answer_seconds": 20
 }

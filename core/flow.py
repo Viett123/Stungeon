@@ -62,8 +62,6 @@ def leave_floor(game):
 def go_to_next_floor(game):
     run = game.run_state
     run.floor_number += 1
-    # TODO(D): healing on a new floor is a placeholder rule (the number is in data/progression.json).
-    run.player.heal(round(run.player.max_hp * load_data("progression.json")["heal_on_new_floor"]))
     enter_floor(game, [t("new_floor", n=run.floor_number)])
 
 
