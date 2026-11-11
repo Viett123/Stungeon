@@ -1,5 +1,5 @@
 {
-  "_note": "PLACEHOLDER numbers written by Claude so the game can run. Owner D: replace them and delete this line. Every enemy, name, number and topic list here is a placeholder. topics = what the enemy asks about (empty = any topic). color is the square drawn until there is art. count = normal enemies on a floor, chests = chests on a floor.",
+  "_note": "PLACEHOLDER numbers written by Claude so the game can run. Owner D: replace them and delete this line. Every enemy, name, number and topic list here is a placeholder. topics = what the enemy asks about (empty = any topic). color is the square drawn until there is art. count = normal enemies on a floor, chests = chests on a floor, theme = how the floor looks (see data/themes.json).",
   "enemies": {
     "vocab_slime":     {"name": "Vocab Slime",     "hp": 30, "damage": 6,  "xp": 15, "gold": 5,
                         "topics": ["vocabulary"], "color": [110, 200, 120]},
@@ -21,9 +21,9 @@
                         "color": [120, 60, 220]}
   },
   "floors": {
-    "1": {"count": 7, "chests": 2, "pool": ["vocab_slime", "article_goblin"], "boss": "boss_floor_1"},
-    "2": {"count": 9, "chests": 3, "pool": ["vocab_slime", "article_goblin", "plural_bat"], "boss": "boss_floor_2"},
-    "3": {"count": 11, "chests": 3, "pool": ["article_goblin", "plural_bat", "grammar_ghost"], "boss": "boss_floor_3"}
+    "1": {"theme": "stone", "count": 7, "chests": 2, "pool": ["vocab_slime", "article_goblin"], "boss": "boss_floor_1"},
+    "2": {"theme": "jungle", "count": 9, "chests": 3, "pool": ["vocab_slime", "article_goblin", "plural_bat"], "boss": "boss_floor_2"},
+    "3": {"theme": "desert", "count": 11, "chests": 3, "pool": ["article_goblin", "plural_bat", "grammar_ghost"], "boss": "boss_floor_3"}
   },
   "chase": {
     "_note": "PLACEHOLDER. wake_radius: a monster starts chasing when the player is this many tiles away. sleep_radius: it gives up when the player is further away than this. seconds_per_step: how fast it walks. rest_after_flee: seconds it stands still after the player ran away from a fight.",

@@ -93,18 +93,21 @@ _TILE_PLACEHOLDERS = {
 }
 
 
-def tile_sprite(name, variant=None):
+def tile_sprite(name, variant=None, folder=""):
     """A 48x48 tile, e.g. tile_floor, tile_wall_front, tile_wall_cap, tile_stairs.
 
-    With a variant number, the picture <name>_<variant>.png is used if it exists
-    (a cracked floor, a wall with a banner). Otherwise the normal <name>.png.
+    variant: with a number, the picture <name>_<variant>.png is used if it exists
+             (a cracked floor, a wall with a banner), otherwise the normal <name>.png.
+    folder:  a theme folder inside assets/sprites/ (e.g. "jungle"). A picture that is
+             missing there is taken from assets/sprites/ itself.
     """
-    image = None
-    if variant is not None:
-        image = assets.load_sprite(f"{name}_{variant}")
-    image = image or assets.load_sprite(name)
-    if image is not None:
-        return image
+    names = [f"{name}_{variant}", name] if variant is not None else [name]
+    places = [f"{folder}/", ""] if folder else [""]
+    for place in places:
+        for candidate in names:
+            image = assets.load_sprite(place + candidate)
+            if image is not None:
+                return image
     if name == "tile_floor":
         return assets.scale_up(_floor_placeholder(variant or 0))
     return assets.scale_up(_TILE_PLACEHOLDERS[name]())

@@ -50,3 +50,10 @@ def floor_spawns(floor_number) -> dict:
 def chase_rules() -> dict:
     """How monsters on the map chase the player: {"wake_radius", "sleep_radius", "seconds_per_step", "rest_after_flee"}."""
     return _data()["chase"]
+
+
+def floor_theme(floor_number) -> dict:
+    """How a floor looks: {"folder": ..., "background": [r, g, b]} from data/themes.json."""
+    themes = json.loads((DATA_PATH.parent / "themes.json").read_text(encoding="utf-8"))["themes"]
+    name = floor_spawns(floor_number).get("theme", "stone")
+    return themes.get(name, themes["stone"])
