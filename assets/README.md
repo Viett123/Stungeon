@@ -34,8 +34,19 @@ To replace a placeholder, put a PNG with the right name in `assets/sprites/`. No
 | `player_<class>_hit_0.png`, ... | The player being hurt (shown in a fight) |
 | `enemy_<id>_idle_0.png`, ... and `enemy_<id>_run_0.png`, ... | An enemy, where `<id>` is its id in `data/enemies.json`, e.g. `enemy_vocab_slime_idle_0.png` |
 | `player_<class>.png`, `enemy_<id>.png` | One still picture, used only if there are no `_idle_` pictures |
+| `weapon_<id>.png` | The weapon as it is held in the hand, where `<id>` is the item's id in `data/items.json`, e.g. `weapon_old_sword.png`. Draw it pointing straight up with the handle at the bottom middle; the game tilts it, swings it and mirrors it |
+| `effect_hit_0.png`, `effect_hit_1.png`, ... | The sparks shown on an enemy when an attack lands |
 | `item_<id>.png` | An item's icon for the bag and the shop, where `<id>` is its id in `data/items.json`, e.g. `item_small_potion.png`. Art taller than 16 pixels is drawn smaller so it fits the slot |
 | `icon_<id>.png` | A move's icon (16 x 16) for the hotbar, where `<id>` is its id in `data/moves.json`, e.g. `icon_fireball.png` |
+
+## Floor themes
+
+A theme is a folder inside `assets/sprites/`, for example `assets/sprites/jungle/`. It holds tile
+pictures with the same names as above (`tile_floor.png`, `tile_wall_front.png`, ...). A floor that
+uses the theme takes its tiles from that folder; any tile missing there comes from `assets/sprites/`.
+Themes and their background colour are listed in `data/themes.json`, and `data/enemies.json` says
+which floor uses which theme. To make your own theme: copy a theme folder, repaint the tiles,
+add it to `data/themes.json`.
 
 The frames, bars and slots of the menus are drawn in code (`ui/theme.py`), so they need no art files.
 A real font is still missing: the game uses pygame's built-in font until someone picks a CC0 pixel font.

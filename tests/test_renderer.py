@@ -107,5 +107,6 @@ def test_tall_item_art_is_shrunk_to_fit_a_slot(screen, tmp_path, monkeypatch):
 
 def test_every_art_file_in_the_repo_loads(screen):
     """Catches a broken or misnamed PNG in assets/sprites/ before the exhibit does."""
-    for path in sorted(assets.SPRITE_DIR.glob("*.png")):
-        assert assets.load_sprite(path.stem) is not None, path.name
+    for path in sorted(assets.SPRITE_DIR.rglob("*.png")):          # also the theme folders
+        name = path.relative_to(assets.SPRITE_DIR).with_suffix("").as_posix()
+        assert assets.load_sprite(name) is not None, name

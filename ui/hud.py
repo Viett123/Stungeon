@@ -4,10 +4,22 @@ import pygame
 from core import settings
 from core.strings import t
 from ui import theme, widgets
+from ui.anim import Trail
 
 PLAYER_PANEL = pygame.Rect(12, 12, 330, 128)
 MESSAGE_WIDTH = 520
 LINE_HEIGHT = 26
+
+
+_trails = {}   # player -> (HP trail, resource trail); only the current player is kept
+
+
+def _trails_for(player):
+    """The two bar trails of this player. They are remembered between frames."""
+    if id(player) not in _trails:
+        _trails.clear()      # a new run has a new player: forget the old one
+        _trails[id(player)] = (Trail(player.hp), Trail(player.resource))
+    return _trails[id(player)]
 
 
 def draw_player_panel(surface, fonts, player, rect=PLAYER_PANEL):
@@ -16,11 +28,14 @@ def draw_player_panel(surface, fonts, player, rect=PLAYER_PANEL):
     small = fonts["small"]
     widgets.text(surface, fonts["normal"], t("player_label", cls=player.class_name, level=player.level),
                  theme.GOLD, inside.topleft)
+    hp_trail, resource_trail = _trails_for(player)
     widgets.bar(surface, (inside.x, inside.y + 28, inside.width, 22), player.hp, player.max_hp,
-                theme.HP, theme.HP_BACK, t("hp_label", hp=player.hp, max_hp=player.max_hp), small)
+                theme.HP, theme.HP_BACK, t("hp_label", hp=player.hp, max_hp=player.max_hp), small,
+                trail=hp_trail.follow(player.hp))
     widgets.bar(surface, (inside.x, inside.y + 54, inside.width, 22), player.resource, player.max_resource,
                 theme.RESOURCE, theme.RESOURCE_BACK,
-                t("res_label", res=player.resource_name, r=player.resource, max_r=player.max_resource), small)
+                t("res_label", res=player.resource_name, r=player.resource, max_r=player.max_resource), small,
+                trail=resource_trail.follow(player.resource))
     widgets.text(surface, small, t("xp_gold", xp=player.xp, gold=player.gold), theme.TEXT_DIM,
                  (inside.x, inside.y + 82))
 

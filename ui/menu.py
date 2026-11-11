@@ -7,11 +7,13 @@ import pygame
 
 from core import settings
 from core.scene import Scene
-from ui import theme, widgets
+from ui import anim, theme, widgets
 from ui.button import Button
 
 BUTTON_W, BUTTON_H, GAP = 380, 48, 10
 ENTER_KEYS = (pygame.K_RETURN, pygame.K_KP_ENTER)
+OPEN_SECONDS = 0.18     # how long a menu takes to slide and fade in
+SLIDE_PIXELS = 28
 
 
 class MenuScene(Scene):
@@ -26,6 +28,10 @@ class MenuScene(Scene):
         self.frame = pygame.Rect(left - 50, top - 110, BUTTON_W + 100,
                                  len(options) * (BUTTON_H + GAP) + 150)
         self.selected = next(i for i, b in enumerate(self.buttons) if b.enabled)
+        self.opened = anim.now()
+        # The menu is first drawn onto this see-through layer, so the whole menu can
+        # slide and fade as one picture while it opens.
+        self.layer = pygame.Surface((settings.SCREEN_W, settings.SCREEN_H), pygame.SRCALPHA)
 
     def move(self, step):
         """Go to the next option that can be used, skipping greyed-out ones."""
@@ -64,6 +70,16 @@ class MenuScene(Scene):
         if self.under:
             self.under.draw(surface)
             widgets.dim(surface)
+        progress = min(1.0, (anim.now() - self.opened) / OPEN_SECONDS)
+        if progress >= 1.0:
+            self.draw_menu(surface)       # fully open: draw straight onto the screen
+            return
+        self.layer.fill((0, 0, 0, 0))
+        self.draw_menu(self.layer)
+        self.layer.set_alpha(round(255 * progress))
+        surface.blit(self.layer, (0, round(SLIDE_PIXELS * (1 - anim.ease_out(progress)))))
+
+    def draw_menu(self, surface):
         fonts = self.game.fonts
         theme.draw_frame(surface, self.frame)
         widgets.text(surface, fonts["big"], self.title, theme.GOLD,

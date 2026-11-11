@@ -2,7 +2,7 @@
 import pygame
 
 from core import assets
-from ui import theme, widgets
+from ui import anim, theme, widgets
 
 SLOT = 64          # size of a slot on screen
 ICON = 48          # size of the icon inside it (16 px art drawn 3 times bigger)
@@ -49,7 +49,7 @@ def draw_slot(surface, rect, icon=None, key="", font=None, enabled=True, highlig
     """Draw one slot. key is the small label in the corner (the number key that uses it)."""
     rect = pygame.Rect(rect)
     pygame.draw.rect(surface, theme.OUTLINE, rect)
-    pygame.draw.rect(surface, theme.GOLD if highlighted else theme.METAL_DARK, rect.inflate(-4, -4))
+    pygame.draw.rect(surface, anim.glow_gold() if highlighted else theme.METAL_DARK, rect.inflate(-4, -4))
     pygame.draw.rect(surface, theme.SLOT_FILL, rect.inflate(-8, -8))
     if icon is not None:
         surface.blit(icon, icon.get_rect(center=rect.center))
