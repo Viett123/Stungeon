@@ -1,4 +1,15 @@
 {
-  "_note": "Owner D. Rarities: Common, Uncommon, Rare, Epic, Legendary.",
-  "items": []
+  "_note": "PLACEHOLDER items and numbers written by Claude so the inventory and shop can be tried. Owner D: replace them and delete this line. kind is consumable or equipment. Equipment needs a slot (weapon or armor). effect is read by systems/item_effects.py. Rarities from docs/HANDOFF.md: common, uncommon, rare, epic, legendary.",
+  "inventory_size": 20,
+  "sell_ratio": 0.5,
+  "items": {
+    "small_potion": {"name": "Small Potion", "kind": "consumable", "rarity": "common", "price": 15,
+                     "effect": {"type": "heal", "amount": 40}, "text": "Restores 40 HP.", "color": [170, 50, 44]},
+    "tonic":        {"name": "Tonic", "kind": "consumable", "rarity": "common", "price": 15,
+                     "effect": {"type": "resource", "amount": 40}, "text": "Restores 40 of your class resource.", "color": [62, 104, 178]},
+    "old_sword":    {"name": "Old Sword", "kind": "equipment", "slot": "weapon", "rarity": "common", "price": 40,
+                     "text": "A placeholder weapon. It does nothing yet.", "color": [130, 130, 136]},
+    "leather_vest": {"name": "Leather Vest", "kind": "equipment", "slot": "armor", "rarity": "common", "price": 40,
+                     "text": "A placeholder armour. It does nothing yet.", "color": [120, 90, 60]}
+  }
 }

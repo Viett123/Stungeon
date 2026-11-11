@@ -1,6 +1,7 @@
 """Save and load (owner: D). No pygame here.
 
 The game is saved once per floor. `state` is a plain dict, so it can be written as JSON.
+What goes into the dict is decided in core/run.py (run_to_dict).
 """
 import json
 from pathlib import Path
@@ -14,7 +15,19 @@ def save_game(state):
 
 
 def load_game() -> dict:
-    """Return the saved state, or {} when there is no save yet."""
+    """Return the saved state, or {} when there is no save or the file is damaged."""
     if not SAVE_PATH.exists():
         return {}
-    return json.loads(SAVE_PATH.read_text(encoding="utf-8"))
+    try:
+        return json.loads(SAVE_PATH.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, OSError):
+        return {}   # a broken save file must not crash the game
+
+
+def has_save() -> bool:
+    return bool(load_game())
+
+
+def delete_save():
+    if SAVE_PATH.exists():
+        SAVE_PATH.unlink()

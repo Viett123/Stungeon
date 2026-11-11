@@ -1,0 +1,7 @@
+{
+  "_note": "PLACEHOLDER written by Claude. Owner D: replace it and delete this line. stock = what the shop sells after each floor (the key is the floor you just cleared). A floor with no entry has no shop.",
+  "stock": {
+    "1": ["small_potion", "tonic", "old_sword"],
+    "2": ["small_potion", "tonic", "old_sword", "leather_vest"]
+  }
+}

@@ -22,6 +22,7 @@ class Enemy:
     topics: list
     color: tuple
     boss: bool = False
+    loot_table: str = "enemy"   # which table in data/loot_tables.json this enemy drops from
 
     @property
     def alive(self):
@@ -37,7 +38,8 @@ def make_enemy(enemy_id) -> Enemy:
     s = _data()["enemies"][enemy_id]
     return Enemy(id=enemy_id, name=s["name"], hp=s["hp"], max_hp=s["hp"], damage=s["damage"],
                  xp=s["xp"], gold=s["gold"], topics=list(s.get("topics", [])),
-                 color=tuple(s.get("color", (200, 80, 80))), boss=s.get("boss", False))
+                 color=tuple(s.get("color", (200, 80, 80))), boss=s.get("boss", False),
+                 loot_table=s.get("loot", "boss" if s.get("boss") else "enemy"))
 
 
 def floor_spawns(floor_number) -> dict:
