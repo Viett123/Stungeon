@@ -3,8 +3,8 @@
   "chest_gold": [5, 20],
   "tables": {
     "enemy": [{"item": "small_potion", "chance": 0.35}],
-    "chest": [{"item": "small_potion", "chance": 0.6}, {"item": "tonic", "chance": 0.4}, {"item": "old_sword", "chance": 0.08}, {"item": "apprentice_staff", "chance": 0.08}, {"item": "hunting_bow", "chance": 0.08}, {"item": "cloth_hood", "chance": 0.1}, {"item": "worn_boots", "chance": 0.1}, {"item": "wool_trousers", "chance": 0.1}, {"item": "copper_ring", "chance": 0.08}, {"item": "lucky_charm", "chance": 0.05}],
-    "chest_golden": [{"item": "big_potion", "chance": 0.8}, {"item": "golden_dagger", "chance": 0.3}, {"item": "ruby_sword", "chance": 0.12}, {"item": "lucky_charm", "chance": 0.3}],
+    "chest": [{"item": "small_potion", "chance": 0.6}, {"item": "tonic", "chance": 0.4}, {"item": "old_sword", "chance": 0.08}, {"item": "apprentice_staff", "chance": 0.08}, {"item": "hunting_bow", "chance": 0.08}, {"item": "cloth_hood", "chance": 0.1}, {"item": "worn_boots", "chance": 0.1}, {"item": "wool_trousers", "chance": 0.1}, {"item": "copper_ring", "chance": 0.08}, {"item": "lucky_charm", "chance": 0.05}, {"item": "cleaver", "chance": 0.06}, {"item": "spear", "chance": 0.05}, {"item": "mace", "chance": 0.05}, {"item": "short_bow", "chance": 0.05}],
+    "chest_golden": [{"item": "big_potion", "chance": 0.8}, {"item": "golden_dagger", "chance": 0.3}, {"item": "ruby_sword", "chance": 0.12}, {"item": "lucky_charm", "chance": 0.3}, {"item": "katana", "chance": 0.12}, {"item": "duel_sword", "chance": 0.12}, {"item": "sledgehammer", "chance": 0.1}, {"item": "emerald_sword", "chance": 0.08}, {"item": "golden_sword", "chance": 0.06}, {"item": "lavish_sword", "chance": 0.02}],
     "elite": [{"item": "small_potion", "chance": 1.0}, {"item": "tonic", "chance": 0.5}],
     "miniboss": [{"item": "big_potion", "chance": 1.0}, {"item": "lucky_charm", "chance": 0.4}, {"item": "war_axe", "chance": 0.3}],
     "boss":  [{"item": "small_potion", "chance": 1.0}, {"item": "tonic", "chance": 0.5}, {"item": "knight_sword", "chance": 0.25}]
