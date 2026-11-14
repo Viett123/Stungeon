@@ -8,6 +8,8 @@
     "tonic": {"name": "Tonic", "kind": "consumable", "rarity": "common", "price": 15, "effect": {"type": "resource", "amount": 40}, "text": "Restores 40 of your class resource.", "color": [62, 104, 178]},
     "old_sword": {"name": "Old Sword", "kind": "equipment", "slot": "weapon", "rarity": "common", "price": 40, "text": "A worn blade with a chipped edge. It does nothing yet.", "color": [130, 130, 136]},
     "knight_sword": {"name": "Knight Sword", "kind": "equipment", "slot": "weapon", "rarity": "rare", "price": 120, "text": "A well-kept sword from the castle guard. It does nothing yet.", "color": [150, 160, 180]},
+    "ruby_sword": {"name": "Ruby Sword", "kind": "equipment", "slot": "weapon", "rarity": "epic", "price": 220, "text": "A blade with a red stone that is warm to the touch. It does nothing yet.", "color": [190, 60, 70]},
+    "golden_dagger": {"name": "Golden Dagger", "kind": "equipment", "slot": "weapon", "rarity": "rare", "price": 110, "text": "Too pretty to be practical. It does nothing yet.", "color": [220, 180, 70]},
     "war_axe": {"name": "War Axe", "kind": "equipment", "slot": "weapon", "rarity": "uncommon", "price": 80, "text": "Heavy, and not at all subtle. It does nothing yet.", "color": [140, 110, 90]},
     "apprentice_staff": {"name": "Apprentice Staff", "kind": "equipment", "slot": "weapon", "rarity": "common", "price": 40, "text": "A beginner's staff with a red stone. It does nothing yet.", "color": [150, 60, 60]},
     "oak_staff": {"name": "Oak Staff", "kind": "equipment", "slot": "weapon", "rarity": "uncommon", "price": 80, "text": "Old oak with a green stone that hums. It does nothing yet.", "color": [70, 130, 80]},

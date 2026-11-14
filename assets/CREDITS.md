@@ -30,7 +30,6 @@ is changed: it is the pack's plain floor with the pack's skull drawn on top.
 | `player_archer_idle_N`, `_run_N`, `_hit_N` | `elf_m_...` (same three animations) |
 | `enemy_vocab_slime_idle_N` | `swampy_anim_fN` |
 | `enemy_article_goblin_idle_N`, `_run_N` | `goblin_idle_anim_fN`, `goblin_run_anim_fN` |
-| `enemy_plural_bat_idle_N`, `_run_N` | `imp_idle_anim_fN`, `imp_run_anim_fN` |
 | `enemy_grammar_ghost_idle_N` | `necromancer_anim_fN` |
 | `enemy_boss_floor_1_idle_N`, `_run_N` | `doc_idle_anim_fN`, `doc_run_anim_fN` |
 | `enemy_boss_floor_2_idle_N`, `_run_N` | `orc_shaman_idle_anim_fN`, `orc_shaman_run_anim_fN` |
@@ -47,6 +46,25 @@ is changed: it is the pack's plain floor with the pack's skull drawn on top.
 | `item_war_axe.png`, `weapon_war_axe.png` | `weapon_axe.png` |
 | `item_oak_staff.png`, `weapon_oak_staff.png` | `weapon_green_magic_staff.png` |
 | `item_big_potion.png` | `flask_big_red.png` |
+
+## 16x16 Dungeon Tileset (v5) by 0x72
+
+- Author: 0x72 (Robert). This is the older sister pack of DungeonTileset II.
+- License: CC0 1.0 Universal (the page says it can be used for anything, credit not required)
+- Link: https://0x72.itch.io/16x16-dungeon-tileset
+- License checked on 14 Nov 2026.
+
+| Files in `assets/sprites/` | Name in the pack's `items/` folder |
+|---|---|
+| `torch_0.png` to `torch_7.png` | `torch_1.png` to `torch_8.png` |
+| `chest_golden_0.png`, `chest_golden_1.png` | `chest_golden_closed.png`, `chest_golden_open_full.png` |
+| `npc_merchant.png` | `npc_merchant.png` |
+| `enemy_plural_bat.png` | `monster_bat.png` |
+| `item_ruby_sword.png`, `weapon_ruby_sword.png` | `weapon_sword_ruby.png` |
+| `item_golden_dagger.png`, `weapon_golden_dagger.png` | `weapon_dagger_golden.png` |
+
+Not used yet from this pack: doors, columns, boxes, gargoyle fountains, about 40 more monsters and
+NPCs (one picture each, no animation), 20 more weapons.
 
 ## 16x16 Dungeon Walls Reconfig by aekae13
 

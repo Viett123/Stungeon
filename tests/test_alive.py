@@ -168,6 +168,7 @@ def test_walking_into_a_chest_opens_it_and_then_you_can_walk_over_it(dungeon):
     scene.floor.enemies[:] = []
     x, y = scene.player_pos
     chest = scene.floor.chests[0]
+    chest["golden"] = False                     # a plain chest: the golden one has its own pictures
     chest["pos"] = (x + 1, y)
     gold = scene.run.player.gold
 

@@ -30,6 +30,9 @@ To replace a placeholder, put a PNG with the right name in `assets/sprites/`. No
 | `tile_wall_side_left.png`, `tile_wall_side_right.png` | The thin line beside a room: on the right edge of the picture for `left`, on the left edge for `right` |
 | `tile_wall_corner_left.png`, `tile_wall_corner_right.png` | The small piece where a side line meets a cap |
 | `tile_stairs.png` | Stairs down |
+| `torch_0.png`, `torch_1.png`, ... | A burning torch for the walls behind rooms (animated) |
+| `chest_golden_0.png`, `chest_golden_1.png`, ... | The treasure-room chest: closed first, open last |
+| `npc_merchant.png` | The shopkeeper shown in the shop |
 | `tile_spikes.png` | Spikes of a trap room, see-through around the spikes; drawn on top of the floor |
 | `chest_0.png`, `chest_1.png`, ... | A chest opening: the first picture is closed, the last is fully open |
 | `player_<class>_idle_0.png`, `_1.png`, ... | The player standing, one set per class id in `data/classes.json` (`warrior`, `mage`, `archer`) |

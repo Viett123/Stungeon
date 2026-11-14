@@ -5,7 +5,7 @@ and reads input. You can buy here; selling exists in systems/shop.py but has no 
 """
 import pygame
 
-from core import flow
+from core import assets, flow
 from core.scene import Scene
 from core.strings import t
 from systems import items, shop
@@ -15,6 +15,7 @@ from ui.item_info import item_icon, item_lines
 
 PANEL = pygame.Rect(190, 70, 900, 580)
 ROW_H, GAP = 52, 8
+MERCHANT_SCALE = 6        # the shopkeeper is drawn 6 times the size of the art
 ENTER_KEYS = (pygame.K_RETURN, pygame.K_KP_ENTER)
 
 
@@ -35,6 +36,7 @@ class ShopScene(Scene):
         self.leave = Button((inside.right - 330, inside.bottom - 84, 330, 48),
                             t("shop_leave", n=self.run.floor_number + 1))
         self.side_x = inside.x + 560
+        self.merchant = assets.load_sprite("npc_merchant", MERCHANT_SCALE)   # None if there is no such art
 
     def buy_selected(self):
         item = self.stock[self.selected]
@@ -85,6 +87,8 @@ class ShopScene(Scene):
         widgets.text(surface, small, kind, kind_color, (self.side_x, inside.y + 104))
         widgets.wrapped(surface, small, text, text_color, (self.side_x, inside.y + 138), inside.right - self.side_x)
 
+        if self.merchant:
+            surface.blit(self.merchant, self.merchant.get_rect(bottomright=(inside.right - 8, self.leave.rect.top - 14)))
         self.leave.draw(surface, fonts["normal"], mouse)
         if self.message:
             widgets.text(surface, small, self.message, theme.GOLD, (inside.x, inside.bottom - 28), "bottomleft")

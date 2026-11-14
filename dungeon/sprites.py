@@ -163,9 +163,17 @@ def character_frames(name, action, color, letter="", font=None, big=False):
     return [image]
 
 
-def chest_frames():
-    """Frames of a chest opening: the first is closed, the last is fully open."""
-    frames = assets.load_frames("chest")
+def torch_frames():
+    """The burning-torch animation for walls, or an empty list if there is no torch art."""
+    return assets.load_frames("torch")
+
+
+def chest_frames(golden=False):
+    """Frames of a chest opening: the first is closed, the last is fully open.
+
+    golden=True asks for the treasure-room chest; without art for it, the normal chest is used.
+    """
+    frames = (assets.load_frames("chest_golden") if golden else []) or assets.load_frames("chest")
     if frames:
         return frames
     closed, opened = _blank(), _blank()

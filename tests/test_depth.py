@@ -278,3 +278,31 @@ def test_shake_fades_out_and_stays_small(monkeypatch):
     assert abs(x) <= 8 and abs(y) <= 8
     clock["now"] += 1
     assert shake.offset() == (0, 0)
+
+
+# --- torches and golden chests -----------------------------------------------
+def test_treasure_room_chests_are_golden_and_the_others_are_not():
+    floor = generate_floor(2, seed=3)
+    treasure = room_cells(floor.rooms[floor.room_kinds.index("treasure")])
+    for chest in floor.chests:
+        assert chest["golden"] == (chest["pos"] in treasure)
+
+
+def test_torches_hang_only_on_bricks_behind_rooms(dungeon):
+    from dungeon import tiles
+    game, scene = dungeon
+    renderer = scene.renderer
+    assert renderer.torches                                  # the art exists, so some torches are placed
+    for x, y in renderer.torches:
+        assert tiles.is_brick(scene.floor.grid, x, y) and scene.floor.is_walkable(x, y + 1)
+
+
+def test_a_golden_chest_uses_its_own_pictures_and_loot(dungeon, monkeypatch):
+    import dungeon.dungeon_scene as module
+    game, scene = dungeon
+    asked = []
+    monkeypatch.setattr(module, "roll_loot", lambda table, rng: asked.append(table) or [])
+    chest = {"pos": (0, 0), "opened": False, "golden": True, "time": 0.0}
+    assert scene.chest_image(chest) is scene.golden_frames[0]
+    scene.open_chest(chest)
+    assert asked == ["chest_golden"] and chest["opened"]
