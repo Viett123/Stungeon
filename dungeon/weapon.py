@@ -1,12 +1,14 @@
 """The weapon a character holds in its hand, and its swing (owner: A).
 
-The art packs have no attack animations: a weapon is one still picture. So the swing
-is made in code by turning that picture around its handle. All turned pictures are
+Used for a class whose art has no attack animation of its own: the weapon is one still
+picture, and the swing is made in code by turning that picture around its handle.
+(The three classes now come with their own weapon animations, so they don't use this.) All turned pictures are
 made once when the weapon is created, never while the game runs.
 """
 import pygame
 
 from core import assets
+from dungeon import sprites
 
 IDLE_ANGLE = -30                               # degrees; tilted a little forward while held
 SWING_ANGLES = [40, 10, -25, -60, -95, -120]   # from raised behind the shoulder to swung forward
@@ -77,6 +79,8 @@ class HeldWeapon:
 
 def held_weapon(player, factor):
     """The HeldWeapon for what the player has equipped, or None (no weapon, or no art for it)."""
+    if sprites.has_frames(f"player_{player.class_id}", "attack"):
+        return None      # this class's own pictures already show it holding and swinging a weapon
     item_id = player.equipped.get("weapon")
     if not item_id:
         return None

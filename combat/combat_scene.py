@@ -33,7 +33,9 @@ PLAYER_ART = pygame.Rect(938, 12, 202, 212)     # the player's picture, right of
 HURT_SECONDS = 0.6
 HIT_PAUSE = 0.07            # seconds everything freezes when a hit lands
 FLASH_SECONDS = 0.12        # seconds the enemy is drawn white after a hit
-ATTACK_SECONDS = 0.35      # how long the weapon swing and the hit sparks last
+USE_SECONDS = 0.6           # how long the use-an-item animation plays
+DIE_SECONDS = 0.7           # how long the defeat animation takes (its last picture then stays)
+ATTACK_SECONDS = 0.45      # how long the weapon swing and the hit sparks last
 FIGHTER_SCALE = settings.TILE_SCALE + 1   # fighters are drawn 4 times the art size, like bosses
 CONTENT = pygame.Rect(140, 236, 1000, 384)     # the big panel: move details, question or feedback
 INSIDE = theme.inner(CONTENT)
@@ -65,6 +67,8 @@ class CombatScene(Scene):
         self.attack = 0.0       # seconds left of the player's attack (weapon swing + sparks on the enemy)
         self.sparks = assets.load_frames("effect_hit", FIGHTER_SCALE)
         self.floating = []      # damage numbers that rise and fade
+        self.using = 0.0        # seconds left of the "use an item" animation
+        self.dying = None       # seconds since the player was defeated (None while alive)
         # "Juice": small effects that make a hit feel like a hit.
         self.shake = Shake()    # the whole screen shakes for a moment
         self.freeze = 0.0       # seconds everything stands still right after a hit
@@ -157,6 +161,7 @@ class CombatScene(Scene):
         if not inventory.use_item(self.player, item["id"]):
             self.notice = t("item_no_effect", item=item["name"])     # e.g. a potion at full HP: keep it
             return
+        self.using = USE_SECONDS
         lines = [(t("item_used", item=item["name"]), theme.GOLD)]
         # TODO(B): whether an item costs the turn is decided in combat/effects.py.
         self.show_message(lines, self.enemy_turn if effects.item_costs_turn(self.battle) else self.back_to_choose)
@@ -254,6 +259,7 @@ class CombatScene(Scene):
                           lambda: self.finish(won=True))
 
     def defeat(self):
+        self.dying = 0.0
         self.show_message([(t("defeat_fight", enemy=self.enemy_name), theme.BAD)],
                           lambda: self.finish(won=False))
 
@@ -336,6 +342,9 @@ class CombatScene(Scene):
         self.player_actor.update(dt)
         self.hurt = max(0.0, self.hurt - dt)
         self.attack = max(0.0, self.attack - dt)
+        self.using = max(0.0, self.using - dt)
+        if self.dying is not None:
+            self.dying += dt
         self.floating = [text for text in self.floating if text.alive()]
         if self.state == "question":
             self.elapsed += dt
@@ -393,6 +402,17 @@ class CombatScene(Scene):
             spark = self.sparks[min(int(progress * len(self.sparks)), len(self.sparks) - 1)]
             surface.blit(spark, spark.get_rect(center=rect.center))
 
+    def player_image(self):
+        """Which picture of the player to show: dying, attacking, using an item, hurt, or just standing."""
+        actor = self.player_actor
+        if self.dying is not None:
+            return actor.image_at("die", self.dying / DIE_SECONDS)
+        if self.attack > 0:
+            return actor.image_at("attack", 1 - self.attack / ATTACK_SECONDS)
+        if self.using > 0:
+            return actor.image_at("use", 1 - self.using / USE_SECONDS)
+        return actor.image("hit" if self.hurt > 0 else None)
+
     def white_copy(self, image):
         """The same picture with every pixel white: the enemy flashes like this when it is hit."""
         if id(image) not in self.white:
@@ -403,7 +423,7 @@ class CombatScene(Scene):
     def draw_player(self, surface):
         """The player's picture in its own small panel; it shows the "hit" frame right after being hurt."""
         inside = theme.draw_frame(surface, PLAYER_ART)
-        image = self.player_actor.image("hit" if self.hurt > 0 else None)
+        image = self.player_image()
         feet = (inside.centerx + 16, inside.bottom)
         surface.blit(image, image.get_rect(midbottom=feet))
         if self.weapon:

@@ -11,6 +11,7 @@ from dungeon import sprites
 
 TILE = settings.TILE
 SECONDS_PER_FRAME = 0.12      # how long each animation frame is shown
+ACTIONS = ("idle", "run", "hit", "attack", "die", "use")   # a character without one of these uses idle
 PLAYER_SPEED = 480            # pixels per second the player's picture glides (10 tiles a second)
 
 
@@ -39,7 +40,7 @@ def _flipped(frames):
 
 class Actor:
     def __init__(self, tile, frames_by_action, speed=PLAYER_SPEED):
-        """frames_by_action: {"idle": [...], "run": [...]} and optionally "hit"."""
+        """frames_by_action: {"idle": [...], "run": [...]} and optionally the other ACTIONS."""
         self.x, self.y = tile[0] * TILE, tile[1] * TILE      # where the picture is now, in world pixels
         self.target = (self.x, self.y)                       # where it is gliding to
         self.speed = speed
@@ -76,6 +77,15 @@ class Actor:
         right, left = self.animations.get(action) or self.animations["idle"]
         return (left if self.facing_left else right).image()
 
+    def image_at(self, action, progress):
+        """A picture of an animation that plays ONCE (attack, die, use an item).
+
+        progress goes from 0.0 (the first picture) to 1.0 (the last picture, which then stays).
+        """
+        right, left = self.animations.get(action) or self.animations["idle"]
+        frames = (left if self.facing_left else right).frames
+        return frames[min(int(progress * len(frames)), len(frames) - 1)]
+
     def feet(self):
         """The point on the floor the character stands on: bottom middle of its tile, in world pixels."""
         return self.x + TILE // 2, self.y + TILE
@@ -94,5 +104,5 @@ def _approach(value, target, step):
 def make_actor(name, tile, color, letter="", font=None, big=False, speed=PLAYER_SPEED):
     """Build an Actor from the art files of a character (see assets/README.md for the names)."""
     frames = {action: sprites.character_frames(name, action, color, letter, font, big)
-              for action in ("idle", "run", "hit")}
+              for action in ACTIONS}
     return Actor(tile, frames, speed)

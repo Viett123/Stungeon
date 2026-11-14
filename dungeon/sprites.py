@@ -190,3 +190,8 @@ def elite_aura():
     pygame.draw.ellipse(image, (230, 190, 90, 110), image.get_rect())
     pygame.draw.ellipse(image, (255, 230, 150, 200), image.get_rect(), width=3)
     return image
+
+
+def has_frames(name, action):
+    """True if the character has its own pictures for this action (e.g. player_mage, "attack")."""
+    return bool(assets.load_frames(f"{name}_{action}"))

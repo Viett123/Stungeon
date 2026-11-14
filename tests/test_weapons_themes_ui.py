@@ -41,12 +41,21 @@ def test_every_class_starts_with_a_weapon_that_has_art(screen):
     for class_id, data in load_data("classes.json")["classes"].items():
         player = new_run(class_id, seed=1).player
         assert player.equipped["weapon"] == data["start_weapon"]
-        assert held_weapon(player, 3) is not None, class_id
+        assert HeldWeapon(data["start_weapon"], 3).has_art, class_id
+
+
+def test_a_class_with_its_own_attack_pictures_gets_no_extra_weapon_picture(screen, tmp_path, monkeypatch):
+    player = new_run("warrior", seed=1).player
+    assert sprites.has_frames("player_warrior", "attack")
+    assert held_weapon(player, 3) is None                       # the class art already holds a weapon
+    # A class without attack pictures still gets the code-swung weapon.
+    monkeypatch.setattr(sprites, "has_frames", lambda name, action: False)
+    assert held_weapon(player, 3) is not None
 
 
 def test_no_weapon_or_no_art_means_nothing_is_drawn(screen, tmp_path, monkeypatch):
     player = new_run("warrior", seed=1).player
-    monkeypatch.setattr(assets, "SPRITE_DIR", tmp_path)     # an empty folder: no weapon art
+    monkeypatch.setattr(assets, "SPRITE_DIR", tmp_path)     # an empty folder: no art at all
     assert held_weapon(player, 3) is None
     player.equipped.clear()
     assert held_weapon(player, 3) is None
@@ -67,7 +76,8 @@ def test_swing_goes_through_different_pictures_and_mirrors_for_the_other_side(sc
     assert weapon.thing(100, 200, facing_left=True)[0] < 100
 
 
-def test_weapon_follows_what_is_equipped_in_the_dungeon(screen):
+def test_weapon_follows_what_is_equipped_in_the_dungeon(screen, monkeypatch):
+    monkeypatch.setattr(sprites, "has_frames", lambda name, action: False)   # as if the class had no attack art
     game = Game()
     flow.start_new_run(game, "mage")
     scene = game.scenes.current
@@ -84,10 +94,14 @@ def test_a_hit_starts_the_swing_and_shows_a_damage_number(screen):
     dungeon = game.scenes.current
     dungeon.start_fight(next(e for e in dungeon.floor.enemies if not e["boss"]))
     fight = game.scenes.current
-    assert isinstance(fight, CombatScene) and fight.weapon is not None
+    assert isinstance(fight, CombatScene)
+    idle = fight.player_image()
     fight.pick_move(0)
     fight.submit(fight.battle.question["answer"])            # a correct answer
     assert fight.attack > 0 and len(fight.floating) == 1
+    fight.freeze = 0                                         # skip the hit pause
+    fight.update(0.2)
+    assert fight.player_image() is not idle                  # an attack picture is showing
     for _ in range(90):                                      # 1.5 seconds
         fight.update(1 / 60)
         fight.draw(game.screen)
