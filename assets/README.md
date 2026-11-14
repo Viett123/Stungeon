@@ -15,7 +15,8 @@ To replace a placeholder, put a PNG with the right name in `assets/sprites/`. No
 - An animation is several files with the same name and a number at the end, starting at 0.
   All frames of one animation must be the same size. Any number of frames works.
 - Use a transparent background for characters.
-- Only our own art or CC0 art. **List every file in [CREDITS.md](CREDITS.md)** with author, license and link.
+- Only our own art, CC0 art, or art whose author allows it. Some art (CC BY) **must** be credited: add it to `data/credits.json` too, so it shows on the Credits screen.
+- Old rule, still true for most packs: our own art or CC0 art. **List every file in [CREDITS.md](CREDITS.md)** with author, license and link.
 - Do not copy art from any commercial game.
 
 ## File names the game looks for
@@ -38,6 +39,10 @@ To replace a placeholder, put a PNG with the right name in `assets/sprites/`. No
 | `player_<class>_idle_0.png`, `_1.png`, ... | The player standing, one set per class id in `data/classes.json` (`warrior`, `mage`, `archer`) |
 | `player_<class>_run_0.png`, ... | The player walking. Without these, the idle pictures are used |
 | `player_<class>_hit_0.png`, ... | The player being hurt (shown in a fight) |
+| `player_<class>_attack_0.png`, ... | The player attacking. Played once when a hit lands. A class that has these is shown with the weapon that is drawn in its pictures; a class without them gets the equipped weapon drawn in its hand and swung by code |
+| `player_<class>_die_0.png`, ... | The player being defeated. Played once; the last picture stays |
+| `player_<class>_use_0.png`, ... | The player using an item in a fight. Played once |
+| `ui_frame.png` | A small square frame (24 x 24). Its corners and edges are used for the border of every panel |
 | `enemy_<id>_idle_0.png`, ... and `enemy_<id>_run_0.png`, ... | An enemy, where `<id>` is its id in `data/enemies.json`, e.g. `enemy_vocab_slime_idle_0.png` |
 | `player_<class>.png`, `enemy_<id>.png` | One still picture, used only if there are no `_idle_` pictures |
 | `weapon_<id>.png` | The weapon as it is held in the hand, where `<id>` is the item's id in `data/items.json`, e.g. `weapon_old_sword.png`. Draw it pointing straight up with the handle at the bottom middle; the game tilts it, swings it and mirrors it |

@@ -80,7 +80,7 @@ def test_a_damaged_save_file_counts_as_no_save():
 def test_continue_is_greyed_out_without_a_save(game):
     title = game.scenes.current
     assert isinstance(title, TitleScene)
-    assert [b.enabled for b in title.buttons] == [True, False, True, True]
+    assert [b.enabled for b in title.buttons] == [True, False, True, True, True]   # only Continue is greyed out
     press(game, pygame.K_DOWN)               # skips the greyed-out Continue
     assert title.selected == 2
 

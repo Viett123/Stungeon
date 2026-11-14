@@ -164,5 +164,10 @@
   "topic_deshalb_darum_deswegen": "deshalb / darum / deswegen",
   "topic_komposita_artikel": "Compound nouns: the article",
   "topic_passiv_praeteritum": "Passive (past)",
-  "topic_diskussion_redemittel": "Discussion phrases"
+  "topic_diskussion_redemittel": "Discussion phrases",
+
+  "menu_credits": "Credits",
+  "credits_title": "Credits",
+  "credits_by": "by {author}",
+  "credits_hint": "Full list with links: assets/CREDITS.md  -  Esc to go back"
 }

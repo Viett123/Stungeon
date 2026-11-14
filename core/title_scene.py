@@ -13,14 +13,19 @@ class TitleScene(MenuScene):
             (t("menu_new_game"), self.new_game, True),
             (t("menu_continue"), self.continue_game, flow.can_continue()),   # greyed out without a save
             (t("menu_demo"), lambda: flow.start_demo(game), True),
+            (t("menu_credits"), self.show_credits, True),
             (t("menu_quit"), game.quit, True),
         ]
-        super().__init__(game, t("title"), options, top=300)
+        super().__init__(game, t("title"), options, top=270)
 
     def new_game(self):
         from ui.class_select import ClassSelectScene
         self.game.message = ""
         self.game.scenes.replace(ClassSelectScene(self.game))
+
+    def show_credits(self):
+        from ui.credits_screen import CreditsScene
+        self.game.scenes.replace(CreditsScene(self.game))
 
     def continue_game(self):
         if not flow.continue_run(self.game):

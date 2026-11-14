@@ -1,0 +1,22 @@
+{
+  "_note": "Shown on the Credits screen (title menu). Keep it in step with assets/CREDITS.md, which has the full file lists and links. what = what it is used for, pack = the pack's name, author = who made it, license = its license.",
+  "credits": [
+    {"what": "Dungeon tiles, monsters, weapons, potions and chests",
+     "pack": "16x16 DungeonTileset II", "author": "0x72 (Robert)", "license": "CC0"},
+    {"what": "Torches, golden chests, the merchant, the bat and more weapons",
+     "pack": "16x16 Dungeon Tileset", "author": "0x72 (Robert)", "license": "CC0"},
+    {"what": "The gold frames around the panels",
+     "pack": "DungeonUI", "author": "0x72 (Robert)", "license": "CC0"},
+    {"what": "Jungle and desert floors",
+     "pack": "Custom dungeon 16x16 tileset", "author": "Omniboy, based on 0x72's tileset", "license": "CC0"},
+    {"what": "The hunting bow and the hit sparks",
+     "pack": "16x16 Dungeon Walls Reconfig", "author": "aekae13, based on work by safwyl and 0x72", "license": "CC0"},
+    {"what": "The hero and all its animations (Warrior, Mage, Archer)",
+     "pack": "Pixel Art Sprite Mixer (kingbell.itch.io/pixel-sprite-mixer)", "author": "KingBell",
+     "license": "CC BY 4.0"},
+    {"what": "German questions, from Das Leben B1, Einheiten 1 to 3",
+     "pack": "Written for this game", "author": "The Stungeon team", "license": ""},
+    {"what": "Game engine",
+     "pack": "pygame-ce", "author": "The pygame community", "license": "LGPL"}
+  ]
+}

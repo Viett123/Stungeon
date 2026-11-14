@@ -135,7 +135,7 @@ Kept from the design chat so nothing is lost. None of these is needed for the ex
 - **Modes:** Roguelike (permadeath), review room, daily challenge.
 - **Rewards:** achievements, titles with buffs, cosmetics, Mythical items, leaderboards.
 - **Learning:** question variation, My Materials uploads, other subjects.
-- **Look:** Vietnamese and German UI, attack animations drawn by us, armour art (none of the three packs has any).
+- **Look:** Vietnamese and German UI, armour art (none of the packs has any), move icons, showing the equipped weapon on the class sprite.
 
 ## 4. Added after the design chat (11 Nov 2026)
 
@@ -152,4 +152,7 @@ These were not in the 37 answers. They were added because dungeon crawlers usual
 | Spike traps | Done, placeholder damage (D) | Only in trap rooms; the middle row and column are safe |
 | Choice between floors | Done, placeholder content (D) | Three of six choices; each has a risk or a reward |
 | Random theme per run | Done | Each floor lists themes in `data/enemies.json`; the run's seed picks one |
+| Class animations with weapons | Done | KingBell's hero: idle, run, attack, hurt, defeat and use-item pictures for each class. The class picture shows a fixed weapon (sword and shield, staff, bow), so the equipped weapon item is no longer drawn in the hand |
+| Credits screen | Done | Title menu; list in `data/credits.json`. Needed because KingBell's art must be credited |
+| Gold panel frames | Done | From 0x72's DungeonUI |
 | Sound, tutorial fight | Not started | Suggested for before the exhibit |
