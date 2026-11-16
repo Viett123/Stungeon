@@ -142,16 +142,20 @@ def _character_placeholder(color):
 
 
 def character_frames(name, action, color, letter="", font=None, big=False):
-    """The animation frames of a character for one action ("idle", "run" or "hit").
+    """The animation frames of a character for one action (see ACTIONS in dungeon/actor.py).
 
     Looks for <name>_<action>_0.png, _1.png, ... If the character has no frames for
     this action, its idle frames are used; if it has no art at all, one placeholder.
     Bosses (big=True) are drawn 4 times bigger instead of 3.
     """
     factor = settings.TILE_SCALE + 1 if big else settings.TILE_SCALE
-    frames = assets.load_frames(f"{name}_{action}", factor) or assets.load_frames(f"{name}_idle", factor)
-    if frames:
-        return frames
+    own = assets.load_frames(f"{name}_{action}", factor)
+    if own:
+        return own
+    idle = assets.load_frames(f"{name}_idle", factor)
+    if idle:
+        # No pictures for "die": make them by tipping the standing picture over.
+        return _falling_over(idle[0]) if action == "die" else idle
     still = assets.load_sprite(name, factor)   # a single picture without animation
     if still is not None:
         return [still]
@@ -161,6 +165,15 @@ def character_frames(name, action, color, letter="", font=None, big=False):
         mark = font.render(letter, True, OUTLINE)
         image.blit(mark, mark.get_rect(center=(image.get_width() // 2, 12 * factor)))
     return [image]
+
+
+def _falling_over(image):
+    """Four pictures of a character tipping backwards until it lies on the floor."""
+    frames = []
+    for angle in (0, 30, 60, 90):
+        turned = pygame.transform.rotate(image, angle)
+        frames.append(turned.subsurface(turned.get_bounding_rect()).copy())   # cut off the empty edges
+    return frames
 
 
 def torch_frames():

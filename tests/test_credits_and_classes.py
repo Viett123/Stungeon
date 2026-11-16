@@ -50,10 +50,14 @@ def test_credits_open_from_the_title_menu_and_close_again(game):
 
 
 # --- class animations --------------------------------------------------------
-def test_every_class_has_all_its_animations(game):
+def test_every_class_has_pictures_for_every_action(game):
+    from dungeon.actor import ACTIONS
     for class_id in load_data("classes.json")["classes"]:
-        for action in ("idle", "run", "attack", "hit", "die", "use"):
-            assert sprites.has_frames(f"player_{class_id}", action), (class_id, action)
+        for action in ACTIONS:
+            assert sprites.character_frames(f"player_{class_id}", action, (0, 0, 0)), (class_id, action)
+        # "die" has no art: it is made by tipping the standing picture over, ending lying down.
+        falling = sprites.character_frames(f"player_{class_id}", "die", (0, 0, 0))
+        assert len(falling) == 4 and falling[-1].get_width() > falling[0].get_width()
 
 
 def test_a_play_once_animation_starts_at_the_first_picture_and_stops_at_the_last():

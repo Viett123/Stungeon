@@ -257,9 +257,14 @@ def test_a_hit_shakes_flashes_and_pauses_for_a_moment(game):
     fight = start_fight(game)
     fight.pick_move(0)
     fight.submit(fight.battle.question["answer"])
-    assert fight.freeze > 0 and fight.flash > 0 and fight.shake.until > anim.now()
+    assert fight.freeze <= 0 and fight.flash == 0               # the weapon is still on its way
+    for _ in range(60):                                         # up to one second
+        fight.update(1 / 60)
+        if fight.freeze > 0:
+            break
+    assert fight.freeze > 0 and fight.flash > 0 and fight.shake.until > anim.now()   # the hit landed
     attack = fight.attack
-    fight.update(1 / 60)                                        # during the pause nothing moves on
+    fight.update(1 / 120)                                       # during the pause nothing moves on
     assert fight.attack == attack
     for _ in range(120):
         fight.update(1 / 60)

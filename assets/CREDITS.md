@@ -25,6 +25,9 @@ is changed: it is the pack's plain floor with the pack's skull drawn on top.
 | `tile_wall_corner_left.png`, `tile_wall_corner_right.png` | `wall_outer_top_left.png`, `wall_outer_top_right.png` |
 | `tile_stairs.png` | `floor_ladder.png` |
 | `chest_N.png` | `chest_full_open_anim_fN.png` |
+| `player_warrior_idle_N`, `_run_N`, `_hit_N` | `knight_m_idle_anim_fN`, `knight_m_run_anim_fN`, `knight_m_hit_anim_fN` |
+| `player_mage_idle_N`, `_run_N`, `_hit_N` | `wizzard_m_...` (same three animations) |
+| `player_archer_idle_N`, `_run_N`, `_hit_N` | `elf_m_...` (same three animations) |
 | `enemy_vocab_slime_idle_N` | `swampy_anim_fN` |
 | `enemy_article_goblin_idle_N`, `_run_N` | `goblin_idle_anim_fN`, `goblin_run_anim_fN` |
 | `enemy_grammar_ghost_idle_N` | `necromancer_anim_fN` |
@@ -46,29 +49,19 @@ is changed: it is the pack's plain floor with the pack's skull drawn on top.
 | `item_oak_staff.png`, `weapon_oak_staff.png` | `weapon_green_magic_staff.png` |
 | `item_big_potion.png` | `flask_big_red.png` |
 
-## Pixel Art Sprite Mixer by KingBell
+## Pixel Art Sprite Mixer by KingBell (reference only)
 
-- Author: KingBell
-- License: CC BY 4.0 on the pack's page: **credit is required**, with a link back to the tool.
-  The license file in the download adds: free for personal and commercial use, not for NFTs, crypto or AI.
-- Link: https://kingbell.itch.io/pixel-sprite-mixer
-- Permission: the author confirmed to the project lead (Viet) in November 2026 that using the sprites
-  in this game is fine, also when an AI coding assistant helps to build the game. Keep that message.
-- Credit is shown in the game on the Credits screen (title menu), from `data/credits.json`.
-- Changes made: frames cut out of the free hero sheet (16 x 24 each). The Mage and the Archer are
-  recoloured: the red of the body is turned blue and green by swapping colour channels.
-
-`N` is the frame number. The numbers are the pack's own animation list (`100_Anims_Order_List_Names_and_License.txt`).
-
-| Files in `assets/sprites/` | Animation in the pack |
-|---|---|
-| `player_warrior_idle_N`, `_run_N`, `_attack_N` | 92 weapon idle sword with shield, 98 weapon run sword with shield, 113 weapon attack sword melee |
-| `player_mage_idle_N`, `_run_N`, `_attack_N` | 94 weapon idle staff with rune, 100 weapon run staff with shield, 117 weapon staff cast |
-| `player_archer_idle_N`, `_run_N`, `_attack_N` | 96 weapon idle bow tall, 102 weapon run bow tall with bag, 104 weapon bow tall fire fast |
-| `player_<class>_hit_N`, `_die_N`, `_use_N` (all three classes) | 3 hurt normal, 4 die normal, 36 heal / use item |
-
-Not used yet from this pack: the other 100 animations of the hero, the rival sheet, the UI icons
-(8 x 8 pixels, very bright), the colour palettes.
+- Author: KingBell. Link: https://kingbell.itch.io/pixel-sprite-mixer
+- **No file from this pack is in the game.** For a short time the three classes used frames cut from its
+  free hero sheet (see the git history of branch `art/kingbell-classes`); the team preferred the
+  knight, wizard and elf from 0x72's pack, so those came back.
+- What we took from it is an idea, not pictures: we watched how its attack animations are timed
+  (wind up, strike, recover; when the slash and the hit appear) and built our own attacks in code
+  with that timing (`dungeon/weapon.py`, `combat/combat_scene.py`).
+- The author is still named on the Credits screen as a thank-you.
+- If its sprites are used again: the pack is CC BY 4.0 (credit with a link is required), its license
+  file says not to use it in AI, and the author told the project lead (Viet) in November 2026 that
+  use in this game is fine. Keep that message.
 
 ## DungeonUI by 0x72
 
@@ -115,8 +108,9 @@ NPCs (one picture each, no animation), 20 more weapons.
 |---|---|
 | `item_hunting_bow.png`, `weapon_hunting_bow.png` | `bow/bow.png` |
 | `effect_hit_0.png` to `effect_hit_4.png` | `bow/effect/hit0.png` to `hit4.png` |
+| `effect_arrow.png` | `bow/arrow.png` |
 
-Not used yet: the pack's wall sheet (a different, darker wall set) and `bow/arrow.png`.
+Not used yet: the pack's wall sheet (a different, darker wall set).
 
 ## Custom dungeon 16x16 tileset (jungle and desert) by Omniboy
 

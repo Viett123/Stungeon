@@ -6,6 +6,7 @@ from core.scene import Scene
 from core.strings import t
 from systems.player import Player, load_data
 from dungeon.actor import make_actor
+from dungeon.weapon import HeldWeapon
 from ui import move_info, slots, theme, widgets
 
 CLASS_IDS = ["warrior", "mage", "archer"]
@@ -26,6 +27,9 @@ class ClassSelectScene(Scene):
         font = game.fonts["small"]
         self.actors = {cid: make_actor(f"player_{cid}", (0, 0), p.color, big=True)
                        for cid, p in self.previews.items()}
+        classes = load_data("classes.json")["classes"]
+        self.weapons = {cid: HeldWeapon(classes[cid]["start_weapon"], settings.TILE_SCALE + 1)
+                        for cid in CLASS_IDS if classes[cid].get("start_weapon")}
         self.icons = {cid: [self.small_icon(move, font) for move in moves]
                       for cid, moves in self.preview_moves.items()}
 
@@ -76,7 +80,11 @@ class ClassSelectScene(Scene):
             theme.draw_frame(surface, rect, highlight=(i == self.selected))
             self.cards.append(rect)
             image = self.actors[cid].image()
-            surface.blit(image, image.get_rect(midbottom=(rect.centerx, rect.y + 120)))
+            feet = (rect.centerx, rect.y + 120)
+            surface.blit(image, image.get_rect(midbottom=feet))
+            weapon = self.weapons.get(cid)
+            if weapon and weapon.has_art:
+                weapon.draw(surface, feet, facing_left=False)     # the weapon this class starts with
             widgets.text(surface, f["big"], f"{i + 1}. {p.class_name}", theme.TEXT,
                          (rect.centerx, rect.y + 150), "center")
             start = self.starts[cid]
