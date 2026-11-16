@@ -1,0 +1,23 @@
+{
+  "_note": "How each move LOOKS in a fight. Only pictures: nothing here changes damage or effects (those are in combat/damage.py and combat/effects.py). Written by Claude as a simple start; change the colours and sizes freely. kind: slash (arcs across the enemy), projectile (flies from the hand to the enemy), rain (falls on the enemy from above), aura (a ring around the player, for utility moves). shape (projectile and rain only): orb or streak. count: how many arcs, or how many things fall. size: 1.0 is normal. shake: how hard the screen shakes when it lands. A move that is missing here uses the 'default' look.",
+  "default":          {"kind": "slash",      "color": [255, 255, 255], "count": 1, "size": 1.0, "shake": 6},
+  "looks": {
+    "slash":            {"kind": "slash",      "color": [255, 255, 255], "count": 1, "size": 1.0, "shake": 6},
+    "shield_bash":      {"kind": "slash",      "color": [160, 200, 255], "count": 1, "size": 1.3, "shake": 9},
+    "berserker_cleave": {"kind": "slash",      "color": [255, 90, 70],   "count": 2, "size": 1.5, "shake": 11},
+    "titans_wrath":     {"kind": "slash",      "color": [255, 210, 90],  "count": 3, "size": 1.8, "shake": 16},
+    "war_cry":          {"kind": "aura",       "color": [255, 90, 70],   "count": 1, "size": 1.0, "shake": 0},
+
+    "arcane_bolt":      {"kind": "projectile", "shape": "orb",    "color": [190, 120, 255], "count": 1, "size": 1.0, "shake": 6},
+    "frost_lance":      {"kind": "projectile", "shape": "streak", "color": [140, 230, 255], "count": 1, "size": 1.2, "shake": 8},
+    "fireball":         {"kind": "projectile", "shape": "orb",    "color": [255, 130, 40],  "count": 1, "size": 1.8, "shake": 12},
+    "meteor_storm":     {"kind": "rain",       "shape": "orb",    "color": [255, 110, 40],  "count": 5, "size": 1.4, "shake": 16},
+    "reveal":           {"kind": "aura",       "color": [255, 220, 120], "count": 1, "size": 1.0, "shake": 0},
+
+    "quick_shot":       {"kind": "projectile", "shape": "streak", "color": [235, 225, 200], "count": 1, "size": 0.8, "shake": 5},
+    "piercing_arrow":   {"kind": "projectile", "shape": "streak", "color": [200, 240, 255], "count": 1, "size": 1.2, "shake": 8},
+    "poison_arrow":     {"kind": "projectile", "shape": "streak", "color": [120, 220, 90],  "count": 1, "size": 1.2, "shake": 10},
+    "arrow_rain":       {"kind": "rain",       "shape": "streak", "color": [235, 225, 200], "count": 9, "size": 0.9, "shake": 14},
+    "evasion":          {"kind": "aura",       "color": [120, 220, 90],  "count": 1, "size": 1.0, "shake": 0}
+  }
+}

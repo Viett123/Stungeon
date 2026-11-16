@@ -160,4 +160,5 @@ These were not in the 37 answers. They were added because dungeon crawlers usual
 | Choose a dungeon | Done | German is open; English, Math and History are placeholders shown as "In development" (`data/dungeons.json`) |
 | Welcome + choose a level | Done | German A1, A2, B1. Each level has its own bank in `questions/data/`. A1 and A2 are empty, so they show "Coming soon" and cannot be started |
 | A1 and A2 questions | Not started (C) | Fill `questions_german_a1.json` / `_a2.json`; the level opens by itself once its bank has questions |
+| A look for every move | Done, basic | Each of the 15 moves has its own effect, made in code: arcs (warrior), orbs and a meteor rain (mage), streaks and an arrow rain (archer), a ring for utility moves. Change them in `data/skill_looks.json`; add a new kind in `combat/skill_looks.py`. Pictures only, no rules |
 | Sound, tutorial fight | Not started | Suggested for before the exhibit |
