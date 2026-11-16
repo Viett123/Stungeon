@@ -87,8 +87,11 @@ def test_continue_is_greyed_out_without_a_save(game):
 
 def test_new_game_saves_and_continue_brings_it_back(game):
     press(game, pygame.K_RETURN)             # New game
+    press(game, pygame.K_RETURN)             # name screen: empty name, so the default name
     assert isinstance(game.scenes.current, ClassSelectScene)
     press(game, pygame.K_2, pygame.K_RETURN)  # Mage
+    press(game, pygame.K_RETURN)             # dungeon screen: German
+    press(game, pygame.K_RETURN)             # level screen: the first playable level
     assert isinstance(game.scenes.current, DungeonScene) and save.has_save()
     seed = game.run_state.seed
 

@@ -26,6 +26,7 @@ class Player:
     max_hp: int = 0
     resource: int = 0
     max_resource: int = 0
+    name: str = ""          # what the player called their character on the new-game screen
 
     def __post_init__(self):
         stats = load_data("classes.json")["classes"][self.class_id]

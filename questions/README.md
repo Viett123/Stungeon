@@ -2,6 +2,18 @@
 
 Source material: *Das Leben B1*, Einheiten 1–3 (developer materials), plus the class Vokabeln lists.
 
+## One bank per level
+
+Each level of a dungeon has its own file here, listed in `data/dungeons.json`:
+
+| Level | File | State |
+|---|---|---|
+| A1 | `questions_german_a1.json` | Empty, to be filled |
+| A2 | `questions_german_a2.json` | Empty, to be filled |
+| B1 | `questions_german_b1.json` | 1,082 questions (below) |
+
+A new bank uses the same question format as B1, with `"level"` set to its own level. A level stays locked in the menu until its file has questions (`systems/dungeons.is_playable`). A test checks that every question's `subject` and `level` match the file it is in.
+
 ## Files
 
 | File | What it is |

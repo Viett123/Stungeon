@@ -7,8 +7,9 @@ MAX_LENGTH = 60
 
 
 class TextInput:
-    def __init__(self, rect=(0, 0, 100, 52)):
+    def __init__(self, rect=(0, 0, 100, 52), max_length=MAX_LENGTH):
         self.rect = pygame.Rect(rect)
+        self.max_length = max_length
         self.text = ""
         self.blink = 0.0   # seconds, used to make the cursor blink
 
@@ -18,7 +19,7 @@ class TextInput:
     def handle_event(self, event):
         """Add typed characters and handle Backspace. Enter is handled by the screen."""
         if event.type == pygame.TEXTINPUT:
-            self.text = (self.text + event.text)[:MAX_LENGTH]
+            self.text = (self.text + event.text)[:self.max_length]
         elif event.type == pygame.KEYDOWN and event.key == pygame.K_BACKSPACE:
             self.text = self.text[:-1]
 

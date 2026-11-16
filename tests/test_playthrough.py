@@ -95,8 +95,11 @@ def play_combat_turn(game, scene):
 @pytest.mark.parametrize("class_index", [0, 1, 2])
 def test_bot_plays_a_whole_run(class_index):
     game = Game()
-    step(game, key(pygame.K_RETURN))                      # title -> class select
+    step(game, key(pygame.K_RETURN))                      # title -> name screen
+    step(game, key(pygame.K_RETURN))                      # the default name -> class select
     step(game, key(NUMBERS[class_index]), key(pygame.K_RETURN))
+    step(game, key(pygame.K_RETURN))                      # dungeon: German
+    step(game, key(pygame.K_RETURN))                      # level: the first playable one (B1)
     answered = 0
     shops = 0
 

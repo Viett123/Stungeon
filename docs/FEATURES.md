@@ -155,4 +155,9 @@ These were not in the 37 answers. They were added because dungeon crawlers usual
 | Attack animations with the equipped weapon | Done | Knight, wizard and elf keep 0x72's pictures. Attacks are made in code, timed like KingBell's: lean back, strike, recover. Swords and axes swing with a white slash, bows shoot an arrow, staffs fire a bolt; the fighter lunges, is knocked back when hurt, hops when using an item and tips over when defeated |
 | Credits screen | Done | Title menu; list in `data/credits.json` |
 | Gold panel frames | Done | From 0x72's DungeonUI |
+| New title menu | Done | A torch-lit dungeon room with embers, the name in gold, the three heroes beside the menu |
+| Name your hero | Done | Shown in the HUD; letters the font cannot draw become the nearest plain letter (Việt -> Viet) |
+| Choose a dungeon | Done | German is open; English, Math and History are placeholders shown as "In development" (`data/dungeons.json`) |
+| Welcome + choose a level | Done | German A1, A2, B1. Each level has its own bank in `questions/data/`. A1 and A2 are empty, so they show "Coming soon" and cannot be started |
+| A1 and A2 questions | Not started (C) | Fill `questions_german_a1.json` / `_a2.json`; the level opens by itself once its bank has questions |
 | Sound, tutorial fight | Not started | Suggested for before the exhibit |

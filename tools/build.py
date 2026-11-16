@@ -16,7 +16,7 @@ ROOT = Path(__file__).resolve().parent.parent
 # (file or folder in the repo, folder inside the build). Keep in step with where the code looks.
 DATA = [
     ("data", "data"),
-    ("questions/data/questions_german_b1.json", "questions/data"),
+    ("questions/data", "questions/data"),       # every level's question bank (A1, A2, B1, ...)
     ("core/strings_en.json", "core"),
     ("assets", "assets"),
 ]

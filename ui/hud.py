@@ -22,12 +22,43 @@ def _trails_for(player):
     return _trails[id(player)]
 
 
+def player_label(player):
+    """"Mia  Mage  Lv 2", or just "Mage  Lv 2" for a hero without a name (old saves, the demo)."""
+    if player.name:
+        return t("player_label_named", name=player.name, cls=player.class_name, level=player.level)
+    return t("player_label", cls=player.class_name, level=player.level)
+
+
+def fit(font, string, width):
+    """The string, shortened with "..." at the end if it is wider than `width` pixels."""
+    if font.size(string)[0] <= width:
+        return string
+    while string and font.size(string + "...")[0] > width:
+        string = string[:-1]
+    return string.rstrip() + "..."
+
+
+def name_line(fonts, player, width):
+    """(left text, right text) for the top line of the player panel.
+
+    With a name: the name on the left, "Warrior  Lv 1" small on the right, and the
+    name is shortened if both do not fit. Without a name: "Warrior  Lv 1" on the left.
+    """
+    level_text = t("player_label", cls=player.class_name, level=player.level)
+    if not player.name:
+        return level_text, ""
+    room = width - fonts["small"].size(level_text)[0] - 12
+    return fit(fonts["normal"], player.name, room), level_text
+
+
 def draw_player_panel(surface, fonts, player, rect=PLAYER_PANEL):
-    """Class and level, a red HP bar, a blue resource bar, then XP and gold."""
+    """Name, class and level, a red HP bar, a blue resource bar, then XP and gold."""
     inside = theme.draw_frame(surface, rect)
     small = fonts["small"]
-    widgets.text(surface, fonts["normal"], t("player_label", cls=player.class_name, level=player.level),
-                 theme.GOLD, inside.topleft)
+    left, right = name_line(fonts, player, inside.width)
+    widgets.text(surface, fonts["normal"], left, theme.GOLD, inside.topleft)
+    if right:
+        widgets.text(surface, small, right, theme.TEXT_DIM, (inside.right, inside.y + 3), "topright")
     hp_trail, resource_trail = _trails_for(player)
     widgets.bar(surface, (inside.x, inside.y + 28, inside.width, 22), player.hp, player.max_hp,
                 theme.HP, theme.HP_BACK, t("hp_label", hp=player.hp, max_hp=player.max_hp), small,
