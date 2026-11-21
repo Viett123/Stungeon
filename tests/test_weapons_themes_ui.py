@@ -41,12 +41,20 @@ def test_every_class_starts_with_a_weapon_that_has_art(screen):
     for class_id, data in load_data("classes.json")["classes"].items():
         player = new_run(class_id, seed=1).player
         assert player.equipped["weapon"] == data["start_weapon"]
-        assert held_weapon(player, 3) is not None, class_id
+        assert HeldWeapon(data["start_weapon"], 3).has_art, class_id
+
+
+def test_a_class_with_its_own_attack_pictures_gets_no_extra_weapon_picture(screen, tmp_path, monkeypatch):
+    player = new_run("warrior", seed=1).player
+    assert held_weapon(player, 3) is not None                   # our classes: the weapon is drawn in the hand
+    # If someone draws attack pictures for a class, those show the weapon, so no second one is drawn.
+    monkeypatch.setattr(sprites, "has_frames", lambda name, action: True)
+    assert held_weapon(player, 3) is None
 
 
 def test_no_weapon_or_no_art_means_nothing_is_drawn(screen, tmp_path, monkeypatch):
     player = new_run("warrior", seed=1).player
-    monkeypatch.setattr(assets, "SPRITE_DIR", tmp_path)     # an empty folder: no weapon art
+    monkeypatch.setattr(assets, "SPRITE_DIR", tmp_path)     # an empty folder: no art at all
     assert held_weapon(player, 3) is None
     player.equipped.clear()
     assert held_weapon(player, 3) is None
@@ -67,7 +75,8 @@ def test_swing_goes_through_different_pictures_and_mirrors_for_the_other_side(sc
     assert weapon.thing(100, 200, facing_left=True)[0] < 100
 
 
-def test_weapon_follows_what_is_equipped_in_the_dungeon(screen):
+def test_weapon_follows_what_is_equipped_in_the_dungeon(screen, monkeypatch):
+    monkeypatch.setattr(sprites, "has_frames", lambda name, action: False)   # as if the class had no attack art
     game = Game()
     flow.start_new_run(game, "mage")
     scene = game.scenes.current
@@ -87,7 +96,12 @@ def test_a_hit_starts_the_swing_and_shows_a_damage_number(screen):
     assert isinstance(fight, CombatScene) and fight.weapon is not None
     fight.pick_move(0)
     fight.submit(fight.battle.question["answer"])            # a correct answer
-    assert fight.attack > 0 and len(fight.floating) == 1
+    assert fight.attack > 0 and fight.pending_damage > 0 and not fight.floating   # the hit is on its way
+    assert fight.player_offset()[0] >= 0                     # winding up: leaning back, away from the enemy
+    fight.update(0.3)
+    assert fight.player_offset()[0] < 0                      # striking: lunging towards the enemy
+    fight.update(0.1)
+    assert fight.pending_damage == 0 and len(fight.floating) == 1               # the hit has landed
     for _ in range(90):                                      # 1.5 seconds
         fight.update(1 / 60)
         fight.draw(game.screen)
@@ -148,3 +162,26 @@ def test_floating_text_disappears_after_a_moment(screen, clock):
     text.draw(screen)
     clock["now"] += anim.FloatingText.SECONDS + 0.1
     assert not text.alive()
+
+
+def test_bows_and_staffs_send_a_projectile_and_swords_do_not(screen):
+    sword, bow, staff = HeldWeapon("old_sword", 3), HeldWeapon("hunting_bow", 3), HeldWeapon("apprentice_staff", 3)
+    assert (sword.style, bow.style, staff.style) == ("melee", "bow", "staff")
+    assert sword.projectile is None and bow.projectile is not None and staff.projectile is not None
+    for weapon in (sword, bow, staff):
+        for swing in (None, 0.0, 0.4, 0.7, 1.0):
+            weapon.draw(screen, (300, 300), facing_left=True, swing=swing)
+            weapon.draw_projectile(screen, (300, 280), (100, 280), True, swing)
+
+
+def test_pressing_enter_early_still_shows_the_hit(screen):
+    game = Game()
+    flow.start_new_run(game, "archer")
+    dungeon = game.scenes.current
+    dungeon.start_fight(next(e for e in dungeon.floor.enemies if not e["guard"]))
+    fight = game.scenes.current
+    fight.pick_move(0)
+    fight.submit(fight.battle.question["answer"])
+    assert fight.pending_damage > 0
+    fight.handle_event(pygame.event.Event(pygame.KEYDOWN, key=pygame.K_RETURN, mod=0, unicode=""))
+    assert fight.pending_damage == 0 and fight.attack == 0 and len(fight.floating) >= 1

@@ -135,7 +135,7 @@ Kept from the design chat so nothing is lost. None of these is needed for the ex
 - **Modes:** Roguelike (permadeath), review room, daily challenge.
 - **Rewards:** achievements, titles with buffs, cosmetics, Mythical items, leaderboards.
 - **Learning:** question variation, My Materials uploads, other subjects.
-- **Look:** Vietnamese and German UI, attack animations drawn by us, armour art (none of the three packs has any).
+- **Look:** Vietnamese and German UI, armour art (none of the packs has any), move icons, hand-drawn attack pictures for the classes.
 
 ## 4. Added after the design chat (11 Nov 2026)
 
@@ -152,4 +152,13 @@ These were not in the 37 answers. They were added because dungeon crawlers usual
 | Spike traps | Done, placeholder damage (D) | Only in trap rooms; the middle row and column are safe |
 | Choice between floors | Done, placeholder content (D) | Three of six choices; each has a risk or a reward |
 | Random theme per run | Done | Each floor lists themes in `data/enemies.json`; the run's seed picks one |
+| Attack animations with the equipped weapon | Done | Knight, wizard and elf keep 0x72's pictures. Attacks are made in code, timed like KingBell's: lean back, strike, recover. Swords and axes swing with a white slash, bows shoot an arrow, staffs fire a bolt; the fighter lunges, is knocked back when hurt, hops when using an item and tips over when defeated |
+| Credits screen | Done | Title menu; list in `data/credits.json` |
+| Gold panel frames | Done | From 0x72's DungeonUI |
+| New title menu | Done | A torch-lit dungeon room with embers, the name in gold, the three heroes beside the menu |
+| Name your hero | Done | Shown in the HUD; letters the font cannot draw become the nearest plain letter (Việt -> Viet) |
+| Choose a dungeon | Done | German is open; English, Math and History are placeholders shown as "In development" (`data/dungeons.json`) |
+| Welcome + choose a level | Done | German A1, A2, B1. Each level has its own bank in `questions/data/`. A1 and A2 are empty, so they show "Coming soon" and cannot be started |
+| A1 and A2 questions | Not started (C) | Fill `questions_german_a1.json` / `_a2.json`; the level opens by itself once its bank has questions |
+| A look for every move | Done, basic | Each of the 15 moves has its own effect, made in code: arcs (warrior), orbs and a meteor rain (mage), streaks and an arrow rain (archer), a ring for utility moves. Change them in `data/skill_looks.json`; add a new kind in `combat/skill_looks.py`. Pictures only, no rules |
 | Sound, tutorial fight | Not started | Suggested for before the exhibit |

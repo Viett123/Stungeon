@@ -30,7 +30,6 @@ is changed: it is the pack's plain floor with the pack's skull drawn on top.
 | `player_archer_idle_N`, `_run_N`, `_hit_N` | `elf_m_...` (same three animations) |
 | `enemy_vocab_slime_idle_N` | `swampy_anim_fN` |
 | `enemy_article_goblin_idle_N`, `_run_N` | `goblin_idle_anim_fN`, `goblin_run_anim_fN` |
-| `enemy_plural_bat_idle_N`, `_run_N` | `imp_idle_anim_fN`, `imp_run_anim_fN` |
 | `enemy_grammar_ghost_idle_N` | `necromancer_anim_fN` |
 | `enemy_boss_floor_1_idle_N`, `_run_N` | `doc_idle_anim_fN`, `doc_run_anim_fN` |
 | `enemy_boss_floor_2_idle_N`, `_run_N` | `orc_shaman_idle_anim_fN`, `orc_shaman_run_anim_fN` |
@@ -43,10 +42,60 @@ is changed: it is the pack's plain floor with the pack's skull drawn on top.
 | `item_tonic.png` | `flask_blue.png` |
 | `item_old_sword.png`, `weapon_old_sword.png` | `weapon_rusty_sword.png` |
 | `item_apprentice_staff.png`, `weapon_apprentice_staff.png` | `weapon_red_magic_staff.png` |
+| `item_katana`, `item_mace`, `item_spear`, `item_cleaver`, `item_golden_sword`, `item_lavish_sword`, `item_duel_sword` (and the same with `weapon_`) | `weapon_katana`, `weapon_mace`, `weapon_spear`, `weapon_cleaver`, `weapon_golden_sword`, `weapon_lavish_sword`, `weapon_duel_sword` |
+| `item_short_bow.png`, `weapon_short_bow.png` | `weapon_bow_2.png` |
 | `item_knight_sword.png`, `weapon_knight_sword.png` | `weapon_knight_sword.png` |
 | `item_war_axe.png`, `weapon_war_axe.png` | `weapon_axe.png` |
 | `item_oak_staff.png`, `weapon_oak_staff.png` | `weapon_green_magic_staff.png` |
 | `item_big_potion.png` | `flask_big_red.png` |
+
+## Pixel Art Sprite Mixer by KingBell (reference only)
+
+- Author: KingBell. Link: https://kingbell.itch.io/pixel-sprite-mixer
+- **No file from this pack is in the game.** For a short time the three classes used frames cut from its
+  free hero sheet (see the git history of branch `art/kingbell-classes`); the team preferred the
+  knight, wizard and elf from 0x72's pack, so those came back.
+- What we took from it is an idea, not pictures: we watched how its attack animations are timed
+  (wind up, strike, recover; when the slash and the hit appear) and built our own attacks in code
+  with that timing (`dungeon/weapon.py`, `combat/combat_scene.py`).
+- The author is still named on the Credits screen as a thank-you.
+- If its sprites are used again: the pack is CC BY 4.0 (credit with a link is required), its license
+  file says not to use it in AI, and the author told the project lead (Viet) in November 2026 that
+  use in this game is fine. Keep that message.
+
+## DungeonUI by 0x72
+
+- Author: 0x72 (Robert)
+- License: CC0 (stated in the pack's description)
+- Link: https://0x72.itch.io/dungeonui
+- License checked on 14 Nov 2026.
+
+| File in `assets/sprites/` | Part of `dungeonui.v1.png` |
+|---|---|
+| `ui_frame.png` | The small square frame under "Parts" (24 x 24 pixels, at x 24, y 72) |
+
+Not used yet: the other frames, hearts, coloured buttons, small icons and the font.
+
+## 16x16 Dungeon Tileset (v5) by 0x72
+
+- Author: 0x72 (Robert). This is the older sister pack of DungeonTileset II.
+- License: CC0 1.0 Universal (the page says it can be used for anything, credit not required)
+- Link: https://0x72.itch.io/16x16-dungeon-tileset
+- License checked on 14 Nov 2026.
+
+| Files in `assets/sprites/` | Name in the pack's `items/` folder |
+|---|---|
+| `torch_0.png` to `torch_7.png` | `torch_1.png` to `torch_8.png` |
+| `chest_golden_0.png`, `chest_golden_1.png` | `chest_golden_closed.png`, `chest_golden_open_full.png` |
+| `npc_merchant.png` | `npc_merchant.png` |
+| `enemy_plural_bat.png` | `monster_bat.png` |
+| `item_ruby_sword.png`, `weapon_ruby_sword.png` | `weapon_sword_ruby.png` |
+| `item_golden_dagger.png`, `weapon_golden_dagger.png` | `weapon_dagger_golden.png` |
+| `item_emerald_sword.png`, `weapon_emerald_sword.png` | `weapon_sword_emerald.png` |
+| `item_sledgehammer.png`, `weapon_sledgehammer.png` | `weapon_sledgehammer.png` |
+
+Not used yet from this pack: doors, columns, boxes, gargoyle fountains, about 40 more monsters and
+NPCs (one picture each, no animation), 20 more weapons.
 
 ## 16x16 Dungeon Walls Reconfig by aekae13
 
@@ -59,8 +108,9 @@ is changed: it is the pack's plain floor with the pack's skull drawn on top.
 |---|---|
 | `item_hunting_bow.png`, `weapon_hunting_bow.png` | `bow/bow.png` |
 | `effect_hit_0.png` to `effect_hit_4.png` | `bow/effect/hit0.png` to `hit4.png` |
+| `effect_arrow.png` | `bow/arrow.png` |
 
-Not used yet: the pack's wall sheet (a different, darker wall set) and `bow/arrow.png`.
+Not used yet: the pack's wall sheet (a different, darker wall set).
 
 ## Custom dungeon 16x16 tileset (jungle and desert) by Omniboy
 
@@ -83,5 +133,5 @@ Not used yet from these sheets: fountains, totems, the wall monster.
 
 - All armour and accessory items (hood, vest, trousers, boots, ring, charm): none of the packs has such art.
 - All move icons.
-- All menu frames, bars and slots (`ui/theme.py`).
+- Bars, slots and buttons (`ui/theme.py`). The panel borders now come from `ui_frame.png`.
 - The font is pygame's built-in font.

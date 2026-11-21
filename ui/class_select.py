@@ -1,4 +1,4 @@
-"""Choose Warrior, Mage or Archer, then start a new run (owner: B)."""
+"""Choose Warrior, Mage or Archer; next comes the dungeon screen (owner: B)."""
 import pygame
 
 from core import flow, settings
@@ -6,7 +6,9 @@ from core.scene import Scene
 from core.strings import t
 from systems.player import Player, load_data
 from dungeon.actor import make_actor
+from dungeon.weapon import HeldWeapon
 from ui import move_info, slots, theme, widgets
+from ui.backdrop import Backdrop
 
 CLASS_IDS = ["warrior", "mage", "archer"]
 NUMBER_KEYS = [pygame.K_1, pygame.K_2, pygame.K_3]
@@ -22,10 +24,15 @@ class ClassSelectScene(Scene):
         self.preview_moves = {cid: p.unlocked_moves() for cid, p in self.previews.items()}
         self.starts = {cid: Player(cid) for cid in CLASS_IDS}   # level-1 stats
         self.cards = []   # rects, filled in by draw(), used for mouse clicks
+        self.backdrop = Backdrop()
+        self.selected = CLASS_IDS.index(game.new_game["class_id"]) if game.new_game.get("class_id") in CLASS_IDS else 0
         # Pictures are made once here, never inside draw().
         font = game.fonts["small"]
         self.actors = {cid: make_actor(f"player_{cid}", (0, 0), p.color, big=True)
                        for cid, p in self.previews.items()}
+        classes = load_data("classes.json")["classes"]
+        self.weapons = {cid: HeldWeapon(classes[cid]["start_weapon"], settings.TILE_SCALE + 1)
+                        for cid in CLASS_IDS if classes[cid].get("start_weapon")}
         self.icons = {cid: [self.small_icon(move, font) for move in moves]
                       for cid, moves in self.preview_moves.items()}
 
@@ -36,7 +43,7 @@ class ClassSelectScene(Scene):
         return pygame.transform.scale(icon, (32, 32))
 
     def start(self):
-        flow.start_new_run(self.game, CLASS_IDS[self.selected])
+        flow.class_chosen(self.game, CLASS_IDS[self.selected])
 
     def handle_event(self, event):
         if event.type == pygame.KEYDOWN:
@@ -49,7 +56,7 @@ class ClassSelectScene(Scene):
             elif event.key in (pygame.K_RETURN, pygame.K_KP_ENTER):
                 self.start()
             elif event.key == pygame.K_ESCAPE:
-                self.game.go_to_title()
+                flow.show_name_screen(self.game)     # back one screen, keeping the name
         elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
             for i, rect in enumerate(self.cards):
                 if rect.collidepoint(event.pos):
@@ -58,12 +65,15 @@ class ClassSelectScene(Scene):
                     self.selected = i
 
     def update(self, dt):
+        self.backdrop.update(dt)
         for actor in self.actors.values():
             actor.update(dt)     # keeps the idle animation playing
 
     def draw(self, surface):
         f = self.game.fonts
         cx = settings.SCREEN_W // 2
+        self.backdrop.draw(surface)
+        widgets.text(surface, f["big"], t("choose_class"), theme.OUTLINE, (cx + 3, 73), "center")
         widgets.text(surface, f["big"], t("choose_class"), theme.GOLD, (cx, 70), "center")
         widgets.text(surface, f["small"], t("class_hint"), theme.TEXT_DIM, (cx, 680), "center")
 
@@ -76,7 +86,11 @@ class ClassSelectScene(Scene):
             theme.draw_frame(surface, rect, highlight=(i == self.selected))
             self.cards.append(rect)
             image = self.actors[cid].image()
-            surface.blit(image, image.get_rect(midbottom=(rect.centerx, rect.y + 120)))
+            feet = (rect.centerx, rect.y + 120)
+            surface.blit(image, image.get_rect(midbottom=feet))
+            weapon = self.weapons.get(cid)
+            if weapon and weapon.has_art:
+                weapon.draw(surface, feet, facing_left=False)     # the weapon this class starts with
             widgets.text(surface, f["big"], f"{i + 1}. {p.class_name}", theme.TEXT,
                          (rect.centerx, rect.y + 150), "center")
             start = self.starts[cid]

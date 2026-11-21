@@ -25,3 +25,11 @@ Read this first in any new chat or Claude Code session about Stungeon.
 - Equipment slots: weapon, head, body, legs, shoes and two accessories.
 - Art: three CC0 packs, listed in assets/CREDITS.md. Floors use the themes stone, jungle and desert.
 - Running the game at the exhibit: docs/EXHIBIT.md.
+
+## Updates (16 Nov 2026)
+- New game is now: name -> class -> dungeon -> welcome + level -> floor 1. Esc goes back one screen. The order is in core/flow.py.
+- Dungeons and levels are listed in data/dungeons.json. Only the German Dungeon is open; the others are placeholders.
+- One question bank per level: questions/data/questions_german_a1.json, _a2.json, _b1.json. A1 and A2 are empty for now and locked in the menu. The rule for "can this level be played" is systems/dungeons.is_playable().
+- The run remembers the hero's name, the subject and the level. SAVE_VERSION is 4, so saves from older builds no longer load.
+- The demo (F1) skips the new screens and plays German B1.
+- Every move has its own simple look in a fight (combat/skill_looks.py): arcs, flying orbs or streaks, falling meteors or arrows, or a ring for utility moves. Colours, sizes, counts and screen shake are in data/skill_looks.json. They are pictures only: a green Poison Arrow does not poison anything until B writes that rule. A basic start, meant to be improved by the team.

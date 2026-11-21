@@ -84,6 +84,7 @@ class DungeonScene(Scene):
         self.minimap = Minimap(self.floor, (settings.SCREEN_W - 12, 74))
         self.look_around()
         self.chest_frames = sprites.chest_frames()
+        self.golden_frames = sprites.chest_frames(golden=True)
         for chest in self.floor.chests:
             chest["time"] = 0.0     # seconds since it was opened, for the opening animation
 
@@ -186,7 +187,8 @@ class DungeonScene(Scene):
         gold = roll_chest_gold(self.run.rng)
         player.gold += gold
         self.say(t("chest_gold", gold=gold))
-        self.give_items(roll_loot("chest", self.run.rng))
+        # TODO(D): both chest tables are placeholders in data/loot_tables.json.
+        self.give_items(roll_loot("chest_golden" if chest["golden"] else "chest", self.run.rng))
 
     def give_items(self, item_ids):
         for item_id in item_ids:
@@ -285,10 +287,11 @@ class DungeonScene(Scene):
         self.update_enemies(dt)
 
     def chest_image(self, chest):
+        frames = self.golden_frames if chest["golden"] else self.chest_frames
         if not chest["opened"]:
-            return self.chest_frames[0]
-        frame = min(int(chest["time"] / CHEST_FRAME_SECONDS) + 1, len(self.chest_frames) - 1)
-        return self.chest_frames[frame]
+            return frames[0]
+        frame = min(int(chest["time"] / CHEST_FRAME_SECONDS) + 1, len(frames) - 1)
+        return frames[frame]
 
     def draw(self, surface):
         things = []

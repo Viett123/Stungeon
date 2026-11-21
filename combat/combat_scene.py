@@ -6,15 +6,18 @@ States:
   "question" - answer the question (multiple choice, tick-all, or typed)
   "message"  - show feedback; Enter runs the next step (self.next_step)
 """
+import math
+
 import pygame
 
 from combat import effects
 from combat.battle import Battle
+from combat.skill_looks import AURA_SECONDS, SkillLook
 from core import assets, settings
 from core.scene import Scene
 from core.strings import t
 from dungeon.actor import make_actor
-from dungeon.weapon import held_weapon
+from dungeon.weapon import IMPACT, STRIKE_START, held_weapon
 from questions.engine import answer_text
 from systems import inventory, items
 from systems.loot import roll_loot
@@ -33,7 +36,14 @@ PLAYER_ART = pygame.Rect(938, 12, 202, 212)     # the player's picture, right of
 HURT_SECONDS = 0.6
 HIT_PAUSE = 0.07            # seconds everything freezes when a hit lands
 FLASH_SECONDS = 0.12        # seconds the enemy is drawn white after a hit
-ATTACK_SECONDS = 0.35      # how long the weapon swing and the hit sparks last
+USE_SECONDS = 0.6           # how long the use-an-item animation plays
+DIE_SECONDS = 0.7           # how long the defeat animation takes (its last picture then stays)
+SPARK_SECONDS = 0.3         # how long the hit sparks stay on the enemy
+WIND_UP_PIXELS = 6          # how far the player leans back before striking
+LUNGE_PIXELS = 18           # how far a melee fighter jumps towards the enemy
+KNOCKBACK_PIXELS = 10       # how far the player is pushed back when hurt
+HOP_PIXELS = 10             # how high the player hops when using an item
+ATTACK_SECONDS = 0.6      # how long the weapon swing and the hit sparks last
 FIGHTER_SCALE = settings.TILE_SCALE + 1   # fighters are drawn 4 times the art size, like bosses
 CONTENT = pygame.Rect(140, 236, 1000, 384)     # the big panel: move details, question or feedback
 INSIDE = theme.inner(CONTENT)
@@ -65,6 +75,14 @@ class CombatScene(Scene):
         self.attack = 0.0       # seconds left of the player's attack (weapon swing + sparks on the enemy)
         self.sparks = assets.load_frames("effect_hit", FIGHTER_SCALE)
         self.floating = []      # damage numbers that rise and fade
+        self.using = 0.0        # seconds left of the "use an item" animation
+        self.pending_damage = 0 # damage of an attack that is on its way and has not landed yet
+        self.spark = 0.0        # seconds left of the hit sparks on the enemy
+        self.enemy_center = ENEMY_PANEL.center     # where arrows and bolts fly to (set when the enemy is drawn)
+        self.player_hand = PLAYER_ART.center       # where the player's skills start (set when the player is drawn)
+        self.player_center = PLAYER_ART.center     # the middle of the player's picture, for rings
+        self.skill = None       # the look of the move being used (combat/skill_looks.py), or None
+        self.dying = None       # seconds since the player was defeated (None while alive)
         # "Juice": small effects that make a hit feel like a hit.
         self.shake = Shake()    # the whole screen shakes for a moment
         self.freeze = 0.0       # seconds everything stands still right after a hit
@@ -131,6 +149,8 @@ class CombatScene(Scene):
             return
         result = self.battle.choose_move(move["id"])
         if result.get("utility"):
+            # Only a picture: what the move really does is decided in combat/effects.py.
+            self.skill = SkillLook(move["id"], self.player_center, self.player_center, AURA_SECONDS)
             # TODO(B): once combat/effects.py has real effects, show what the move did here.
             self.show_message([(t("utility_used", move=move["name"]), theme.GOLD)], self.enemy_turn)
         else:
@@ -157,6 +177,7 @@ class CombatScene(Scene):
         if not inventory.use_item(self.player, item["id"]):
             self.notice = t("item_no_effect", item=item["name"])     # e.g. a potion at full HP: keep it
             return
+        self.using = USE_SECONDS
         lines = [(t("item_used", item=item["name"]), theme.GOLD)]
         # TODO(B): whether an item costs the turn is decided in combat/effects.py.
         self.show_message(lines, self.enemy_turn if effects.item_costs_turn(self.battle) else self.back_to_choose)
@@ -217,6 +238,7 @@ class CombatScene(Scene):
             y += CHOICE_HEIGHT + CHOICE_GAP
 
     def submit(self, given):
+        move_id = self.battle.move["id"]      # read before answering: the battle forgets the move after the last answer
         out = self.battle.answer(given, self.elapsed)
         question = out["question"]
         lines = [(t("correct"), theme.GOOD) if out["correct"] else (t("wrong"), theme.BAD)]
@@ -229,12 +251,59 @@ class CombatScene(Scene):
             return
         lines.append((t("damage_dealt", damage=out["damage"]) if out["damage"] else t("miss"), theme.GOLD))
         if out["damage"]:
+            # Start the attack animation. The hit itself lands a moment later (see land_hit).
             self.attack = ATTACK_SECONDS
-            self.shake.start(strength=6, seconds=0.25)
-            self.freeze = HIT_PAUSE
-            self.flash = FLASH_SECONDS
-            self.float_text(f"-{out['damage']}", theme.GOLD, ENEMY_PANEL)
+            self.pending_damage = out["damage"]
+            # The move's own look (arcs, orb, meteors...) plays with the same timing as the swing.
+            self.skill = SkillLook(move_id, self.player_hand, self.enemy_center, ATTACK_SECONDS)
         self.show_message(lines, self.victory if self.battle.won else self.enemy_turn)
+
+    def attack_progress(self):
+        """How far the player's attack has gone: 0.0 at its start, 1.0 when it is over."""
+        return 1 - self.attack / ATTACK_SECONDS
+
+    def land_hit(self):
+        """The moment the weapon, arrow or bolt reaches the enemy: shake, flash, sparks, damage number."""
+        self.float_text(f"-{self.pending_damage}", theme.GOLD, ENEMY_PANEL)
+        self.pending_damage = 0
+        strength = self.skill.look["shake"] if self.skill else 6     # stronger moves shake the screen harder
+        self.shake.start(strength=strength, seconds=0.25)
+        self.freeze = HIT_PAUSE
+        self.flash = FLASH_SECONDS
+        self.spark = SPARK_SECONDS
+
+    def finish_attack(self):
+        """The player pressed Enter before the attack was over: show its hit now and end it."""
+        if self.pending_damage:
+            self.land_hit()
+            self.freeze = 0.0
+        self.attack = 0.0
+        if self.skill:
+            self.skill.finish()
+
+    def player_offset(self):
+        """How far the player's picture is moved from its spot, as (x, y). The enemy is on the LEFT.
+
+        This is what makes the standing picture look alive: it leans back and lunges for
+        an attack, hops when using an item, and is knocked back when hurt.
+        """
+        if self.dying is not None:
+            return 0, 0
+        if self.attack > 0:
+            lunge = LUNGE_PIXELS if (self.weapon is None or self.weapon.style == "melee") else 0
+            progress = self.attack_progress()
+            if progress < STRIKE_START:                          # wind up: lean back
+                return round(WIND_UP_PIXELS * progress / STRIKE_START), 0
+            if progress < IMPACT:                                # strike: forward
+                forward = (progress - STRIKE_START) / (IMPACT - STRIKE_START)
+                return round(WIND_UP_PIXELS - (WIND_UP_PIXELS + lunge) * forward), 0
+            back = (progress - IMPACT) / (1 - IMPACT)            # recover: return to the spot
+            return round(-lunge * (1 - back)), 0
+        if self.using > 0:
+            return 0, -round(HOP_PIXELS * math.sin(math.pi * (1 - self.using / USE_SECONDS)))
+        if self.hurt > 0:
+            return round(KNOCKBACK_PIXELS * self.hurt / HURT_SECONDS), 0
+        return 0, 0
 
     def enemy_turn(self):
         out = self.battle.enemy_turn()
@@ -254,6 +323,7 @@ class CombatScene(Scene):
                           lambda: self.finish(won=True))
 
     def defeat(self):
+        self.dying = 0.0
         self.show_message([(t("defeat_fight", enemy=self.enemy_name), theme.BAD)],
                           lambda: self.finish(won=False))
 
@@ -266,8 +336,10 @@ class CombatScene(Scene):
         elif self.state == "question":
             self.input_question(event)
         elif event.type == pygame.KEYDOWN and event.key in ENTER_KEYS + (pygame.K_SPACE,):
+            self.finish_attack()
             self.next_step()
         elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            self.finish_attack()
             self.next_step()
 
     def input_choose(self, event):
@@ -336,6 +408,16 @@ class CombatScene(Scene):
         self.player_actor.update(dt)
         self.hurt = max(0.0, self.hurt - dt)
         self.attack = max(0.0, self.attack - dt)
+        self.spark = max(0.0, self.spark - dt)
+        if self.pending_damage and self.attack_progress() >= IMPACT:
+            self.land_hit()
+        self.using = max(0.0, self.using - dt)
+        if self.skill:
+            self.skill.update(dt)
+            if not self.skill.alive():
+                self.skill = None
+        if self.dying is not None:
+            self.dying += dt
         self.floating = [text for text in self.floating if text.alive()]
         if self.state == "question":
             self.elapsed += dt
@@ -373,6 +455,8 @@ class CombatScene(Scene):
         choosing = self.state == "choose"
         self.hotbar.draw(surface, fonts, pygame.mouse.get_pos(),
                          selected=self.selected if choosing else None, active=choosing)
+        if self.skill:
+            self.skill.draw(surface)
         for text in self.floating:
             text.draw(surface)
 
@@ -387,11 +471,23 @@ class CombatScene(Scene):
         image = self.enemy_actor.image()
         rect = image.get_rect(midbottom=(inside.centerx, inside.bottom))
         surface.blit(self.white_copy(image) if self.flash > 0 else image, rect)
-        if self.attack > 0 and self.sparks:
-            # Hit sparks over the enemy while the player's attack lands.
-            progress = 1 - self.attack / ATTACK_SECONDS
+        self.enemy_center = rect.center
+        if self.spark > 0 and self.sparks:
+            # Hit sparks over the enemy right after the player's attack landed.
+            progress = 1 - self.spark / SPARK_SECONDS
             spark = self.sparks[min(int(progress * len(self.sparks)), len(self.sparks) - 1)]
             surface.blit(spark, spark.get_rect(center=rect.center))
+
+    def player_image(self):
+        """Which picture of the player to show: dying, attacking, using an item, hurt, or just standing."""
+        actor = self.player_actor
+        if self.dying is not None:
+            return actor.image_at("die", self.dying / DIE_SECONDS)
+        if self.attack > 0:
+            return actor.image_at("attack", self.attack_progress())   # own attack pictures if the art has them
+        if self.using > 0:
+            return actor.image_at("use", 1 - self.using / USE_SECONDS)
+        return actor.image("hit" if self.hurt > 0 else None)
 
     def white_copy(self, image):
         """The same picture with every pixel white: the enemy flashes like this when it is hit."""
@@ -403,12 +499,21 @@ class CombatScene(Scene):
     def draw_player(self, surface):
         """The player's picture in its own small panel; it shows the "hit" frame right after being hurt."""
         inside = theme.draw_frame(surface, PLAYER_ART)
-        image = self.player_actor.image("hit" if self.hurt > 0 else None)
-        feet = (inside.centerx + 16, inside.bottom)
-        surface.blit(image, image.get_rect(midbottom=feet))
-        if self.weapon:
-            swing = 1 - self.attack / ATTACK_SECONDS if self.attack > 0 else None
+        image = self.player_image()
+        offset_x, offset_y = self.player_offset()
+        feet = (inside.centerx + 16 + offset_x, inside.bottom + offset_y)
+        rect = image.get_rect(midbottom=feet)
+        surface.blit(image, rect)
+        self.player_center = rect.center
+        self.player_hand = rect.midleft          # used when no weapon is drawn
+        if self.weapon and self.dying is None:
+            swing = self.attack_progress() if self.attack > 0 else None
             self.weapon.draw(surface, feet, facing_left=True, swing=swing)
+            hand = self.weapon.hand(*feet, facing_left=True)
+            self.player_hand = hand
+            # A skill that flies or falls brings its own picture; then the weapon's arrow or bolt is not drawn too.
+            if not (self.skill and self.skill.kind in ("projectile", "rain")):
+                self.weapon.draw_projectile(surface, hand, self.enemy_center, True, swing)
 
     def hint(self, surface, fonts, string, color=theme.TEXT_DIM):
         widgets.text(surface, fonts["small"], string, color, INSIDE.bottomleft, "bottomleft")

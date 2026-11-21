@@ -25,7 +25,8 @@ class Game:
             "normal": pygame.font.Font(None, 32),
             "small": pygame.font.Font(None, 26),
         }
-        self.run_state = None   # the current playthrough (core/run.py), set on the class select screen
+        self.run_state = None   # the current playthrough (core/run.py), set when floor 1 starts
+        self.new_game = {}      # name, class, dungeon picked so far on the new-game screens (core/flow.py)
 
         settings.LOG_DIR.mkdir(exist_ok=True)
         logging.basicConfig(filename=settings.LOG_DIR / "error.log", level=logging.ERROR,

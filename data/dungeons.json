@@ -1,0 +1,15 @@
+{
+  "_note": "Which dungeons (subjects) and levels the player can pick on a new game. Owner: lead. Names and descriptions are in core/strings_en.json as dungeon_<id>, dungeon_<id>_text, level_<subject>_<level>_text. PLACEHOLDER: every subject except german is a placeholder for later and is shown as 'In development'.",
+  "dungeons": [
+    {"id": "german", "available": true, "color": [218, 182, 100],
+     "levels": [
+       {"id": "A1", "bank": "questions_german_a1.json"},
+       {"id": "A2", "bank": "questions_german_a2.json"},
+       {"id": "B1", "bank": "questions_german_b1.json"}
+     ]},
+    {"id": "english", "available": false, "color": [110, 150, 210], "levels": []},
+    {"id": "math", "available": false, "color": [124, 186, 110], "levels": []},
+    {"id": "history", "available": false, "color": [190, 120, 80], "levels": []}
+  ],
+  "default": {"subject": "german", "level": "B1"}
+}

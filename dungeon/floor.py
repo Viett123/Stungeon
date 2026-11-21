@@ -45,7 +45,8 @@ class Floor:
     # [{"id": enemy id, "pos": (x, y), "boss": bool, "elite": bool, "guard": bool}]
     # guard = stands still (the boss and the mini-boss); elite = stronger and better loot
     enemies: list = field(default_factory=list)
-    chests: list = field(default_factory=list)    # [{"pos": (x, y), "opened": bool}]
+    # [{"pos": (x, y), "opened": bool, "golden": bool}]  golden = a treasure-room chest with better loot
+    chests: list = field(default_factory=list)
     rooms: list = field(default_factory=list)     # [(x, y, w, h)]
     room_kinds: list = field(default_factory=list)   # one kind per room, same order as rooms
     traps: set = field(default_factory=set)       # {(x, y)} floor cells with spikes
@@ -182,9 +183,10 @@ def generate_floor(floor_number, seed, demo=False, modifiers=None) -> Floor:
                         "elite": rng.random() < elite_chance, "guard": False})
 
     # Chests: some in the treasure room, the rest on cells that are still free anywhere.
-    chest_spots = _take(rng, cells["treasure"], TREASURE_CHESTS if treasure_rooms else 0)
+    golden_spots = _take(rng, cells["treasure"], TREASURE_CHESTS if treasure_rooms else 0)
     anywhere = [c for c in anywhere if c not in spots]
-    chest_spots += _take(rng, anywhere, spawns.get("chests", 0) + modifiers.get("extra_chests", 0))
-    chests = [{"pos": pos, "opened": False} for pos in chest_spots]
+    plain_spots = _take(rng, anywhere, spawns.get("chests", 0) + modifiers.get("extra_chests", 0))
+    chests = [{"pos": pos, "opened": False, "golden": True} for pos in golden_spots]
+    chests += [{"pos": pos, "opened": False, "golden": False} for pos in plain_spots]
 
     return Floor(floor_number, WIDTH, HEIGHT, grid, start, stairs, enemies, chests, rooms, kinds, traps)

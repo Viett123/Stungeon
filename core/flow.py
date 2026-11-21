@@ -3,7 +3,7 @@
 Scenes call these functions instead of creating each other directly, so the order
 of the game is written down in one place:
 
-  title menu -> class select -> floor 1 -> shop -> choice -> floor 2 -> shop -> choice -> floor 3 -> end screen
+  title menu -> name -> class select -> dungeon -> welcome + level -> floor 1 -> shop -> choice -> floor 2 -> shop -> choice -> floor 3 -> end screen
 
 The game is saved every time a floor starts (never in demo mode).
 Scene classes are imported inside the functions, because those files import this one.
@@ -14,9 +14,56 @@ from systems import save, shop
 from systems.player import load_data
 
 
-def start_new_run(game, class_id):
-    game.run_state = new_run(class_id)
+def start_new_run(game, class_id, name="", subject=None, level=None):
+    """name, subject and level were added as keywords with defaults, so start_new_run(game, class_id) still works."""
+    game.run_state = new_run(class_id, name=name, subject=subject, level=level)
     enter_floor(game)
+
+
+# --- the new-game screens ------------------------------------------------------
+# What the player picks is collected in game.new_game, one screen at a time.
+# Each show_... function opens one screen; Esc on a screen opens the one before it.
+def begin_new_game(game):
+    game.new_game = {}
+    show_name_screen(game)
+
+
+def show_name_screen(game):
+    from ui.new_game import NameScene
+    game.scenes.replace(NameScene(game))
+
+
+def name_chosen(game, name):
+    game.new_game["name"] = name
+    show_class_select(game)
+
+
+def show_class_select(game):
+    from ui.class_select import ClassSelectScene
+    game.scenes.replace(ClassSelectScene(game))
+
+
+def class_chosen(game, class_id):
+    game.new_game["class_id"] = class_id
+    show_dungeon_select(game)
+
+
+def show_dungeon_select(game):
+    from ui.new_game import DungeonSelectScene
+    game.scenes.replace(DungeonSelectScene(game))
+
+
+def dungeon_chosen(game, subject):
+    from ui.new_game import LevelSelectScene
+    game.new_game["subject"] = subject
+    game.scenes.replace(LevelSelectScene(game, subject))
+
+
+def level_chosen(game, level):
+    """The last pick: everything is known, so the run starts on floor 1."""
+    picks = game.new_game
+    start_new_run(game, picks["class_id"], name=picks.get("name", ""),
+                  subject=picks["subject"], level=level)
 
 
 def start_demo(game):

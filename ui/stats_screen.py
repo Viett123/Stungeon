@@ -11,7 +11,7 @@ import pygame
 from core.scene import Scene
 from core.strings import t
 from systems.player import load_data
-from ui import theme, topic_names, widgets
+from ui import hud, theme, topic_names, widgets
 
 PANEL = pygame.Rect(90, 30, 1100, 660)
 ROW_HEIGHT = 40
@@ -89,7 +89,7 @@ class StatsScene(Scene):
         widgets.text(surface, fonts["big"], t("stats_title"), theme.GOLD, inside.topleft)
         widgets.text(surface, small, t("stats_streak", n=self.streak), theme.TEXT_DIM, inside.topright, "topright")
         y = inside.y + 56
-        widgets.text(surface, fonts["normal"], t("player_label", cls=player.class_name, level=player.level),
+        widgets.text(surface, fonts["normal"], hud.player_label(player),
                      theme.TEXT, (inside.x, y))
         if self.xp:
             gained, needed = self.xp
