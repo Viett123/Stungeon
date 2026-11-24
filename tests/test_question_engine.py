@@ -1,7 +1,6 @@
 """Tests for the finished parts of the question engine.
 
-Choosing WHICH question to ask (QuestionEngine._choose) belongs to owner C.
-C adds tests for it here, e.g. "grammar topics appear" and "enemy topics are respected".
+ e.g. "grammar topics appear" and "enemy topics are respected".
 """
 import random
 
@@ -66,15 +65,16 @@ def test_report_answer_counts_per_topic_and_tells_the_tracker():
     told = []
 
     class FakeTracker:
-        def update(self, topic, correct):
-            told.append((topic, correct))
+        def update(self, topic, correct, guess = 0.25):
+            told.append((topic, correct, guess))
 
     e = QuestionEngine(rng=random.Random(3), tracker=FakeTracker())
     q = e.next_question(1, "easy")
     e.report_answer(q, True, 4)
     e.report_answer(q, False, 4)
     assert e.stats[q["topic"]] == {"asked": 2, "correct": 1}
-    assert told == [(q["topic"], True), (q["topic"], False)]
+    expected = 1 / len(q["choices"])
+    assert told == [(q["topic"], True, expected), (q["topic"], False, expected)]
 
 
 def test_to_typed_removes_the_choices():

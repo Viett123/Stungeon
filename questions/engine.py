@@ -1,10 +1,4 @@
-"""Question engine (owner: C). No pygame here.
-
-What is finished here (plumbing): loading the bank, keeping floors cumulative,
-shuffling the answers, checking answers, counting right and wrong per topic.
-
-What is NOT finished (owner C): choosing WHICH question to ask. See _choose() below.
-"""
+"""Question engine"""
 import json
 import random
 from collections import defaultdict
@@ -83,7 +77,13 @@ class QuestionEngine:
         stats["correct"] += int(bool(correct))
         self.streak = self.streak + 1 if correct else 0
         if self.tracker:
-            self.tracker.update(question["topic"], correct)   # owner C: see ai/mastery.py
+            if question.get("type") == "multiple_choice":
+                guess = 1.0 / len(question["choices"])
+            elif question.get("type") == "multi_select":
+                guess = 0.1
+            else:              # typed, or anything unexpected
+                guess = 0.02
+            self.tracker.update(question["topic"], correct, guess)
 
     def to_typed(self, question) -> dict:
         """Blind debuff: turn a multiple-choice question into a typed one (README rule 3)."""
