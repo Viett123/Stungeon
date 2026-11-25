@@ -61,9 +61,8 @@ class QuestionEngine:
         return question
 
     def _choose(self, pool, wanted_topics, weakest) -> dict:
-        """Pick one question out of `pool`. THIS IS THE PART OWNER C WRITES.
+        """Pick one question out of `pool` (written by owner C).
 
-        PLACEHOLDER: picks any question at random and ignores wanted_topics and weakest.
         The bank has ~1,000 vocabulary questions and ~70 grammar questions, so picking a
         question at random would almost never ask grammar. Instead (questions/README.md):
           - rule 4: pick a TOPIC first, weighted by low mastery, then a question inside it.
