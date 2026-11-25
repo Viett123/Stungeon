@@ -1,0 +1,125 @@
+"""Tests for critical hits and streaks (mission 4).
+
+A fast answer is a critical hit. Several right answers in a row multiply the damage.
+The numbers are in data/combat.json.
+"""
+from types import SimpleNamespace
+
+import pytest
+
+from combat import effects
+from combat.battle import Battle
+from systems.enemies import make_enemy
+from systems.player import Player, load_data
+
+NUMBERS = load_data("combat.json")
+CRIT_TIERS = NUMBERS["crit_tiers"]
+STREAK = NUMBERS["streak"]
+
+
+def fake_battle(time_used, streak=0):
+    """A battle with only what the two rules look at."""
+    return SimpleNamespace(time_used=time_used, engine=SimpleNamespace(streak=streak), last_crit=False)
+
+
+@pytest.mark.parametrize("share, expected", [
+    (0.10, 2.0),    # fast: inside 15 % of the time
+    (0.15, 2.0),    # exactly 15 % still counts
+    (0.20, 1.5),    # inside 30 %, but not 15 %
+    (0.30, 1.5),    # exactly 30 % still counts
+    (0.31, 1.0),    # too slow: no crit
+    (0.90, 1.0),
+])
+def test_crit_multiplier_depends_on_how_fast_the_answer_was(share, expected):
+    assert effects.crit_multiplier([share], CRIT_TIERS) == expected
+
+
+def test_crit_uses_the_average_of_several_answers():
+    # (0.1 + 0.4) / 2 = 0.25: inside 30 % but not 15 %, so x1.5
+    assert effects.crit_multiplier([0.1, 0.4], CRIT_TIERS) == 1.5
+
+
+def test_no_answers_means_no_crit():
+    assert effects.crit_multiplier([], CRIT_TIERS) == 1.0
+
+
+# The streak suggestion: +10 % per right answer in a row, up to x1.5.
+@pytest.mark.parametrize("streak, expected", [(0, 1.0), (1, 1.1), (2, 1.2), (5, 1.5), (9, 1.5)])
+def test_streak_adds_ten_percent_per_right_answer_up_to_one_and_a_half(streak, expected):
+    assert effects.streak_multiplier(streak, STREAK) == pytest.approx(expected)
+
+
+def test_a_fast_answer_doubles_the_damage_and_sets_last_crit():
+    battle = fake_battle([0.1])
+    assert effects.change_player_damage(10, battle) == 20
+    assert battle.last_crit is True
+
+
+def test_a_slow_answer_is_normal_damage_and_no_crit():
+    battle = fake_battle([0.5])
+    assert effects.change_player_damage(10, battle) == 10
+    assert battle.last_crit is False
+
+
+def test_last_crit_is_reset_by_the_next_slow_attack():
+    battle = fake_battle([0.1])
+    effects.change_player_damage(10, battle)
+    battle.time_used = [0.9]
+    effects.change_player_damage(10, battle)
+    assert battle.last_crit is False
+
+
+def test_streak_alone_adds_damage_without_a_crit():
+    battle = fake_battle([0.5], streak=2)      # x1.2, no crit
+    assert effects.change_player_damage(10, battle) == 12
+
+
+def test_streak_and_crit_multiply_together():
+    # 10 damage, crit x2, streak of 5 gives x1.5: 10 * 2 * 1.5 = 30
+    battle = fake_battle([0.1], streak=5)
+    assert effects.change_player_damage(10, battle) == 30
+
+
+class RightEngine:
+    """Asks one question each time. Counts right answers in a row, like the real engine does."""
+
+    def __init__(self):
+        self.streak = 0
+
+    def next_question(self, floor, difficulty, topic=None, weakest=False):
+        return {"topic": "articles", "type": "multiple_choice", "difficulty": difficulty,
+                "question": "___ Bühne", "choices": ["der", "die", "das"], "answer": "die"}
+
+    def check_answer(self, question, given):
+        return given == question["answer"]
+
+    def report_answer(self, question, correct, seconds):
+        self.streak = self.streak + 1 if correct else 0
+
+
+def answer_slash(seconds):
+    """A real warrior fight: one right answer with the basic move, after `seconds` seconds."""
+    player = Player("warrior")
+    player.resource = player.max_resource
+    battle = Battle(player, make_enemy("article_goblin"), RightEngine(), floor=1)
+    slash = next(m for m in battle.moves() if m["id"] == "slash")
+    battle.choose_move(slash["id"])
+    result = battle.answer("die", seconds)
+    return battle, slash, result
+
+
+def test_a_fast_real_attack_is_a_crit_and_sets_last_crit():
+    # Basic questions are easy: 15 s. 1.5 s is 10 % of that, so x2.
+    # One right answer is a streak of 1, which adds x1.1 on top.
+    battle, slash, result = answer_slash(seconds=1.5)
+    expected = round(slash["damage"] * 2 * 1.1)
+    assert battle.last_crit is True
+    assert result["damage"] == expected
+    assert battle.enemy.hp == battle.enemy.max_hp - expected
+
+
+def test_a_slow_real_attack_is_not_a_crit():
+    # 10 s is about 67 % of 15 s, so no crit. Only the streak of 1 (x1.1) applies.
+    battle, slash, result = answer_slash(seconds=10)
+    assert battle.last_crit is False
+    assert result["damage"] == round(slash["damage"] * 1.1)

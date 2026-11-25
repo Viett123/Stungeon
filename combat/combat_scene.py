@@ -240,8 +240,19 @@ class CombatScene(Scene):
     def submit(self, given):
         move_id = self.battle.move["id"]      # read before answering: the battle forgets the move after the last answer
         out = self.battle.answer(given, self.elapsed)
+        self.show_result(out, move_id)
+
+    def time_up(self):
+        """The timer ran out. The answer counts as wrong, just like a wrong answer."""
+        move_id = self.battle.move["id"]
+        out = self.battle.time_out()
+        self.show_result(out, move_id, first_line=(t("time_up"), theme.BAD))
+
+    def show_result(self, out, move_id, first_line=None):
+        """Show right or wrong, the answer and the explanation, then the damage or the next question."""
         question = out["question"]
-        lines = [(t("correct"), theme.GOOD) if out["correct"] else (t("wrong"), theme.BAD)]
+        lines = [first_line] if first_line else []
+        lines.append((t("correct"), theme.GOOD) if out["correct"] else (t("wrong"), theme.BAD))
         if not out["correct"]:
             lines.append((t("the_answer", answer=answer_text(question)), theme.TEXT))
         if question.get("explanation"):
@@ -421,6 +432,8 @@ class CombatScene(Scene):
         self.floating = [text for text in self.floating if text.alive()]
         if self.state == "question":
             self.elapsed += dt
+            if self.battle.time_is_up(self.elapsed):
+                self.time_up()
 
     def draw(self, surface):
         offset = self.shake.offset()
@@ -542,7 +555,9 @@ class CombatScene(Scene):
             number = move["questions"] - self.battle.remaining + 1
             widgets.text(surface, small, t("question_count", i=number, n=move["questions"]),
                          theme.GOLD, (INSIDE.centerx, INSIDE.y), "midtop")
-        widgets.text(surface, small, t("seconds", s=int(self.elapsed)), theme.TEXT_DIM, INSIDE.topright, "topright")
+        # The timer counts down. It shows the time left, rounded up, so it reads 1 s until the very last moment.
+        left = max(0, self.battle.time_limit - self.elapsed)
+        widgets.text(surface, small, t("seconds", s=math.ceil(left)), theme.TEXT_DIM, INSIDE.topright, "topright")
 
         y = INSIDE.y + 30
         for line in self.question_lines:
