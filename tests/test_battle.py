@@ -16,7 +16,7 @@ class FakeEngine:
 
     def __init__(self):
         self.reported = []
-        self.streak = 0
+        self.streak = 0           # the real engine counts right answers in a row; the battle reads it
 
     def next_question(self, floor, difficulty, topic=None, weakest=False):
         return {"topic": "articles", "type": "multiple_choice", "difficulty": difficulty,
@@ -48,6 +48,7 @@ def test_answer_uses_the_damage_hook(monkeypatch):
         return 7
 
     monkeypatch.setattr(damage, "player_damage", fake_damage)
+    # This test only checks the damage hook, so the crit and streak rules must not change the 7.
     monkeypatch.setattr(effects, "change_player_damage", lambda amount, battle: amount)
     battle, _ = make_battle()
     battle.choose_move(first_move(battle, "basic")["id"])

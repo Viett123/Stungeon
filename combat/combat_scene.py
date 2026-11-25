@@ -256,7 +256,6 @@ class CombatScene(Scene):
         question = out["question"]
         lines = [first_line] if first_line else []
         lines.append((t("correct"), theme.GOOD) if out["correct"] else (t("wrong"), theme.BAD))
-        lines = [(t("correct"), theme.GOOD) if out["correct"] else (t("wrong"), theme.BAD)]
         sound.play("correct" if out["correct"] else "wrong")
         if not out["correct"]:
             lines.append((t("the_answer", answer=answer_text(question)), theme.TEXT))
