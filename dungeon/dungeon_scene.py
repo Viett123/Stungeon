@@ -8,7 +8,7 @@ The rules (who is on which tile) change at once. The pictures (Actors) glide aft
 """
 import pygame
 
-from core import flow, settings
+from core import flow, settings, sound
 from core.scene import Scene
 from core.strings import t
 from dungeon import chase, fog, sprites
@@ -39,6 +39,8 @@ CHEST_FRAME_SECONDS = 0.1
 
 
 class DungeonScene(Scene):
+    music = "dungeon"   # core/sound.py plays it while this screen is on top (menus over it keep it playing)
+
     def __init__(self, game, messages=None):
         super().__init__(game)
         self.run = game.run_state
@@ -168,6 +170,7 @@ class DungeonScene(Scene):
         if (x, y) in self.floor.traps and self.step_on_spikes():
             return
         if self.floor.grid[y][x] == STAIRS:
+            sound.play("stairs")
             flow.leave_floor(self.game)   # shop, next floor or the end screen: see core/flow.py
 
     def step_on_spikes(self):
@@ -175,6 +178,7 @@ class DungeonScene(Scene):
         # TODO(D): the trap damage is a placeholder number in data/progression.json.
         damage = self.run.player.take_damage(load_data("progression.json")["trap_damage"])
         self.say(t("trap_hit", damage=damage))
+        sound.play("trap")
         if not self.run.player.alive:
             flow.finish_run(self.game, won=False)
             return True
@@ -183,6 +187,7 @@ class DungeonScene(Scene):
     # --- chests ------------------------------------------------------------
     def open_chest(self, chest):
         chest["opened"] = True
+        sound.play("chest")
         player = self.run.player
         gold = roll_chest_gold(self.run.rng)
         player.gold += gold
@@ -264,6 +269,7 @@ class DungeonScene(Scene):
             kind, value = event.split(":")
             if kind == "level_up":
                 self.say(t("level_up", level=value))
+                sound.play("level_up")
             else:
                 name = next(m["name"] for m in player.unlocked_moves() if m["id"] == value)
                 self.say(t("new_move", name=name))

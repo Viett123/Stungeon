@@ -1,3 +1,4 @@
+"""Bayesian Knowledge Tracing (ai/mastery.py). The expected numbers were worked out by hand."""
 import pytest
 
 from ai.mastery import KnowledgeTracker

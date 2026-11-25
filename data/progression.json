@@ -5,5 +5,14 @@
   "hp_per_level": 20,
   "last_floor": 3,
   "trap_damage": 8,
-  "expected_answer_seconds": 20
+  "expected_answer_seconds": 20,
+  "mastery": {
+    "_note": "Knowledge tracing numbers chosen by C (ai/mastery.py, questions/engine.py). Not placeholders.",
+    "p_init": 0.2,
+    "p_slip": 0.1,
+    "p_learn": 0.15,
+    "review_weight": 0.15,
+    "guess_multi_select": 0.1,
+    "guess_typed": 0.02
+  }
 }

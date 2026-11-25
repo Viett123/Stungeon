@@ -135,3 +135,8 @@ Not used yet from these sheets: fountains, totems, the wall monster.
 - All move icons.
 - Bars, slots and buttons (`ui/theme.py`). The panel borders now come from `ui_frame.png`.
 - The font is pygame's built-in font.
+
+## Sound and music: made by us, in code
+
+Every file in `assets/sounds/` (19 effects and 4 music loops) is made by `tools/make_sounds.py`
+from the recipes in `data/sounds.json`. Nothing is downloaded, so there is nothing to license or credit.

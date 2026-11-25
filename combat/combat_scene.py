@@ -13,7 +13,7 @@ import pygame
 from combat import effects
 from combat.battle import Battle
 from combat.skill_looks import AURA_SECONDS, SkillLook
-from core import assets, settings
+from core import assets, settings, sound
 from core.scene import Scene
 from core.strings import t
 from dungeon.actor import make_actor
@@ -62,6 +62,7 @@ class CombatScene(Scene):
         self.player = player
         self.enemy = enemy
         self.on_end = on_end   # called once with the result dict, see finish()
+        self.music = "boss" if enemy.boss else "fight"      # core/sound.py plays it while this screen is on top
         self.battle = Battle(player, enemy, run.engine, run.floor_number, habits=run.habits, rng=run.rng)
         # In a fight both fighters are drawn big and animated. They stand still, so the
         # tile they are "on" does not matter; the player faces left, towards the enemy.
@@ -151,6 +152,7 @@ class CombatScene(Scene):
         if result.get("utility"):
             # Only a picture: what the move really does is decided in combat/effects.py.
             self.skill = SkillLook(move["id"], self.player_center, self.player_center, AURA_SECONDS)
+            sound.play(sound.skill_sound("aura"))
             # TODO(B): once combat/effects.py has real effects, show what the move did here.
             self.show_message([(t("utility_used", move=move["name"]), theme.GOLD)], self.enemy_turn)
         else:
@@ -178,6 +180,7 @@ class CombatScene(Scene):
             self.notice = t("item_no_effect", item=item["name"])     # e.g. a potion at full HP: keep it
             return
         self.using = USE_SECONDS
+        sound.play("potion")
         lines = [(t("item_used", item=item["name"]), theme.GOLD)]
         # TODO(B): whether an item costs the turn is decided in combat/effects.py.
         self.show_message(lines, self.enemy_turn if effects.item_costs_turn(self.battle) else self.back_to_choose)
@@ -253,6 +256,8 @@ class CombatScene(Scene):
         question = out["question"]
         lines = [first_line] if first_line else []
         lines.append((t("correct"), theme.GOOD) if out["correct"] else (t("wrong"), theme.BAD))
+        lines = [(t("correct"), theme.GOOD) if out["correct"] else (t("wrong"), theme.BAD)]
+        sound.play("correct" if out["correct"] else "wrong")
         if not out["correct"]:
             lines.append((t("the_answer", answer=answer_text(question)), theme.TEXT))
         if question.get("explanation"):
@@ -267,6 +272,7 @@ class CombatScene(Scene):
             self.pending_damage = out["damage"]
             # The move's own look (arcs, orb, meteors...) plays with the same timing as the swing.
             self.skill = SkillLook(move_id, self.player_hand, self.enemy_center, ATTACK_SECONDS)
+            sound.play(sound.skill_sound(self.skill.look["kind"]))     # swing, shoot or rain
         self.show_message(lines, self.victory if self.battle.won else self.enemy_turn)
 
     def attack_progress(self):
@@ -277,6 +283,7 @@ class CombatScene(Scene):
         """The moment the weapon, arrow or bolt reaches the enemy: shake, flash, sparks, damage number."""
         self.float_text(f"-{self.pending_damage}", theme.GOLD, ENEMY_PANEL)
         self.pending_damage = 0
+        sound.play("hit")
         strength = self.skill.look["shake"] if self.skill else 6     # stronger moves shake the screen harder
         self.shake.start(strength=strength, seconds=0.25)
         self.freeze = HIT_PAUSE
@@ -323,6 +330,7 @@ class CombatScene(Scene):
         else:
             lines = [(t("enemy_hits", enemy=self.enemy_name, damage=out["damage"]), theme.BAD)]
             self.hurt = HURT_SECONDS
+            sound.play("hurt")
             self.shake.start(strength=10, seconds=0.3)
             self.float_text(f"-{out['damage']}", theme.BAD, PLAYER_ART)
         if out["taunt"]:
@@ -330,11 +338,13 @@ class CombatScene(Scene):
         self.show_message(lines, self.defeat if self.battle.lost else self.back_to_choose)
 
     def victory(self):
+        sound.play("victory")
         self.show_message([(t("victory_fight", enemy=self.enemy_name), theme.GOOD)],
                           lambda: self.finish(won=True))
 
     def defeat(self):
         self.dying = 0.0
+        sound.play("defeat")
         self.show_message([(t("defeat_fight", enemy=self.enemy_name), theme.BAD)],
                           lambda: self.finish(won=False))
 
@@ -366,6 +376,7 @@ class CombatScene(Scene):
             elif event.key == pygame.K_i:
                 self.open_items()
             elif event.key == pygame.K_ESCAPE and not self.enemy.boss:
+                sound.play("flee")
                 self.finish(won=False, fled=True)
         elif event.type == pygame.MOUSEMOTION:
             hovered = self.hotbar.index_at(event.pos)

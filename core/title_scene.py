@@ -52,6 +52,8 @@ def _glow(size):
 
 
 class TitleScene(MenuScene):
+    music = "title"   # core/sound.py: the title tune keeps playing through the new-game screens
+
     def __init__(self, game):
         options = [
             (t("menu_new_game"), self.new_game, True),
