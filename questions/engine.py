@@ -4,6 +4,8 @@ import random
 from collections import defaultdict
 from pathlib import Path
 
+REVIEW_WEIGHT = 0.15
+
 BANK_PATH = Path(__file__).parent / "data" / "questions_german_b1.json"
 
 _UMLAUTS = {"ä": "ae", "ö": "oe", "ü": "ue"}   # many keyboards have no umlaut keys
@@ -61,7 +63,25 @@ class QuestionEngine:
         Always return one of the dicts in `pool`. Use self.rng (not the random module),
         so a run with the same seed asks the same questions.
         """
-        return self.rng.choice(pool)
+        by_topic = {}
+        for question in pool:
+            by_topic.setdefault(question["topic"], []).append(question)
+        topics = sorted(by_topic)
+        if wanted_topics:
+            topics = [t for t in topics if t in wanted_topics] or topics
+
+        def score(topic):
+            if self.tracker:
+                mastery = self.tracker.mastery(topic)
+                return mastery
+            return 0.5   # no tracker, so all topics are equal
+        if weakest:
+            topics = sorted(topics, key=score)[:3]
+        weights = []
+        for topic in topics:
+            weights.append(1.0 - score(topic) + REVIEW_WEIGHT)
+        topic = self.rng.choices(topics, weights=weights)[0]
+        return self.rng.choice(by_topic[topic])
 
     # --- checking ----------------------------------------------------------
     def check_answer(self, question, given) -> bool:

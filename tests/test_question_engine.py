@@ -8,6 +8,8 @@ from questions.engine import QuestionEngine, normalise
 
 engine = QuestionEngine(rng=random.Random(1))
 
+GRAMMAR_FREE = {"vocabulary", "articles", "plurals"}
+
 
 def test_bank_loads():
     assert len(engine.questions) == 1082
@@ -64,9 +66,37 @@ def test_multi_select_needs_exactly_the_right_set():
 def test_report_answer_counts_per_topic_and_tells_the_tracker():
     told = []
 
+
+def test_same_seed_asks_the_same_questions():
+    first = QuestionEngine(rng=random.Random(5))
+    second = QuestionEngine(rng=random.Random(5))
+    ids_first = [first.next_question(2, "easy")["id"] for _ in range(20)]
+    ids_second = [second.next_question(2, "easy")["id"] for _ in range(20)]
+    assert ids_first == ids_second
+
+
+def test_grammar_topics_are_asked():
+    e = QuestionEngine(rng=random.Random(7))
+    topics = [e.next_question(1, "medium")["topic"] for _ in range(200)]
+    grammar = [t for t in topics if t not in GRAMMAR_FREE]
+    assert len(grammar) >= 50
+
+
+def test_enemy_topic_is_respected():
+    e = QuestionEngine(rng=random.Random(8))
+    for _ in range(50):
+        assert e.next_question(1, "medium", topic=["articles"])["topic"] == "articles"
+
+def test_report_answer_counts_per_topic_and_tells_the_tracker():
+    told = []
+
     class FakeTracker:
+        def mastery(self, topic):
+            return 0.5
+
         def update(self, topic, correct, guess = 0.25):
             told.append((topic, correct, guess))
+    
 
     e = QuestionEngine(rng=random.Random(3), tracker=FakeTracker())
     q = e.next_question(1, "easy")
