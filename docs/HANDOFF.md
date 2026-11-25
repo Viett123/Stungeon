@@ -33,3 +33,8 @@ Read this first in any new chat or Claude Code session about Stungeon.
 - The run remembers the hero's name, the subject and the level. SAVE_VERSION is 4, so saves from older builds no longer load.
 - The demo (F1) skips the new screens and plays German B1.
 - Every move has its own simple look in a fight (combat/skill_looks.py): arcs, flying orbs or streaks, falling meteors or arrows, or a ring for utility moves. Colours, sizes, counts and screen shake are in data/skill_looks.json. They are pictures only: a green Poison Arrow does not poison anything until B writes that rule. A basic start, meant to be improved by the team.
+
+## Updates (24-25 Nov 2026, C)
+- Knowledge tracing (BKT) is in ai/mastery.py and topic choice in QuestionEngine._choose (C). Every topic now starts at 20% on the Progress screen.
+- Contract: KnowledgeTracker.update(topic, correct) gained a third argument, guess=0.25 (the chance of a lucky right answer). Old calls still work. The engine passes 1/choices for multiple choice, and lower values for tick-all and typed answers.
+- The BKT numbers and the review weight are in data/progression.json, under "mastery".

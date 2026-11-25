@@ -1,7 +1,5 @@
-"""Tests for the finished parts of the question engine.
-
- e.g. "grammar topics appear" and "enemy topics are respected".
-"""
+"""Tests for the question engine: loading, checking answers, and choosing questions
+(grammar topics appear, enemy topics are respected, the same seed asks the same questions)."""
 import random
 
 from questions.engine import QuestionEngine, normalise
@@ -61,10 +59,6 @@ def test_multi_select_needs_exactly_the_right_set():
     q = {"answer": ["die Bühne", "die Rolle"]}
     assert engine.check_answer(q, ["die Rolle", "die Bühne"])
     assert not engine.check_answer(q, ["die Rolle"])
-
-
-def test_report_answer_counts_per_topic_and_tells_the_tracker():
-    told = []
 
 
 def test_same_seed_asks_the_same_questions():

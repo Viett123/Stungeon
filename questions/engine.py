@@ -1,10 +1,22 @@
-"""Question engine"""
+"""Question engine (owner: C). No pygame here.
+
+It loads the bank, keeps floors cumulative, shuffles the answers, checks answers and
+counts right and wrong per topic. It also chooses WHICH question to ask (_choose):
+first a topic, weighted towards the topics the player knows least (ai/mastery.py),
+then a question inside that topic.
+"""
 import json
 import random
 from collections import defaultdict
 from pathlib import Path
 
-REVIEW_WEIGHT = 0.15
+from systems.player import load_data
+
+_NUMBERS = load_data("progression.json")["mastery"]
+# Added to every topic's weight, so topics the player already knows still come back now and then.
+REVIEW_WEIGHT = _NUMBERS["review_weight"]
+GUESS_MULTI_SELECT = _NUMBERS["guess_multi_select"]   # ticking exactly the right set by luck is rare
+GUESS_TYPED = _NUMBERS["guess_typed"]                 # typing the right answer by luck is very rare
 
 BANK_PATH = Path(__file__).parent / "data" / "questions_german_b1.json"
 
@@ -52,15 +64,13 @@ class QuestionEngine:
         """Pick one question out of `pool`. THIS IS THE PART OWNER C WRITES.
 
         PLACEHOLDER: picks any question at random and ignores wanted_topics and weakest.
-        Because the bank has ~1,000 vocabulary questions and ~70 grammar questions,
-        this placeholder almost never asks grammar. That is the problem to solve.
-
-        TODO(C), from questions/README.md:
-          - rule 4: pick a TOPIC first, weighted by low mastery (self.tracker.mastery(topic)),
-            then a question inside that topic
-          - use wanted_topics (the enemy's topics) when the pool has questions for them
-          - rule 5: when weakest is True, draw mostly from the player's weakest topics
-        Always return one of the dicts in `pool`. Use self.rng (not the random module),
+        The bank has ~1,000 vocabulary questions and ~70 grammar questions, so picking a
+        question at random would almost never ask grammar. Instead (questions/README.md):
+          - rule 4: pick a TOPIC first, weighted by low mastery, then a question inside it.
+            weight = 1 - mastery + REVIEW_WEIGHT, so weak topics come up most.
+          - the enemy's topics (wanted_topics) are used when the pool has questions for them
+          - rule 5: when weakest is True (ultimates), only the 3 weakest topics are used
+        Always returns one of the dicts in `pool`. Uses self.rng (not the random module),
         so a run with the same seed asks the same questions.
         """
         by_topic = {}
@@ -100,9 +110,9 @@ class QuestionEngine:
             if question.get("type") == "multiple_choice":
                 guess = 1.0 / len(question["choices"])
             elif question.get("type") == "multi_select":
-                guess = 0.1
+                guess = GUESS_MULTI_SELECT
             else:              # typed, or anything unexpected
-                guess = 0.02
+                guess = GUESS_TYPED
             self.tracker.update(question["topic"], correct, guess)
 
     def to_typed(self, question) -> dict:
