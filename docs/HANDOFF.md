@@ -38,3 +38,10 @@ Read this first in any new chat or Claude Code session about Stungeon.
 - Knowledge tracing (BKT) is in ai/mastery.py and topic choice in QuestionEngine._choose (C). Every topic now starts at 20% on the Progress screen.
 - Contract: KnowledgeTracker.update(topic, correct) gained a third argument, guess=0.25 (the chance of a lucky right answer). Old calls still work. The engine passes 1/choices for multiple choice, and lower values for tick-all and typed answers.
 - The BKT numbers and the review weight are in data/progression.json, under "mastery".
+
+## Updates (25 Nov 2026)
+- German A1 is playable: questions/data/questions_german_a1.json, 3,943 questions from Das Leben A1, Einheiten 1–16. It is the first level on the level screen now. A2 is still empty.
+- A bank can now say which Einheiten each floor asks ("floor_einheiten"). A1: floor 1 = Einheiten 1–5, floor 2 = 1–10, floor 3 = 1–16. B1 has no such entry and works as before. New method: QuestionEngine.last_einheit(floor).
+- questions/build/build.py builds every level (python build.py, or python build.py a1). The B1 output is unchanged.
+- D: the bosses ask B1 grammar topics, which A1 doesn't have, so in A1 they ask any topic. A1 boss topics could be added later.
+

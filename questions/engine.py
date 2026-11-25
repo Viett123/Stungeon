@@ -35,11 +35,18 @@ class QuestionEngine:
     def __init__(self, bank_path=BANK_PATH, rng=None, tracker=None):
         bank = json.loads(Path(bank_path).read_text(encoding="utf-8"))
         self.questions = bank["questions"]
+        # The highest Einheit each floor asks about, e.g. A1 has 16 Einheiten on 3 floors.
+        # A bank without "floor_einheiten" (B1) uses Einheit n on floor n.
+        self.floor_einheiten = {int(floor): last for floor, last in bank.get("floor_einheiten", {}).items()}
         self.topics = sorted({q["topic"] for q in self.questions})
         self.rng = rng or random.Random()
         self.tracker = tracker            # a KnowledgeTracker (ai/mastery.py), or None
         self.stats = defaultdict(lambda: {"asked": 0, "correct": 0})   # topic -> counts, for the end screen
         self.streak = 0                   # right answers in a row; a wrong answer sets it back to 0
+
+    def last_einheit(self, floor) -> int:
+        """The highest Einheit asked on this floor (the bank's "floor_einheiten", or the floor number)."""
+        return self.floor_einheiten.get(floor, floor)
 
     # --- picking -----------------------------------------------------------
     def next_question(self, floor, difficulty, topic=None, weakest=False) -> dict:
@@ -48,8 +55,9 @@ class QuestionEngine:
         topic   - one topic name, or a list of them (an enemy's topics), or None for any
         weakest - True for ultimate moves and bosses: prefer the player's weakest topics
         """
-        # Floor n uses Einheiten 1 to n (README rule 5: cumulative floors).
-        pool = [q for q in self.questions if q["einheit"] <= floor and q["difficulty"] == difficulty]
+        # Floors are cumulative (README rule 5): floor n uses Einheiten 1 to last_einheit(n).
+        last = self.last_einheit(floor)
+        pool = [q for q in self.questions if q["einheit"] <= last and q["difficulty"] == difficulty]
         if not pool:
             raise ValueError(f"no {difficulty} question for floor {floor}")
         wanted = [topic] if isinstance(topic, str) else list(topic or [])

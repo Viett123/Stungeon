@@ -1,6 +1,6 @@
-# Stungeon – German Dungeon question bank (B1, Einheiten 1–3)
+# Stungeon – German Dungeon question banks (A1 and B1)
 
-Source material: *Das Leben B1*, Einheiten 1–3 (developer materials), plus the class Vokabeln lists.
+Source material: *Das Leben A1*, Einheiten 1–16, and *Das Leben B1*, Einheiten 1–3 (developer materials), plus the class Vokabeln lists.
 
 ## One bank per level
 
@@ -8,7 +8,7 @@ Each level of a dungeon has its own file here, listed in `data/dungeons.json`:
 
 | Level | File | State |
 |---|---|---|
-| A1 | `questions_german_a1.json` | Empty, to be filled |
+| A1 | `questions_german_a1.json` | 3,943 questions (see "The A1 bank" below) |
 | A2 | `questions_german_a2.json` | Empty, to be filled |
 | B1 | `questions_german_b1.json` | 1,082 questions (below) |
 
@@ -20,13 +20,16 @@ A new bank uses the same question format as B1, with `"level"` set to its own le
 |---|---|
 | `questions_german_b1.json` | The question bank the game loads |
 | `questions_german_b1_review.csv` | The same questions as a spreadsheet for checking (columns for "ok?" and notes) |
+| `questions_german_a1.json`, `questions_german_a1_review.csv` | The same two files for A1 |
 | `build/vocab.py` | All vocabulary: article, plural, English, Vietnamese, source |
 | `build/grammar.py` | Handwritten grammar questions for each Einheit |
-| `build/build.py` | Generates the JSON and CSV from the two files above |
+| `build/vocab_a1.py`, `build/grammar_a1.py` | The same two files for A1 |
+| `build/build.py` | Generates the JSON and CSV of each level: `python build.py` (all) or `python build.py a1` |
+| `build/extract_a1_pdf.py` | One-off helper that read the A1 Vokabeln PDFs (needs `pip install pymupdf`) |
 
-To change or add questions, edit `vocab.py` or `grammar.py`, then run `python build.py`. Don't edit the JSON by hand, because the next build overwrites it.
+To change or add questions, edit the vocab or grammar file of the level, then run `python build.py`. Don't edit the JSON by hand, because the next build overwrites it.
 
-## What's inside
+## What's inside the B1 bank
 
 1,082 questions in total.
 
@@ -46,6 +49,31 @@ To change or add questions, edit `vocab.py` or `grammar.py`, then run `python bu
   - E3: `konjunktiv2_praesens`, `deshalb_darum_deswegen`, `komposita_artikel`, `passiv_praeteritum`, `diskussion_redemittel`
 
 Each topic is a mastery category for knowledge tracing, and a natural home for a themed enemy. For example, an Article Goblin uses `articles` and a Conjunctive Wraith uses the Konjunktiv II topics.
+
+## The A1 bank
+
+3,943 questions from *Das Leben A1*, Einheiten 1–16, made the same way as B1:
+
+- **Vocabulary:** 883 words from the class Vokabeln lists (A1.zip). Unit 0, the first pages of the book, is counted as Einheit 1. Each word gets the same questions as in B1: German→English, English→German, typed, its article and its plural.
+- **Grammar:** 153 questions written for the game from the "Wörter, Wendungen und Strukturen" box on each "Fit für Einheit …?" page. They are not copied exercises.
+- **Topics:** `vocabulary`, `articles`, `plurals`, plus 18 grammar topics: `pronomen`, `verben_praesens`, `w_fragen`, `zahlen_uhrzeit`, `zeitangaben`, `artikel_kein_nicht`, `akkusativ`, `welch_dieser`, `adjektive`, `adverbien`, `trennbare_verben`, `modalverben`, `perfekt`, `praeteritum_sein_haben`, `praepositionen`, `possessivartikel`, `wortbildung`, `imperativ`. Small rules were merged into bigger topics (each has 4–14 questions), because the engine picks a topic first. A topic with one question would repeat it again and again.
+- **Floors:** A1 has 16 Einheiten but the dungeon has 3 floors. The bank's `"floor_einheiten": {"1": 5, "2": 10, "3": 16}` says floor 1 asks Einheiten 1–5, floor 2 asks 1–10 and floor 3 asks 1–16. A bank without it (B1) uses Einheiten 1 to n on floor n.
+
+What was fixed in the Vokabeln lists:
+
+- **Cut-off words** completed, where the PDF cell was too narrow: Automobilkaufmann, Automobilkauffrau, Informatikkaufmann, Wohngemeinschaft, Überschwemmung, Frühstück machen.
+- **Wrong plurals** fixed or removed: der Sport (not "Sportarten"), die Musik, die Schokolade, der Kaffee and der Käse get no plural question; Laptops, Werkstätten, Knie, Öfen, Vorschläge, Schwäger, Mottos. Uncountable words (Wetter, Schnee, Gemüse, Glück, …) get no plural question.
+- **Plural-only nouns** (die Eltern, Geschwister, Großeltern, Leute, Ferien, Senioren, Lebensmittel, Pommes) get no article or plural question.
+- **Old spellings:** Erdnuss, Schluss, nass (not ß).
+- **English typos and unclear meanings** fixed, for example grez → grey, stzle → style, potatoe → potato, maritial status → marital status, philharmony → philharmonic orchestra, ordnen "to order" → "to sort, to arrange", Ausverkauft → der Ausverkauf (clearance sale). `vocab_a1.py` already holds the fixed words, so edit that file from now on.
+- **Repeats removed:** a word listed in several Einheiten is kept only the first time.
+- **Typed questions** are skipped when two German words share the same English meaning (to know = kennen or wissen), so a typed answer always has one right word.
+
+Still to do:
+
+- **Vietnamese:** only about 40% of the A1 words have `meaning_vi` (the lists are empty for the rest).
+- **Bosses:** the bosses in `data/enemies.json` ask B1 grammar topics. In A1 those topics don't exist, so they ask any topic. Owner D can give A1 its own boss topics later.
+- **Please have a German speaker check** a sample of `questions_german_a1_review.csv`, especially the grammar questions.
 
 ## Question format
 
