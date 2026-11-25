@@ -5,7 +5,7 @@ and reads input. You can buy here; selling exists in systems/shop.py but has no 
 """
 import pygame
 
-from core import assets, flow
+from core import assets, flow, sound
 from core.scene import Scene
 from core.strings import t
 from systems import items, shop
@@ -42,6 +42,7 @@ class ShopScene(Scene):
         item = self.stock[self.selected]
         result = shop.buy(self.player, item["id"])
         self.message = t(f"shop_{result}", item=item["name"])
+        sound.play("buy" if result == "ok" else "wrong")
 
     def handle_event(self, event):
         if event.type == pygame.KEYDOWN:

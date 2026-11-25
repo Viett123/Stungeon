@@ -64,3 +64,9 @@ The frames, bars and slots of the menus are drawn in code (`ui/theme.py`), so th
 A real font is still missing: the game uses pygame's built-in font until someone picks a CC0 pixel font.
 
 A broken image file does not crash the game: it is written to `logs/error.log` and the placeholder is used.
+
+## Sounds
+
+The game plays `assets/sounds/<name>.wav` for effects and `assets/sounds/music_<name>.wav` for music
+(see `core/sound.py`). They are made by `python tools/make_sounds.py` from `data/sounds.json`.
+To use your own sound instead, save it as a .wav with the same name. A missing file is just silence.
