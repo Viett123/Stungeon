@@ -49,6 +49,7 @@
   "the_answer": "Answer: {answer}",
   "damage_dealt": "You deal {damage} damage.",
   "miss": "Your attack misses.",
+  "time_up": "Time is up!",
   "press_continue": "Press Enter to continue",
 
   "utility_used": "You use {move}. (It has no effect yet.)",

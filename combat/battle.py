@@ -33,6 +33,9 @@ class Battle:
         self.remaining = 0     # questions still to answer for this move
         self.results = []      # True/False per answered question of this move
         self.seconds = []      # how long each of those answers took, for B's rules (faster = stronger)
+        self.time_used = []    # share of each question's time limit used
+        self.time_limit = 0
+        self.missed = False
 
     # --- state -------------------------------------------------------------
     @property
@@ -67,6 +70,8 @@ class Battle:
         self.remaining = move["questions"]
         self.results = []
         self.seconds = []
+        self.time_used = []
+        self.missed = False
         self._next_question()
         return {"ok": True, "utility": False}
 
@@ -75,18 +80,35 @@ class Battle:
                                              topic=self.enemy.topics or None,
                                              weakest=self.move.get("weakest_topics", False))
         self.question = effects.change_question(question, self)
+        numbers = load_data("combat.json")
+        self.time_limit = numbers["time_limit_seconds"][self.move["difficulty"]]
+        if self.question["type"] == "typed":
+            self.time_limit += numbers["typed_extra_seconds"]
+        self.time_limit = effects.change_time_limit(self.time_limit, self.question, self)
+
+    def time_is_up(self, seconds) -> bool:
+        return seconds >= self.time_limit
+
+    def time_out(self) -> dict:
+        """Record the current answer as wrong after its time limit expires."""
+        return self._record_answer(self.question, False, self.time_limit)
 
     # --- 2. answer ---------------------------------------------------------
     def answer(self, given, seconds) -> dict:
         """Check one answer. Returns {"correct", "question", "done", "damage"}."""
         question = self.question
         correct = self.engine.check_answer(question, given)
+        return self._record_answer(question, correct, seconds)
+
+    def _record_answer(self, question, correct, seconds) -> dict:
         self.engine.report_answer(question, correct, seconds)
         if self.habits:
             self.habits.record_move(self.move["id"], self.move["tier"], seconds / self.expected_seconds, correct)
 
         self.results.append(correct)
         self.seconds.append(seconds)
+        self.time_used.append(min(seconds / self.time_limit, 1.0))
+        self.missed = self.missed or not correct
         self.remaining -= 1
         result = {"correct": correct, "question": question, "done": False, "damage": 0}
         if self.remaining > 0:
@@ -105,10 +127,12 @@ class Battle:
     def enemy_turn(self) -> dict:
         """Returns {"damage": hp the player lost, "taunt": a strings key or None}."""
         if effects.enemy_loses_turn(self):
+            self.missed = False
             return {"damage": 0, "taunt": None}
         amount = damage.enemy_damage(self.enemy, self.player)
         amount = effects.change_enemy_damage(amount, self)
         lost = self.player.take_damage(amount)
+        self.missed = False
         effects.end_of_round(self)
         taunt = self.habits.adapt(self.enemy) if self.habits else None
         return {"damage": lost, "taunt": taunt}

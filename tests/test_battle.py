@@ -16,6 +16,7 @@ class FakeEngine:
 
     def __init__(self):
         self.reported = []
+        self.streak = 0           # the real engine counts right answers in a row; the battle reads it
 
     def next_question(self, floor, difficulty, topic=None, weakest=False):
         return {"topic": "articles", "type": "multiple_choice", "difficulty": difficulty,
@@ -26,6 +27,7 @@ class FakeEngine:
 
     def report_answer(self, question, correct, seconds):
         self.reported.append(correct)
+        self.streak = self.streak + 1 if correct else 0
 
 
 def make_battle(class_id="warrior", level=1, enemy="article_goblin"):
@@ -46,6 +48,8 @@ def test_answer_uses_the_damage_hook(monkeypatch):
         return 7
 
     monkeypatch.setattr(damage, "player_damage", fake_damage)
+    # This test only checks the damage hook, so the crit and streak rules must not change the 7.
+    monkeypatch.setattr(effects, "change_player_damage", lambda amount, battle: amount)
     battle, _ = make_battle()
     battle.choose_move(first_move(battle, "basic")["id"])
     out = battle.answer("die", seconds=3)
@@ -122,3 +126,22 @@ def test_won_and_lost(monkeypatch):
     assert battle.won and battle.over
     battle.enemy_turn()
     assert battle.lost
+
+
+def test_timeout_records_a_full_length_wrong_answer():
+    battle, _ = make_battle()
+    battle.choose_move(first_move(battle, "basic")["id"])
+    limit = battle.time_limit
+
+    out = battle.time_out()
+
+    assert not out["correct"] and out["done"] and out["damage"] == 0
+    assert battle.seconds == [limit]
+    assert battle.time_used == [1.0]
+    assert battle.missed
+
+
+def test_combat_scene_imports_with_damage_effects():
+    from combat.combat_scene import CombatScene
+
+    assert CombatScene.__name__ == "CombatScene"

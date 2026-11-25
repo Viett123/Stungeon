@@ -1,0 +1,140 @@
+
+from types import SimpleNamespace
+
+import pytest
+
+from combat import damage
+from combat.battle import Battle
+from systems.enemies import make_enemy
+from systems.player import Player, load_data
+
+
+class FakePlayer:
+    """Only what the formula asks for: a damage multiplier and no armour."""
+
+    def __init__(self, multiplier=1.0):
+        self.multiplier = multiplier
+
+    def damage_multiplier(self):
+        return self.multiplier
+
+
+class ArmouredPlayer(FakePlayer):
+    """The same, but with armour, as it will be once D adds Player.defense()."""
+
+    def __init__(self, armour, multiplier=1.0):
+        super().__init__(multiplier)
+        self.armour = armour
+
+    def defense(self):
+        return self.armour
+
+
+BASIC = {"damage": 10}
+ULTIMATE = {"damage": 35, "bonus_damage": 45}
+
+
+# --- player_damage -----------------------------------------------------------
+
+def test_one_right_answer_deals_the_tier_damage():
+    assert damage.player_damage(BASIC, [True], FakePlayer(), None) == 10
+
+
+def test_each_right_answer_adds_the_tier_damage():
+    assert damage.player_damage(BASIC, [True, True, True], FakePlayer(), None) == 30
+
+
+def test_all_wrong_deals_nothing():
+    assert damage.player_damage(BASIC, [False], FakePlayer(), None) == 0
+    assert damage.player_damage(ULTIMATE, [False, False, False], FakePlayer(), None) == 0
+
+
+def test_no_answers_at_all_deals_nothing():
+    # all() of an empty list is True, so this case needs a check of its own.
+    assert damage.player_damage(ULTIMATE, [], FakePlayer(), None) == 0
+
+
+def test_ultimate_gets_the_bonus_only_when_all_three_are_right():
+    assert damage.player_damage(ULTIMATE, [True, True, True], FakePlayer(), None) == 35 * 3 + 45
+    assert damage.player_damage(ULTIMATE, [True, True, False], FakePlayer(), None) == 35 * 2
+
+
+def test_damage_multiplier_scales_each_hit():
+    # 10 damage, two right answers, multiplier 1.5 -> 30
+    assert damage.player_damage(BASIC, [True, True], FakePlayer(multiplier=1.5), None) == 30
+
+
+def test_bonus_is_added_after_the_multiplier():
+    # The multiplier scales the tier damage only. 35 * 3 * 2.0 + 45 = 255.
+    # (If the bonus were multiplied too, the answer would be 300.)
+    assert damage.player_damage(ULTIMATE, [True, True, True], FakePlayer(multiplier=2.0), None) == 255
+
+
+@pytest.mark.parametrize("rule, expected", [("floor", 12), ("round", 13), ("ceil", 13)])
+def test_rounding_follows_the_rule_in_data(monkeypatch, rule, expected):
+    monkeypatch.setattr(damage, "_combat_numbers", lambda: {"min_enemy_damage": 1, "rounding": rule})
+    # 10 damage times a multiplier of 1.25 is 12.5
+    assert damage.player_damage(BASIC, [True], FakePlayer(multiplier=1.25), None) == expected
+
+
+# --- enemy_damage ------------------------------------------------------------
+
+def test_enemy_hits_for_its_full_damage_without_armour():
+    assert damage.enemy_damage(SimpleNamespace(damage=8), FakePlayer()) == 8
+
+
+def test_armour_takes_away_part_of_the_hit():
+    assert damage.enemy_damage(SimpleNamespace(damage=8), ArmouredPlayer(armour=3)) == 5
+
+
+def test_hit_never_goes_below_the_minimum_from_data():
+    minimum = load_data("combat.json")["min_enemy_damage"]
+    assert minimum >= 1
+    assert damage.enemy_damage(SimpleNamespace(damage=8), ArmouredPlayer(armour=50)) == minimum
+    assert damage.enemy_damage(SimpleNamespace(damage=0), FakePlayer()) == minimum
+
+
+# --- the real numbers from data/ ---------------------------------------------
+
+def test_real_ultimate_uses_the_numbers_in_moves_json():
+    player = Player("warrior", level=5)
+    move = next(m for m in player.unlocked_moves() if m["tier"] == "ultimate")
+    tier = load_data("moves.json")["tiers"]["ultimate"]
+    expected = tier["damage"] * 3 + tier["bonus_damage"]
+    assert damage.player_damage(move, [True, True, True], player, None) == expected
+
+
+def test_real_enemy_hits_for_its_damage_in_enemies_json():
+    enemy = make_enemy("article_goblin")
+    expected = load_data("enemies.json")["enemies"]["article_goblin"]["damage"]
+    assert damage.enemy_damage(enemy, Player("warrior")) == expected
+
+
+class RightEngine:
+    """Asks one question and always marks the answer right."""
+
+    streak = 0      # the crit and streak rule reads engine.streak; 0 = no streak bonus
+
+    def next_question(self, floor, difficulty, topic=None, weakest=False):
+        return {"topic": "articles", "type": "multiple_choice", "difficulty": difficulty,
+                "question": "___ Bühne", "choices": ["der", "die", "das"], "answer": "die"}
+
+    def check_answer(self, question, given):
+        return True
+
+    def report_answer(self, question, correct, seconds):
+        pass
+
+
+def test_a_real_fight_uses_the_formula():
+    player = Player("warrior")
+    enemy = make_enemy("article_goblin")
+    battle = Battle(player, enemy, RightEngine(), floor=1)
+    slash = next(m for m in battle.moves() if m["id"] == "slash")
+    battle.choose_move(slash["id"])
+    # Answer slowly (half the time limit), so it is not a critical hit and the damage is the plain formula.
+    out = battle.answer("die", seconds=battle.time_limit * 0.5)
+    assert out["damage"] == slash["damage"]
+    assert enemy.hp == enemy.max_hp - slash["damage"]
+    battle.enemy_turn()
+    assert player.hp == player.max_hp - enemy.damage
