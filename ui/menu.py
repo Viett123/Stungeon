@@ -5,7 +5,7 @@ is chosen. Up/Down (or W/S) move, Enter chooses, the mouse works too.
 """
 import pygame
 
-from core import settings
+from core import settings, sound
 from core.scene import Scene
 from ui import anim, theme, widgets
 from ui.button import Button
@@ -35,6 +35,7 @@ class MenuScene(Scene):
 
     def move(self, step):
         """Go to the next option that can be used, skipping greyed-out ones."""
+        sound.play("ui_move")
         for _ in self.buttons:
             self.selected = (self.selected + step) % len(self.buttons)
             if self.buttons[self.selected].enabled:
@@ -50,13 +51,17 @@ class MenuScene(Scene):
             elif event.key in (pygame.K_DOWN, pygame.K_s):
                 self.move(1)
             elif event.key in ENTER_KEYS:
-                self.actions[self.selected]()
+                self.choose()
             elif event.key == pygame.K_ESCAPE:
                 self.on_escape()
         elif event.type == pygame.MOUSEMOTION:
             self.select_at(event.pos)
         elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and self.select_at(event.pos):
-            self.actions[self.selected]()
+            self.choose()
+
+    def choose(self):
+        sound.play("ui_select")
+        self.actions[self.selected]()
 
     def select_at(self, pos):
         """Select the button under the mouse. Returns True if there is one."""

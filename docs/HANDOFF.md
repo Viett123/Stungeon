@@ -45,3 +45,8 @@ Read this first in any new chat or Claude Code session about Stungeon.
 - questions/build/build.py builds every level (python build.py, or python build.py a1). The B1 output is unchanged.
 - D: the bosses ask B1 grammar topics, which A1 doesn't have, so in A1 they ask any topic. A1 boss topics could be added later.
 
+## Updates (25 Nov 2026, sound)
+- Sound and music are in, all made in code: tools/make_sounds.py turns the recipes in data/sounds.json into assets/sounds/*.wav. No downloaded sounds, so no licences.
+- Play an effect from any screen with sound.play("name") (core/sound.py). A screen picks its music with a class attribute: music = "dungeon"; None keeps the current track; "off" is silence.
+- F2 turns sound on and off on every screen. With no sound card, the game just stays quiet.
+

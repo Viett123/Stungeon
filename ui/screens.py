@@ -1,16 +1,20 @@
 """Game over and victory screen with a short learning summary (owner: B)."""
 import pygame
 
-from core import settings
+from core import settings, sound
 from core.scene import Scene
 from core.strings import t
 from ui import theme, topic_names, widgets
 
 
 class EndScene(Scene):
+    music = "off"     # core/sound.py: silence, so the result sound stands out
+
     def __init__(self, game, won):
         super().__init__(game)
         self.won = won
+        if won:
+            sound.play("victory")
         run = game.run_state
         self.player = run.player
         self.floor = run.floor_number
