@@ -50,3 +50,12 @@ Read this first in any new chat or Claude Code session about Stungeon.
 - Play an effect from any screen with sound.play("name") (core/sound.py). A screen picks its music with a class attribute: music = "dungeon"; None keeps the current track; "off" is silence.
 - F2 turns sound on and off on every screen. With no sound card, the game just stays quiet.
 
+## Updates (26 Nov 2026, play-test changes)
+- Title logo: put a drawn assets/sprites/logo.png in, and the title uses it (see assets/README.md). Without it, the logo is made from the font.
+- Rooms: new kinds pillars (a hall with pillars), storeroom (a chest, no monsters) and merchant (a wandering shop). Monsters are spread so every normal and pillar room gets one first. Weights and chances are in data/rooms.json (A can tune them).
+- Wandering merchant: on about half the floors one room has a merchant. Walk into him to trade; Esc goes back to the dungeon. His stock is wandering_stock in data/shop.json. Nobody can walk through his tile (Floor.is_walkable).
+- Shops can sell now: Tab switches Buy / Sell. Worn equipment is not sold (take it off first). The shopkeeper breathes and hops after a sale (ui/merchant.py).
+- Bag: Delete (or Backspace) on a bag item asks first, a second press throws it away. On a worn item it still takes it off.
+- Streak: "Streak x3 +30% damage" with boxes up to the biggest bonus, in fights and on the map.
+- Music: each floor look has its own tune (data/themes.json, music: stone, jungle, desert) and the boss room has its own (boss_room). DungeonScene.music is now a property.
+

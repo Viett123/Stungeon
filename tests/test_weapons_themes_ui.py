@@ -95,6 +95,7 @@ def test_a_hit_starts_the_swing_and_shows_a_damage_number(screen):
     fight = game.scenes.current
     assert isinstance(fight, CombatScene) and fight.weapon is not None
     fight.pick_move(0)
+    fight.elapsed = fight.battle.time_limit * 0.5            # a slow answer, so no "CRIT!" (see test_crit_and_skip.py)
     fight.submit(fight.battle.question["answer"])            # a correct answer
     assert fight.attack > 0 and fight.pending_damage > 0 and not fight.floating   # the hit is on its way
     assert fight.player_offset()[0] >= 0                     # winding up: leaning back, away from the enemy

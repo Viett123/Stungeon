@@ -93,3 +93,22 @@ class Player:
             events.append(f"level_up:{self.level}")
             events += [f"unlocked:{m['id']}" for m in self.unlocked_moves() if m["id"] not in before]
         return events
+
+    def _equipped_items(self) -> list[dict]:
+        items = load_data("items.json")["items"]
+        return [items[item_id] for item_id in self.equipped.values() if item_id in items]
+
+    def damage_multiplier(self) -> float:
+        """Product of every equipped item's damage_multiplier (1.0 if it has none)."""
+        result = 1.0
+        for item in self._equipped_items():
+            result *= item.get("damage_multiplier", 1.0)
+        return result
+
+    def defense(self) -> int:
+        """Total damage removed from every enemy hit by the equipped items."""
+        return sum(item.get("defense", 0) for item in self._equipped_items())
+
+    def bonus_seconds(self) -> int:
+        """Extra seconds to answer every question, from the equipped items ("bonus_seconds" in items.json)."""
+        return sum(item.get("bonus_seconds", 0) for item in self._equipped_items())

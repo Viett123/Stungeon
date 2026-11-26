@@ -1,4 +1,4 @@
-"""Buying and selling between floors (owner: D). No pygame here."""
+"""Buying and selling: in the shop between floors, or from a wandering merchant (owner: D). No pygame here."""
 from systems import inventory, items
 from systems.player import load_data
 
@@ -6,6 +6,11 @@ from systems.player import load_data
 def stock(floor_number) -> list[str]:
     """Item ids the shop sells after this floor. An empty list means: no shop."""
     return list(load_data("shop.json")["stock"].get(str(floor_number), []))
+
+
+def wandering_stock(floor_number) -> list[str]:
+    """Item ids a wandering merchant sells on this floor (he can stand in any room, see dungeon/floor.py)."""
+    return list(load_data("shop.json").get("wandering_stock", {}).get(str(floor_number), []))
 
 
 def buy_price(item) -> int:
