@@ -1,0 +1,13 @@
+{
+  "_note": "How each kind of weapon is held (owner A). Written by Claude after the play-test: weapons looked too big and were all held the same way. Lengths are in art pixels of the character (a hero is about 20 pixels tall). grip = where the hand holds the weapon, as a share of its length from the bottom end (0.1 = near the handle end, 0.6 = a bit above the middle). hand = [how far in front of the body, how far above the feet]. hold_angle = degrees the weapon leans while held (minus = the top leans forward); raised_angle = while a bow or staff attacks. max_length = the weapon is drawn smaller (by a whole number, so pixels stay square) until it is at most about this long. A weapon listed under weapons changes only the values it names; big: true lets a bow use big_max_length.",
+  "styles": {
+    "melee": {"grip": 0.1, "hand": [6, 8], "hold_angle": -30, "max_length": 18},
+    "staff": {"grip": 0.6, "hand": [5, 12], "hold_angle": -8, "raised_angle": 18, "max_length": 22},
+    "bow":   {"grip": 0.5, "hand": [8, 11], "hold_angle": 0, "raised_angle": 0, "max_length": 20, "big_max_length": 30}
+  },
+  "weapons": {
+    "spear":         {"grip": 0.3, "hold_angle": -12, "max_length": 24},
+    "sledgehammer":  {"grip": 0.12, "max_length": 22},
+    "golden_dagger": {"grip": 0.15, "hand": [7, 8]}
+  }
+}

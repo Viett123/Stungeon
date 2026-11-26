@@ -31,6 +31,9 @@ is changed: it is the pack's plain floor with the pack's skull drawn on top.
 | `enemy_vocab_slime_idle_N` | `swampy_anim_fN` |
 | `enemy_article_goblin_idle_N`, `_run_N` | `goblin_idle_anim_fN`, `goblin_run_anim_fN` |
 | `enemy_grammar_ghost_idle_N` | `necromancer_anim_fN` |
+| `enemy_abbrev_imp_idle_N`, `_run_N` | `imp_idle_anim_fN`, `imp_run_anim_fN` |
+| `enemy_while_wisp_idle_N` | `ice_zombie_anim_fN` |
+| `enemy_debate_gargoyle_idle_N`, `_run_N` | `masked_orc_idle_anim_fN`, `masked_orc_run_anim_fN` |
 | `enemy_boss_floor_1_idle_N`, `_run_N` | `doc_idle_anim_fN`, `doc_run_anim_fN` |
 | `enemy_boss_floor_2_idle_N`, `_run_N` | `orc_shaman_idle_anim_fN`, `orc_shaman_run_anim_fN` |
 | `enemy_boss_floor_3_idle_N`, `_run_N` | `chort_idle_anim_fN`, `chort_run_anim_fN` |

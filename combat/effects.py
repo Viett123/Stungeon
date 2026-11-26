@@ -28,8 +28,8 @@ def change_time_limit(seconds, question, battle) -> int:
     Equipment can give more time: every worn item's "bonus_seconds" (data/items.json) is added,
     e.g. Worn Boots +2 s. A player without that method (a test's fake player) gets no bonus.
     """
-    bonus = getattr(battle.player, "bonus_seconds", lambda: 0)()
-    return seconds + bonus
+    bonus = getattr(battle.player, "bonus_seconds", lambda: 0)()     # heavy weapons give a minus number
+    return max(load_data("combat.json")["min_time_limit_seconds"], seconds + bonus)
 
 
 def change_player_damage(damage, battle) -> int:
