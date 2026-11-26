@@ -35,6 +35,7 @@ class Battle:
         self.seconds = []      # how long each of those answers took, for B's rules (faster = stronger)
         self.time_used = []    # share of each question's time limit used
         self.time_limit = 0
+        self.base_time_limit = 1     # the time limit before items change it (set for each question)
         self.missed = False
         self.last_crit = False # set by effects.change_player_damage: was the last hit a critical hit?
 
@@ -86,6 +87,9 @@ class Battle:
         self.time_limit = numbers["time_limit_seconds"][self.move["difficulty"]]
         if self.question["type"] == "typed":
             self.time_limit += numbers["typed_extra_seconds"]
+        # The crit is measured on this normal limit. Items that give more seconds give more time
+        # to think, not an easier crit.
+        self.base_time_limit = self.time_limit
         self.time_limit = effects.change_time_limit(self.time_limit, self.question, self)
 
     def time_is_up(self, seconds) -> bool:
@@ -109,7 +113,7 @@ class Battle:
 
         self.results.append(correct)
         self.seconds.append(seconds)
-        self.time_used.append(min(seconds / self.time_limit, 1.0))
+        self.time_used.append(min(seconds / self.base_time_limit, 1.0))
         self.missed = self.missed or not correct
         self.remaining -= 1
         result = {"correct": correct, "question": question, "done": False, "damage": 0, "crit": False}
