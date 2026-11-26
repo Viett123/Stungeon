@@ -67,7 +67,7 @@ def floor_spawns(floor_number) -> dict:
 
 
 def chase_rules() -> dict:
-    """How monsters on the map chase the player: {"wake_radius", "sleep_radius", "seconds_per_step", "rest_after_flee"}."""
+    """How monsters chase: radii, speed, flee rest, and ids in ``astar_enemies`` that route around walls."""
     return _data()["chase"]
 
 

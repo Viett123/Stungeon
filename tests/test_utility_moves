@@ -1,0 +1,191 @@
+"""Tests for the three utility moves (mission 6): War Cry, Reveal and Evasion.
+
+A utility move asks no question. It only switches something on in the battle, and a later
+step uses it:
+  - War Cry: the next attack deals more damage. The attack uses it up, hit or miss.
+  - Reveal:  the next multiple-choice question loses one wrong answer.
+  - Evasion: the enemy's next attacks each have a chance to miss.
+The numbers are in data/combat.json under "utility".
+"""
+import json
+import random
+from pathlib import Path
+from types import SimpleNamespace
+
+import pytest
+
+from combat import damage, effects
+from combat.battle import Battle
+from systems.enemies import make_enemy
+from systems.player import Player, load_data
+
+UTILITY = load_data("combat.json")["utility"]
+ROOT = Path(__file__).resolve().parent.parent
+
+
+class SequenceRng:
+    """Gives the numbers from a list, one per call to random(), so a test knows every roll."""
+
+    def __init__(self, *values):
+        self.values = list(values)
+
+    def random(self):
+        return self.values.pop(0)
+
+
+class FakeEngine:
+    """Asks questions of the given types, one after another, and counts right answers in a row."""
+
+    def __init__(self, types=("multiple_choice",)):
+        self.types = list(types)
+        self.streak = 0
+
+    def next_question(self, floor, difficulty, topic=None, weakest=False):
+        kind = self.types.pop(0) if len(self.types) > 1 else self.types[0]
+        return {"topic": "articles", "type": kind, "difficulty": difficulty,
+                "question": "___ Bühne", "choices": ["der", "die", "das"], "answer": "die"}
+
+    def check_answer(self, question, given):
+        return given == question["answer"]
+
+    def report_answer(self, question, correct, seconds):
+        self.streak = self.streak + 1 if correct else 0
+
+
+def make_battle(class_id, level=5, engine=None, rng=None):
+    player = Player(class_id, level=level)
+    player.resource = player.max_resource          # every move is affordable
+    battle = Battle(player, make_enemy("article_goblin"), engine or FakeEngine(), floor=1,
+                    rng=rng or random.Random(0))
+    return battle, player
+
+
+def utility_move(battle):
+    return next(m for m in battle.moves() if m["tier"] == "utility")
+
+
+def move_of_tier(battle, tier):
+    return next(m for m in battle.moves() if m["tier"] == tier)
+
+
+# --- War Cry: the next attack deals more ----------------------------------------
+
+def test_war_cry_adds_its_bonus_to_the_next_attack():
+    battle, _ = make_battle("warrior")
+    battle.choose_move(utility_move(battle)["id"])
+    slash = move_of_tier(battle, "basic")
+    battle.choose_move(slash["id"])
+    out = battle.answer("die", seconds=10)         # slow answer: no crit. One right answer: streak x1.1
+    assert out["damage"] == damage.round_damage(slash["damage"] * 1.1 * (1 + UTILITY["war_cry_bonus"]))
+    assert battle.enemy.hp == battle.enemy.max_hp - out["damage"]
+
+
+def test_the_attack_after_war_cry_is_normal_again():
+    battle, _ = make_battle("warrior")
+    battle.choose_move(utility_move(battle)["id"])
+    slash = move_of_tier(battle, "basic")
+    battle.choose_move(slash["id"])
+    battle.answer("die", seconds=10)               # this one uses War Cry up
+    battle.choose_move(slash["id"])
+    out = battle.answer("die", seconds=10)         # second right answer: streak x1.2, no War Cry
+    assert out["damage"] == damage.round_damage(slash["damage"] * 1.2)
+
+
+def test_a_wrong_answer_still_uses_up_war_cry():
+    battle, _ = make_battle("warrior")
+    battle.choose_move(utility_move(battle)["id"])
+    slash = move_of_tier(battle, "basic")
+    battle.choose_move(slash["id"])
+    out = battle.answer("der", seconds=10)         # wrong: no damage at all
+    assert out["damage"] == 0
+    assert battle.war_cry is False
+
+
+def test_war_cry_changes_only_one_attack_in_the_hook():
+    battle = SimpleNamespace(time_used=[0.5], engine=SimpleNamespace(streak=0), last_crit=False, war_cry=True)
+    assert effects.change_player_damage(10, battle) == round(10 * (1 + UTILITY["war_cry_bonus"]))
+    assert battle.war_cry is False
+    assert effects.change_player_damage(10, battle) == 10
+
+
+# --- Reveal: the next multiple-choice question loses a wrong answer -------------
+
+@pytest.mark.parametrize("seed", range(20))
+def test_reveal_takes_out_a_wrong_answer_and_never_the_right_one(seed):
+    battle, _ = make_battle("mage", rng=random.Random(seed))
+    battle.choose_move(utility_move(battle)["id"])
+    battle.choose_move(move_of_tier(battle, "basic")["id"])
+    choices = battle.question["choices"]
+    assert "die" in choices
+    assert len(choices) == 3 - UTILITY["reveal_wrong_choices_removed"]
+
+
+def test_reveal_waits_for_the_next_multiple_choice_question():
+    engine = FakeEngine(types=["typed", "multiple_choice"])
+    battle, _ = make_battle("mage", engine=engine)
+    battle.choose_move(utility_move(battle)["id"])
+    spark = move_of_tier(battle, "basic")
+    battle.choose_move(spark["id"])
+    assert battle.question["type"] == "typed"
+    assert battle.question["choices"] == ["der", "die", "das"]     # a typed question is left alone
+    assert battle.reveal is True                                    # and Reveal is still waiting
+    battle.answer("die", seconds=3)                                 # ends this move
+    battle.choose_move(spark["id"])
+    assert len(battle.question["choices"]) == 2                     # the next one is revealed
+    assert battle.reveal is False
+
+
+# --- Evasion: the enemy's next attacks may miss ---------------------------------
+
+def test_evasion_covers_exactly_the_next_two_attacks():
+    rng = SequenceRng(0.0, 0.99)            # attack 1 rolls a miss, attack 2 rolls a hit
+    battle, player = make_battle("archer", rng=rng)
+    battle.choose_move(utility_move(battle)["id"])
+    full = damage.enemy_damage(battle.enemy, player)
+    assert battle.enemy_turn()["damage"] == 0
+    assert battle.enemy_turn()["damage"] == full
+    assert battle.enemy_turn()["damage"] == full     # third attack: no roll, no cover any more
+    assert rng.values == []
+
+
+def test_evasion_miss_chance_is_the_number_in_data():
+    chance = UTILITY["evasion_miss_chance"]
+    rng = SequenceRng(chance - 0.001, chance)      # just under the chance: miss. Exactly the chance: hit
+    battle, player = make_battle("archer", rng=rng)
+    battle.choose_move(utility_move(battle)["id"])
+    full = damage.enemy_damage(battle.enemy, player)
+    assert battle.enemy_turn()["damage"] == 0
+    assert battle.enemy_turn()["damage"] == full
+
+
+def test_a_skipped_enemy_turn_does_not_use_up_evasion():
+    rng = SequenceRng(0.0, 0.0)   # first roll: the enemy skips its turn. Second roll: evasion misses
+    battle, _ = make_battle("archer", rng=rng)
+    battle.choose_move(utility_move(battle)["id"])
+    battle.missed = True          # a wrong answer this round, so the skip can happen
+    assert battle.enemy_turn()["damage"] == 0      # skipped: not an attack
+    assert battle.evasion_attacks == UTILITY["evasion_attacks"]
+    assert battle.enemy_turn()["damage"] == 0      # a real attack: the roll misses
+    assert battle.evasion_attacks == UTILITY["evasion_attacks"] - 1
+
+
+def test_using_evasion_again_starts_the_count_again_instead_of_adding():
+    battle, _ = make_battle("archer")
+    battle.choose_move(utility_move(battle)["id"])
+    battle.choose_move(utility_move(battle)["id"])
+    assert battle.evasion_attacks == UTILITY["evasion_attacks"]
+
+
+# --- Every utility move has an effect and some text -----------------------------
+
+@pytest.mark.parametrize("class_id", ["warrior", "mage", "archer"])
+def test_every_utility_move_of_every_class_has_an_effect(class_id):
+    for move in Player(class_id, level=5).unlocked_moves():
+        if move["tier"] == "utility":
+            assert move["id"] in effects.UTILITY_EFFECTS, f"no effect for {move['id']}"
+
+
+def test_every_utility_hint_has_text_in_the_strings_file():
+    strings = json.loads((ROOT / "core" / "strings_en.json").read_text(encoding="utf-8"))
+    for key in effects.UTILITY_HINTS.values():
+        assert key in strings, f"missing string {key}"

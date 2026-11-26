@@ -75,6 +75,12 @@ def test_distance_counts_diagonals_as_one_step():
     assert chase.distance((0, 0), (3, 1)) == 3
 
 
+def test_chase_rules_include_the_configured_astar_enemies():
+    assert chase_rules()["astar_enemies"] == [
+        "vocab_slime", "article_goblin", "plural_bat", "abbreviation_imp", "while_wisp",
+    ]
+
+
 def test_monster_steps_towards_the_player_and_can_reach_them():
     floor = OpenFloor()
     assert chase.next_step(floor, (5, 5), (8, 5), set()) == (6, 5)

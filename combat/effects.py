@@ -1,44 +1,108 @@
-"""Status effects: buffs, debuffs and utility moves (owners: B for the rules, D for the content).
+"""Status effects: buffs, debuffs, utility moves, time, crits and streaks (owners: B for the rules, D for the content).
 
-PLACEHOLDER. Every function here is a "hook": the battle calls it at a fixed moment
-and uses what it returns. Right now each hook does nothing, so there are no effects yet.
-To add an effect (for example the Blind debuff), put its rule in the matching hook.
-`battle` gives access to battle.player, battle.enemy, battle.engine and battle.rng.
+Every function here is a "hook": the battle calls it at a fixed moment and uses what it returns.
+`battle` gives access to battle.player, battle.enemy, battle.engine, battle.rng and the
+time and answer data of the current move (battle.time_limit, battle.time_used, battle.missed).
 
-The v1 plan (docs/HANDOFF.md) has 3 buffs and 4 debuffs. Which ones is a design decision.
+Rules that are written: critical hits and streaks (change_player_damage), the three utility
+moves (War Cry, Reveal and Evasion, mission 6: use_utility, change_question, change_player_damage
+and change_enemy_damage), the enemy skipping its turn after a miss (enemy_loses_turn), and the
+item-turn rule (item_costs_turn).
+Still placeholders: the other buffs and debuffs. The v1 plan (docs/HANDOFF.md) has
+3 buffs and 4 debuffs. Which ones is a design decision.
 """
-
 from combat.damage import round_damage
 from systems.player import load_data
 
+
 def use_utility(move, battle) -> None:
-    """Called when the player uses a utility move (War Cry, Reveal, Evasion). No question is asked."""
-    # TODO(B/D): start the move's effect, e.g. remember "next attack is stronger" on the battle.
+    """Called when the player uses a utility move (War Cry, Reveal, Evasion). No question is asked.
+
+    The move only switches something on, on the battle. The hook that uses it is named below.
+    """
+    start = UTILITY_EFFECTS.get(move["id"])
+    if start is not None:
+        start(battle)
+
+
+def _start_war_cry(battle) -> None:
+    # Using War Cry twice before an attack does not stack: it is one flag.
+    battle.war_cry = True              # change_player_damage uses it up on the next attack
+
+
+def _start_reveal(battle) -> None:
+    battle.reveal = True               # change_question uses it up on the next multiple-choice question
+
+
+def _start_evasion(battle) -> None:
+    # Using Evasion again starts the count again: the attacks do not add up.
+    # change_enemy_damage counts the attacks down.
+    battle.evasion_attacks = load_data("combat.json")["utility"]["evasion_attacks"]
+
+
+# The utility moves, by move id from data/moves.json.
+UTILITY_EFFECTS = {"war_cry": _start_war_cry, "reveal": _start_reveal, "evasion": _start_evasion}
+
+# The line shown under a utility move, by move id (keys in core/strings_en.json).
+UTILITY_HINTS = {"war_cry": "utility_war_cry", "reveal": "utility_reveal", "evasion": "utility_evasion"}
 
 
 def change_question(question, battle) -> dict:
-    """Called for every new question, before it is shown. Return the question to show."""
+    """Called for every new question, before it is shown. Return the question to show.
+
+    Reveal: the next multiple-choice question loses a wrong answer (never the right one).
+    Other question types are left alone, and Reveal waits for the next multiple-choice one.
+    """
     # TODO(B): e.g. Blind debuff -> return battle.engine.to_typed(question)
-    return question
+    if not battle.reveal or question["type"] != "multiple_choice":
+        return question
+    battle.reveal = False
+    how_many = load_data("combat.json")["utility"]["reveal_wrong_choices_removed"]
+    return dict(question, choices=_remove_wrong_choices(question, how_many, battle.rng))
 
 
-def change_time_limit(seconds, question, battle) -> int:
-    """Called after the default time limit is chosen for a question."""
+def _remove_wrong_choices(question, how_many, rng) -> list:
+    """Copy the choices and take out up to `how_many` wrong ones, picked at random with rng."""
+    choices = list(question["choices"])
+    for _ in range(how_many):
+        wrong = [i for i, choice in enumerate(choices) if choice != question["answer"]]
+        if not wrong:
+            break                      # no wrong choice is left to take out
+        del choices[rng.choice(wrong)]
+    return choices
+
+
+def change_time_limit(seconds, question, battle) -> float:
+    """Called when a question is shown. `seconds` is the time it gets (by difficulty, plus extra for typed).
+
+    Return the time the question really gets.
+    """
+    # TODO(B/D): e.g. an armour piece that gives extra seconds -> return seconds + 5
     return seconds
 
 
 def change_player_damage(damage, battle) -> int:
     """Called after combat/damage.py worked out the player's damage. Return the final number.
 
-    Two rules, both numbers in data/combat.json:
-      - a fast answer is a critical hit (the faster, the bigger)
-      - a streak of right answers in a row adds damage
+    Three multipliers, multiplied together, then rounded once:
+      - a fast answer is a critical hit (the faster, the bigger), numbers in data/combat.json
+      - a streak of right answers in a row adds damage, numbers in data/combat.json
+      - War Cry: the next attack deals more, number in data/combat.json (utility move, mission 6)
     """
     numbers = load_data("combat.json")
     crit = crit_multiplier(battle.time_used, numbers["crit_tiers"])
     streak = streak_multiplier(battle.engine.streak, numbers["streak"])
+    war_cry = _use_war_cry(battle, numbers["utility"])
     battle.last_crit = crit > 1      # so the screen can show "CRIT!"
-    return round_damage(damage * crit * streak)
+    return round_damage(damage * crit * streak * war_cry)
+
+
+def _use_war_cry(battle, utility_numbers) -> float:
+    """Normally 1.0. After War Cry: the bonus for this attack, and War Cry is used up (hit or miss)."""
+    if not battle.war_cry:
+        return 1.0
+    battle.war_cry = False
+    return 1 + utility_numbers["war_cry_bonus"]
 
 
 def crit_multiplier(time_used, tiers) -> float:
@@ -87,8 +151,17 @@ def enemy_loses_turn(battle) -> bool:
 
 
 def change_enemy_damage(damage, battle) -> int:
-    """Called after combat/damage.py worked out the enemy's damage. Return the final number."""
-    # TODO(B): e.g. Evasion -> return 0 once.
+    """Called after combat/damage.py worked out the enemy's damage. Return the final number.
+
+    Evasion: while it covers attacks, each enemy attack may miss (0 damage). Every attack that
+    is rolled uses up one of its attacks, hit or miss. A skipped enemy turn is not an attack.
+    The chance is evasion_miss_chance in data/combat.json, and battle.rng makes the roll.
+    """
+    if battle.evasion_attacks <= 0:
+        return damage
+    battle.evasion_attacks -= 1
+    if battle.rng.random() < load_data("combat.json")["utility"]["evasion_miss_chance"]:
+        return 0
     return damage
 
 

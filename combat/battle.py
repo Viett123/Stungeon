@@ -36,6 +36,9 @@ class Battle:
         self.time_used = []    # share of each question's time limit used
         self.time_limit = 0
         self.missed = False
+        self.war_cry = False
+        self.reveal = False
+        self.evasion_attacks = 0
 
     # --- state -------------------------------------------------------------
     @property
