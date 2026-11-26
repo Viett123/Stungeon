@@ -73,11 +73,14 @@ is changed: it is the pack's plain floor with the pack's skull drawn on top.
 - Link: https://0x72.itch.io/dungeonui
 - License checked on 14 Nov 2026.
 
-| File in `assets/sprites/` | Part of `dungeonui.v1.png` |
-|---|---|
-| `ui_frame.png` | The small square frame under "Parts" (24 x 24 pixels, at x 24, y 72) |
+No file from this pack is in the game any more. `ui_frame.png` used to be its small square frame
+(24 x 24 pixels, at x 24, y 72 of `dungeonui.v1.png`); it was replaced by our own frames (see below).
 
-Not used yet: the other frames, hearts, coloured buttons, small icons and the font.
+## UI frames: drawn by us
+
+- `assets/sprites/ui_frame.png` (stone floors), `assets/sprites/desert/ui_frame.png` and
+  `assets/sprites/jungle/ui_frame.png`: drawn by Viet (project lead), 24 x 24 pixels each, in the same
+  layout as 0x72's frame. Nothing to license.
 
 ## 16x16 Dungeon Tileset (v5) by 0x72
 
@@ -137,7 +140,18 @@ Not used yet from these sheets: fountains, totems, the wall monster.
 - All armour and accessory items (hood, vest, trousers, boots, ring, charm): none of the packs has such art.
 - All move icons.
 - Bars, slots and buttons (`ui/theme.py`). The panel borders now come from `ui_frame.png`.
-- The font is pygame's built-in font.
+- Nothing else: the font is now a real pixel font (see Fonts).
+
+## Fonts
+
+Both are from Google Fonts' GitHub (https://github.com/google/fonts), downloaded on 26 Nov 2026.
+License: SIL Open Font License 1.1 (free to use and ship with a game; the license file must go with
+the font, so it is in `assets/fonts/` next to it). Both can draw English, German and Vietnamese.
+
+| File in `assets/fonts/` | Font | Author | License file |
+|---|---|---|---|
+| `Tiny5.ttf` (the file `Tiny5[BLED,JITT,ROND,wdth,wght].ttf`, renamed) | Tiny5 | The Tiny5 Project Authors (Stefan Schmidt), https://github.com/Gissio/font_tiny5 | `OFL-Tiny5.txt` |
+| `VT323-Regular.ttf` | VT323 | The VT323 Project Authors (Peter Hull) | `OFL-VT323.txt` |
 
 ## Sound and music: made by us, in code
 

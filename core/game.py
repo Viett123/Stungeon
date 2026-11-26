@@ -10,6 +10,19 @@ from core.strings import t
 SOUND_NOTICE_SECONDS = 1.5
 
 
+
+def load_font(name):
+    """One of the fonts in settings.FONTS, e.g. "normal".
+
+    If the font file is missing or broken, pygame's built-in font is used, so the game still runs.
+    """
+    file_name, size = settings.FONTS[name]
+    try:
+        return pygame.font.Font(str(settings.FONT_DIR / file_name), size)
+    except (OSError, FileNotFoundError):
+        logging.error("font %s could not be loaded, using the built-in font", file_name)
+        return pygame.font.Font(None, settings.OLD_FONT_SIZES[name])
+
 class Game:
     def __init__(self, fullscreen=False):
         # A small sound buffer (512) makes effects play right when they happen, not a moment later.
@@ -24,13 +37,8 @@ class Game:
         self.running = True
         self.message = ""   # a one-line notice for the title screen (e.g. after an error)
 
-        # Load fonts once here, never inside draw(). Real font files go in assets/fonts later.
-        self.fonts = {
-            "title": pygame.font.Font(None, 96),
-            "big": pygame.font.Font(None, 48),
-            "normal": pygame.font.Font(None, 32),
-            "small": pygame.font.Font(None, 26),
-        }
+        # Load fonts once here, never inside draw().
+        self.fonts = {name: load_font(name) for name in settings.FONTS}
         self.run_state = None   # the current playthrough (core/run.py), set when floor 1 starts
         self.new_game = {}      # name, class, dungeon picked so far on the new-game screens (core/flow.py)
 

@@ -107,3 +107,28 @@ def test_weapons_are_not_much_taller_than_the_hero(game, item_id):
     art = pygame.image.load(f"assets/sprites/weapon_{item_id}.png")
     length = art.get_bounding_rect().height * weapon.pixel / 3              # in the hero's art pixels
     assert length <= rules["max_length"] * 1.25
+
+
+# --- fonts ----------------------------------------------------------------------------------
+LETTERS = "äöüßÄÖÜ" + "ĐđệữảỗắẫơƯ"        # German and Vietnamese
+
+
+def _picture(font, char):
+    return pygame.image.tobytes(font.render(char, False, (255, 255, 255)), "RGBA")
+
+
+@pytest.mark.parametrize("name", ["title", "big", "normal", "small"])
+def test_the_pixel_fonts_can_draw_german_and_vietnamese(game, name):
+    from core import settings
+    file_name, size = settings.FONTS[name]
+    assert (settings.FONT_DIR / file_name).exists()
+    font = game.fonts[name]
+    missing = _picture(font, "")                           # a character no font has: the "missing" box
+    for char in LETTERS:
+        assert _picture(font, char) != missing, (name, char)
+
+
+def test_a_missing_font_file_falls_back_to_the_built_in_font(monkeypatch, tmp_path):
+    from core import game as game_module, settings
+    monkeypatch.setattr(settings, "FONT_DIR", tmp_path)          # an empty folder
+    assert game_module.load_font("normal") is not None

@@ -117,7 +117,9 @@ def test_the_longest_name_fits_in_the_hud_panel(game):
     player = new_run("warrior", name="W" * NAME_LENGTH).player
     width = hud.PLAYER_PANEL.width - 28                          # the inside of the panel's frame
     left, right = hud.name_line(game.fonts, player, width)
-    assert left.endswith("...")                                  # too long, so it was shortened
+    full = game.fonts["normal"].size(player.name)[0] + game.fonts["small"].size(right)[0]
+    if full > width:                                             # with a wide font the name is too long...
+        assert left.endswith("...")                              # ...so it was shortened
     assert game.fonts["normal"].size(left)[0] + game.fonts["small"].size(right)[0] <= width
     short = new_run("warrior", name="Mia").player
     assert hud.name_line(game.fonts, short, width)[0] == "Mia"   # short names are not touched
