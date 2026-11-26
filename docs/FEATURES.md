@@ -67,7 +67,7 @@ In the order that matters most for the exhibit.
 | 10 | Weapons as damage multipliers with effects and looks | Looks done, effects Now (D + B) | The equipped weapon is held and swung. See Now 8 |
 | 11 | Armour reduces damage or gives time; special skills on high tiers | Slots done, effects Now (D + B) | Head, body, legs, shoes, two accessories. See Now 8 |
 | 12 | Rarity tiers; loot from monsters, bosses and chests | Done | Common to Legendary. Mythical: Later. End-of-floor reward chest: Later |
-| 13 | Gold, shop between floors; selling; wandering traders | Buying done | Selling has its rule (`shop.sell`) but no screen yet: small, could be Now. Traders: Later |
+| 13 | Gold, shop between floors; selling; wandering traders | Done | Buying and selling (Tab). A wandering merchant appears in a room on about half the floors |
 | 14 | HP potions, buff potions, hint and skip scrolls, gamble scroll | Potions done | Potions can be used in a fight (I). Scrolls: Now 13. Buff potions need buffs (Now 9). Gamble scroll: Later |
 
 ### Buffs and debuffs
@@ -164,3 +164,10 @@ These were not in the 37 answers. They were added because dungeon crawlers usual
 | A look for every move | Done, basic | Each of the 15 moves has its own effect, made in code: arcs (warrior), orbs and a meteor rain (mage), streaks and an arrow rain (archer), a ring for utility moves. Change them in `data/skill_looks.json`; add a new kind in `combat/skill_looks.py`. Pictures only, no rules |
 | Sound and music | Done, basic | Made in code from `data/sounds.json`, no downloaded files. Effects for menus, moves, hits, answers, chests, traps, stairs, level ups; music for the title, the dungeon, fights and bosses. F2: sound on/off |
 | Tutorial fight | Not started | Suggested for before the exhibit |
+| Drawn title logo | Hook ready | Drop `assets/sprites/logo.png` in; it is scaled to fit. Without it the font logo stays |
+| More room kinds | Done, placeholder weights (A) | Pillar halls, storerooms, a wandering merchant; monsters spread so fewer rooms are empty. `data/rooms.json` |
+| Wandering merchant | Done | A shop in a room on about half the floors; stock in `data/shop.json` (wandering_stock) |
+| Selling in shops | Done | Tab: Buy / Sell. Worn equipment is not sold |
+| Throw items away | Done | Delete twice in the bag |
+| Streak display | Done | Bonus and boxes, in fights and on the map |
+| Music per floor look and boss room | Done | Stone, jungle, desert and a boss-room tune, made in code |

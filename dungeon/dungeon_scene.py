@@ -23,6 +23,7 @@ from systems.loot import roll_chest_gold, roll_loot
 from systems.player import load_data
 from ui import hud, move_info, theme
 from ui.hotbar import Hotbar
+from ui.merchant import Merchant
 from ui.minimap import Minimap
 
 MOVE_KEYS = {
@@ -38,8 +39,12 @@ HOLD_DELAY = 0.22          # seconds a key must be held before the player keeps 
 CHEST_FRAME_SECONDS = 0.1
 
 
+BOSS_ROOM_MUSIC = "boss_room"   # data/sounds.json: the tense tune in the room with the boss and the stairs
+
+
 class DungeonScene(Scene):
-    music = "dungeon"   # core/sound.py plays it while this screen is on top (menus over it keep it playing)
+    # core/sound.py plays self.music while this screen is on top (menus over it keep it playing).
+    # It is a property (below): each floor look has its own tune, and the boss room has its own.
 
     def __init__(self, game, messages=None):
         super().__init__(game)
@@ -57,6 +62,7 @@ class DungeonScene(Scene):
         if self.run.floor_number == 1:
             self.say(t("dungeon_hint"))   # explain the controls once, at the start of a run
         self.held = 0.0             # how long a move key has been held down
+        self.merchant_greeted = False   # has the player been told about the wandering merchant yet?
 
         self.make_pictures()
         self.hotbar = Hotbar()
@@ -65,11 +71,13 @@ class DungeonScene(Scene):
     def make_pictures(self):
         """Build everything that is drawn, once, so draw() never loads a file."""
         theme = floor_theme(self.run.floor_number, self.run.seed)
+        self.theme_music = theme.get("music", "dungeon")     # data/themes.json: stone, jungle and desert sound different
         self.renderer = DungeonRenderer(self.floor, theme["folder"], theme["background"])
         self.camera = Camera(VIEW.width, VIEW.height, self.renderer.world_w, self.renderer.world_h)
         font = self.game.fonts["small"]
         player = self.run.player
         self.player_actor = make_actor(f"player_{player.class_id}", self.player_pos, player.color)
+        self.merchant = Merchant(settings.TILE_SCALE)     # drawn only if this floor has one
         self.camera.snap_to(*self.player_actor.center())
         self.weapon_id = None       # which weapon the picture below shows
         self.weapon = None
@@ -90,6 +98,14 @@ class DungeonScene(Scene):
         for chest in self.floor.chests:
             chest["time"] = 0.0     # seconds since it was opened, for the opening animation
 
+    @property
+    def music(self):
+        """The tune for where the player is: the boss room has its own, every other room the floor's."""
+        room = self.floor.room_at(*self.player_pos)
+        if room is not None and self.floor.room_kinds[room] == "boss":
+            return BOSS_ROOM_MUSIC
+        return self.theme_music
+
     def look_around(self):
         """Fog of war: mark what the player sees from here and lift the fog from new cells."""
         new_cells = fog.cells_in_view(self.floor, self.player_pos) - self.seen
@@ -97,6 +113,7 @@ class DungeonScene(Scene):
             self.seen |= new_cells
             self.renderer.reveal(new_cells)
             self.minimap.reveal(new_cells)
+            self.greet_merchant()
 
     def refresh_weapon(self):
         """Make the picture of the equipped weapon again if the player changed it in the bag."""
@@ -153,6 +170,10 @@ class DungeonScene(Scene):
         return next((c for c in self.floor.chests if c["pos"] == pos), None)
 
     def try_move(self, x, y):
+        if (x, y) == self.floor.merchant:
+            self.player_actor.face((x, y))
+            self.open_wandering_shop()   # bumping into the merchant opens his shop; he never moves
+            return
         if not self.floor.is_walkable(x, y):
             return
         self.player_actor.face((x, y))
@@ -183,6 +204,18 @@ class DungeonScene(Scene):
             flow.finish_run(self.game, won=False)
             return True
         return False
+
+    # --- the wandering merchant ---------------------------------------------
+    def open_wandering_shop(self):
+        from ui.shop_screen import ShopScene
+        sound.play("ui_select")
+        self.game.scenes.push(ShopScene(self.game, wandering=True))
+
+    def greet_merchant(self):
+        """Say once, the first time the merchant comes into view, that he can be visited."""
+        if self.floor.merchant and not self.merchant_greeted and self.floor.merchant in self.seen:
+            self.merchant_greeted = True
+            self.say(t("merchant_hello"))
 
     # --- chests ------------------------------------------------------------
     def open_chest(self, chest):
@@ -308,6 +341,11 @@ class DungeonScene(Scene):
             if e["elite"]:
                 things.append((feet_x, feet_y - 1, self.aura, -10))   # a gold ring on the floor under it
             things.append((feet_x, feet_y, e["actor"].image()))
+        if self.floor.merchant and self.floor.merchant in self.seen:
+            x, y = self.floor.merchant
+            image, lift = self.merchant.frame()          # breathing and bobbing (ui/merchant.py)
+            if image is not None:
+                things.append((x * TILE + TILE // 2, (y + 1) * TILE - lift, image))
         for chest in self.floor.chests:
             x, y = chest["pos"]
             if chest["pos"] not in self.seen:
@@ -324,6 +362,9 @@ class DungeonScene(Scene):
         """Everything drawn on top of the dungeon: status panel, floor number, messages, hotbar."""
         fonts = self.game.fonts
         hud.draw_player_panel(surface, fonts, self.run.player)
+        # The streak goes on from fight to fight, so it is shown on the map too, under the status panel.
+        hud.draw_streak(surface, fonts, self.run.engine.streak, (hud.PLAYER_PANEL.x + 8, hud.PLAYER_PANEL.bottom + 10),
+                        backing=True)
         hud.draw_floor_label(surface, fonts, self.run.floor_number)
         lines = [(message, theme.GOLD) for message, _ in self.messages]
         hud.draw_messages(surface, fonts, lines, bottom=self.hotbar.rects[0].top - 20)

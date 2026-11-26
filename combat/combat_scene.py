@@ -482,9 +482,8 @@ class CombatScene(Scene):
             self.draw_question(surface, fonts)
         else:
             self.draw_message(surface, fonts)
-        if self.battle.engine.streak >= 2:
-            widgets.text(surface, fonts["normal"], t("streak", n=self.battle.engine.streak), anim.glow_gold(),
-                         (CONTENT.left + 4, CONTENT.top - 6), "bottomleft")   # in the gap under the status panel
+        # The streak sits under the status panel: how many right answers in a row, and what it adds.
+        hud.draw_streak(surface, fonts, self.battle.engine.streak, (hud.PLAYER_PANEL.x + 4, hud.PLAYER_PANEL.bottom + 12))
         choosing = self.state == "choose"
         self.hotbar.draw(surface, fonts, pygame.mouse.get_pos(),
                          selected=self.selected if choosing else None, active=choosing)

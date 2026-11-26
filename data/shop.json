@@ -3,5 +3,11 @@
   "stock": {
     "1": ["small_potion", "tonic", "cloth_hood", "worn_boots", "copper_ring"],
     "2": ["small_potion", "big_potion", "tonic", "leather_vest", "wool_trousers", "war_axe", "oak_staff"]
+  },
+  "_wandering_note": "wandering_stock = what a wandering merchant sells when you meet him in a room on that floor (the key is the floor you are ON). See data/rooms.json for how often he appears.",
+  "wandering_stock": {
+    "1": ["small_potion", "tonic", "hunting_bow", "cleaver"],
+    "2": ["small_potion", "big_potion", "spear", "short_bow", "lucky_charm"],
+    "3": ["small_potion", "big_potion", "tonic", "knight_sword", "katana"]
   }
 }

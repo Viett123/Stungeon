@@ -70,3 +70,11 @@ A broken image file does not crash the game: it is written to `logs/error.log` a
 The game plays `assets/sounds/<name>.wav` for effects and `assets/sounds/music_<name>.wav` for music
 (see `core/sound.py`). They are made by `python tools/make_sounds.py` from `data/sounds.json`.
 To use your own sound instead, save it as a .wav with the same name. A missing file is just silence.
+
+## The title logo
+
+Draw the logo yourself and save it as `assets/sprites/logo.png` (a see-through background works best).
+Draw it small, about 200 x 50 pixels: the game makes it bigger by a whole number (x2, x3, x4), so the
+pixels stay sharp, as big as fits in 900 x 140 on screen. A bigger picture is shrunk to fit.
+Without the file, the title shows the name made from the font (`core/title_scene.py`).
+

@@ -1,5 +1,5 @@
 {
-  "_note": "Every sound in the game is MADE from these recipes by tools/make_sounds.py (no downloaded sounds, so nothing to license). Change a number, then run: python tools/make_sounds.py  -- it rewrites assets/sounds/. EFFECT LAYER: wave = square, triangle, saw, sine or noise; freq = start pitch in Hz (for noise: how rough, low = rumble, high = hiss); to = end pitch (a slide); seconds = length; delay = when it starts; attack = fade-in seconds; fade = how fast it dies away (1 = steady, 2+ = quick); duty = square only, 0.5 = full, 0.125 = thin; vibrato = wobbles per second; notes + step = play these notes one after another, step seconds apart. volume (effect) = how loud its loudest point is, 0 to 1. MUSIC: bpm = speed; each track's steps are eighth notes: a note name starts a note, - holds it, . is silence, | only marks the bars. A drums track uses k = kick, s = snare, h = hi-hat.",
+  "_note": "Every sound in the game is MADE from these recipes by tools/make_sounds.py (no downloaded sounds, so nothing to license). Change a number, then run: python tools/make_sounds.py  -- it rewrites assets/sounds/. EFFECT LAYER: wave = square, triangle, saw, sine or noise; freq = start pitch in Hz (for noise: how rough, low = rumble, high = hiss); to = end pitch (a slide); seconds = length; delay = when it starts; attack = fade-in seconds; fade = how fast it dies away (1 = steady, 2+ = quick); duty = square only, 0.5 = full, 0.125 = thin; vibrato = wobbles per second; notes + step = play these notes one after another, step seconds apart. volume (effect) = how loud its loudest point is, 0 to 1. MUSIC: bpm = speed; each track's steps are eighth notes: a note name starts a note, - holds it, . is silence, | only marks the bars. A drums track uses k = kick, s = snare, h = hi-hat. Which dungeon music plays on which floor look is in data/themes.json (music); boss_room plays in the room with the stairs.",
   "sample_rate": 22050,
   "volume": {"effects": 0.7, "music": 0.35},
   "skill_kinds": {"slash": "swing", "projectile": "shoot", "rain": "rain", "aura": "aura"},
@@ -95,6 +95,34 @@
         "C2 C2 C3 C2 C2 C3 C2 Eb2 | C2 C2 C3 C2 C2 C3 C2 Eb2 | Ab1 Ab1 Ab2 Ab1 Ab1 Ab2 Ab1 C2 | Ab1 Ab1 Ab2 Ab1 Ab1 Ab2 Ab1 C2 | F1 F1 F2 F1 F1 F2 F1 Ab1 | F1 F1 F2 F1 F1 F2 F1 Ab1 | G1 G1 G2 G1 G1 G2 G1 B1 | G1 G1 G2 G1 G1 G2 G1 B1"},
       {"wave": "drums", "volume": 0.65, "steps":
         "k . h k s . h . | k . h k s . h . | k . h k s . h . | k . h k s . h . | k . h k s . h . | k . h k s . h . | k . h k s . h . | k k s . s s s s"}
+    ]},
+    "jungle": {"bpm": 112, "volume": 0.85, "tracks": [
+      {"wave": "triangle", "volume": 1.0, "steps":
+        "A4 . C5 . D5 E5 . G5 | E5 - D5 . C5 . A4 . | G4 . A4 . C5 D5 . E5 | D5 - - - . . . . | A4 . C5 . D5 E5 . G5 | A5 - G5 . E5 . D5 . | C5 . D5 . E5 G5 . E5 | A4 - - - . . . ."},
+      {"wave": "square", "duty": 0.5, "volume": 0.35, "steps":
+        "A2 . A2 E2 . A2 . E2 | A2 . A2 E2 . A2 . E2 | G2 . G2 D2 . G2 . D2 | G2 . G2 D2 . G2 . D2 | A2 . A2 E2 . A2 . E2 | F2 . F2 C3 . F2 . C3 | G2 . G2 D2 . G2 . D2 | A2 . A2 E2 . A2 . E2"},
+      {"wave": "drums", "volume": 0.5, "steps":
+        "k . h k s . h h | k . h k s . h h | k . h k s . h h | k . h k s . h h | k . h k s . h h | k . h k s . h h | k . h k s . h h | k . s k s s s s"}
+    ]},
+    "desert": {"bpm": 92, "volume": 0.85, "tracks": [
+      {"wave": "square", "duty": 0.25, "volume": 0.5, "vibrato": 6, "steps":
+        "D5 - Eb5 - F#5 - - - | G5 - F#5 - Eb5 - D5 - | . . A4 - Bb4 - A4 - | F#4 - - - - - . . | D5 - Eb5 - F#5 - A5 - | G5 - F#5 - Eb5 - F#5 - | Eb5 - D5 - C5 - Bb4 - | A4 - - - - - . ."},
+      {"wave": "sine", "volume": 0.35, "steps":
+        "D4 A4 D4 A4 D4 A4 D4 A4 | D4 A4 D4 A4 D4 A4 D4 A4 | Eb4 Bb4 Eb4 Bb4 Eb4 Bb4 Eb4 Bb4 | D4 A4 D4 A4 D4 A4 D4 A4 | D4 A4 D4 A4 D4 A4 D4 A4 | D4 A4 D4 A4 D4 A4 D4 A4 | C4 G4 C4 G4 C4 G4 C4 G4 | D4 A4 D4 A4 D4 A4 D4 A4"},
+      {"wave": "triangle", "volume": 1.0, "steps":
+        "D2 - - - - - - - | D2 - - - - - - - | Eb2 - - - - - - - | D2 - - - - - - - | D2 - - - - - - - | D2 - - - - - - - | C2 - - - - - - - | D2 - - - - - - -"},
+      {"wave": "drums", "volume": 0.45, "steps":
+        "k . . h k . s . | k . . h k . s . | k . . h k . s . | k . . h k . s . | k . . h k . s . | k . . h k . s . | k . . h k . s . | k . s . k s s ."}
+    ]},
+    "boss_room": {"bpm": 80, "volume": 0.85, "tracks": [
+      {"wave": "triangle", "volume": 1.0, "steps":
+        "C2 C2 . . . . . . | C2 C2 . . . . . . | C2 C2 . . . . . . | C2 C2 . . . . . . | C2 C2 . . . . . . | C2 C2 . . . . . . | C2 C2 . . . . . . | C2 C2 . . . . . ."},
+      {"wave": "saw", "volume": 0.25, "steps":
+        "C3 - - - - - - - | C3 - - - - - - - | Db3 - - - - - - - | Db3 - - - - - - - | C3 - - - - - - - | C3 - - - - - - - | B2 - - - - - - - | B2 - - - - - - -"},
+      {"wave": "square", "duty": 0.125, "volume": 0.35, "vibrato": 5, "steps":
+        ". . . . G5 - - - | . . . . F#5 - - - | . . . . Ab5 - - - | . . . . G5 - - - | . . . . G5 - - - | . . . . Eb5 - - - | . . . . D5 - - - | . . . . B4 - - -"},
+      {"wave": "drums", "volume": 0.5, "steps":
+        "k k . . . . . . | k k . . . . . . | k k . . . . . . | k k . . . . . . | k k . . . . . . | k k . . . . . . | k k . . . . . . | k k . . s . s s"}
     ]}
   }
 }

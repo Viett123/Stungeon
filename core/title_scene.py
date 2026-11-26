@@ -5,7 +5,7 @@ in gold at the top and the three heroes standing guard beside the menu.
 """
 import pygame
 
-from core import flow, settings
+from core import assets, flow, settings
 from core.strings import t
 from dungeon.actor import make_actor
 from systems.player import load_data
@@ -16,6 +16,8 @@ from ui.menu import BUTTON_H, BUTTON_W, GAP, MenuScene
 MENU_TOP = 330            # y of the first button
 LOGO_Y = 150              # centre of the game's name
 LOGO_SCALE = 1.6          # the name is drawn this much bigger than the title font
+LOGO_MAX = (900, 140)     # the biggest a drawn logo may be on screen (width, height): it must end above the subtitle
+LOGO_FILE = "logo"        # assets/sprites/logo.png: if it exists, it is used instead of the logo made in code
 HERO_FEET_Y = 600         # where the heroes beside the menu stand
 HERO_SPOTS = [("warrior", 250, False), ("mage", 1030, True), ("archer", 1130, True)]   # (class, x, facing left)
 
@@ -39,6 +41,24 @@ def _logo(font, string):
     logo.blit(top_half, (2, 2))                    # a lighter top half, like light from above
     size = (round(logo.get_width() * LOGO_SCALE), round(logo.get_height() * LOGO_SCALE))
     return pygame.transform.scale(logo, size)
+
+
+def _drawn_logo():
+    """The logo someone drew: assets/sprites/logo.png, or None if there is no such file.
+
+    Pixel art is made bigger by a whole number (x2, x3, x4...) so every pixel stays a sharp square.
+    We take the biggest whole number that still fits inside LOGO_MAX. A picture that is already
+    too big is shrunk smoothly instead, so it always fits.
+    """
+    image = assets.load_sprite(LOGO_FILE, factor=1)
+    if image is None:
+        return None
+    width, height = image.get_size()
+    factor = min(LOGO_MAX[0] // width, LOGO_MAX[1] // height)
+    if factor >= 1:
+        return assets.scale_up(image, factor)
+    shrink = min(LOGO_MAX[0] / width, LOGO_MAX[1] / height)
+    return pygame.transform.smoothscale(image, (round(width * shrink), round(height * shrink)))
 
 
 def _glow(size):
@@ -65,7 +85,8 @@ class TitleScene(MenuScene):
         super().__init__(game, t("title"), options, top=MENU_TOP)
         # Everything below is made once here, never inside draw().
         self.backdrop = Backdrop()
-        self.logo = _logo(game.fonts["title"], t("title").upper())
+        # A drawn logo (assets/sprites/logo.png) wins; without one, the logo is made from the font.
+        self.logo = _drawn_logo() or _logo(game.fonts["title"], t("title").upper())
         self.glow = _glow((self.logo.get_width() + 200, self.logo.get_height() + 60))
         self.button_frame = pygame.Rect(0, 0, BUTTON_W + 60, len(options) * (BUTTON_H + GAP) + 40)
         self.button_frame.midtop = (settings.SCREEN_W // 2, MENU_TOP - 25)
