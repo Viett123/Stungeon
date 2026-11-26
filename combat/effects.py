@@ -37,7 +37,7 @@ def change_player_damage(damage, battle) -> int:
 
     Two rules, both numbers in data/combat.json:
       - a fast answer is a critical hit (the faster, the bigger), but only on the
-        difficulties listed in crit_difficulties: an easy question is never a crit
+        difficulties listed in crit_difficulties (now all three, so easy questions can crit too)
       - a streak of right answers in a row adds damage
     """
     numbers = load_data("combat.json")
@@ -48,7 +48,7 @@ def change_player_damage(damage, battle) -> int:
 
 
 def can_crit(battle, numbers) -> bool:
-    """Can this move's questions be a crit? Easy ones (the basic move) cannot.
+    """Can this move's questions be a crit? Only the difficulties in crit_difficulties can.
 
     A battle without a move (a test's stand-in) is allowed to crit.
     """

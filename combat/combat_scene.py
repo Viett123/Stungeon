@@ -21,7 +21,7 @@ from dungeon.weapon import IMPACT, STRIKE_START, held_weapon
 from questions.engine import answer_text
 from systems import inventory, items
 from systems.loot import roll_loot
-from ui import anim, hud, move_info, theme, topic_names, widgets
+from ui import anim, hud, learning_panel, move_info, theme, topic_names, widgets
 from ui.anim import FloatingText, Shake, Trail
 from ui.button import Button
 from ui.hotbar import Hotbar
@@ -44,16 +44,31 @@ LUNGE_PIXELS = 18           # how far a melee fighter jumps towards the enemy
 KNOCKBACK_PIXELS = 10       # how far the player is pushed back when hurt
 HOP_PIXELS = 10             # how high the player hops when using an item
 CRIT_LIFT = -42             # "CRIT!" starts this far BELOW the damage number (above it, it would cover the HP bar)
+RED_FLASH_SECONDS = 0.3     # the screen flashes red this long when the player is hit
+RED_FLASH_ALPHA = 110       # how strong the red is at the start (0 = none, 255 = solid red)
+RED = (200, 30, 30)
+STREAK_POPUP_FROM = 2       # "2 in a row!" is the first streak pop-up
+STREAK_POPUP_AT = PLAYER_ART.move(-120, 0)   # over the player, a bit to the left so the big text fits on screen
+TAUNT_SECONDS = 4.0         # how long the enemy's speech bubble stays
+TAUNT_BUBBLE_WIDTH = 190   # fits in the empty space left of the enemy
 ATTACK_SECONDS = 0.6      # how long the weapon swing and the hit sparks last
 FIGHTER_SCALE = settings.TILE_SCALE + 1   # fighters are drawn 4 times the art size, like bosses
 CONTENT = pygame.Rect(140, 236, 1000, 384)     # the big panel: move details, question or feedback
 INSIDE = theme.inner(CONTENT)
-CHOICE_HEIGHT = 36
+CHOICE_HEIGHT = 42          # one answer row: room for the "answer" font (34 px)
+QUESTION_MAX_LINES = 2      # a longer question switches to the smaller question font
 CHOICE_GAP = 4
 
 
 def topic_name(topic):
     return topic_names.label(topic)
+
+
+def is_weak_hit(results):
+    """True when only some of a move's answers were right (e.g. 1 of an Ultimate's 3): it still hits,
+    but much weaker. All wrong is a miss, not a weak hit. (Not judged by the damage number: the last
+    blow on an almost dead enemy is small too, and should still feel good.)"""
+    return any(results) and not all(results)
 
 
 class CombatScene(Scene):
@@ -91,6 +106,14 @@ class CombatScene(Scene):
         self.freeze = 0.0       # seconds everything stands still right after a hit
         self.flash = 0.0        # seconds the enemy is drawn all white
         self.white = {}         # white copies of the enemy's pictures, made the first time each is needed
+        self.red_flash = 0.0    # seconds left of the red flash over the screen (the player was hit)
+        self.red_layer = pygame.Surface((settings.SCREEN_W, settings.SCREEN_H))   # made once, see draw_scene
+        self.red_layer.fill(RED)
+        self.pending_weak = False   # the attack on its way is a weak hit: small grey number
+        # What the player learned in this fight (ui/learning_panel.py), shown when it ends.
+        self.learned_before = {}    # {topic: mastery just before its first question in this fight}
+        self.learning = []          # [(topic, before, after)], worked out once when the fight ends
+        self.learning_shown_at = 0.0
         self.buffer = pygame.Surface((settings.SCREEN_W, settings.SCREEN_H))   # used only while shaking
         # Items that can be used in this fight (the "items" state).
         self.item_ids = []
@@ -110,13 +133,18 @@ class CombatScene(Scene):
         self.ticked = set()     # ticked choice numbers (multi_select)
         self.elapsed = 0.0      # seconds spent on the current question
         self.ignore_text = False
-        self.question_font = game.fonts["big"]
+        self.question_font = game.fonts["question"]
         self.question_lines = []
         self.choice_buttons = []
+        # Taunts (ai/habits.py): a speech bubble over the enemy, so they are hard to miss.
+        self.taunt_bubble = None    # the bubble picture, made once per taunt
+        self.taunt_time = 0.0       # seconds left to show it
+        self.show_taunt(self.battle.start())     # the enemy may greet you with what it noticed before
 
-    def float_text(self, string, color, panel, lift=0):
-        """Show a rising, fading text over one of the fighter panels. lift: start this many pixels higher (negative = lower)."""
-        font = self.game.fonts["big"]
+    def float_text(self, string, color, panel, lift=0, font=None):
+        """Show a rising, fading text over one of the fighter panels. lift: start this many pixels higher (negative = lower).
+        font: how big it is (default "big")."""
+        font = font or self.game.fonts["big"]
         self.floating.append(FloatingText(font, string, color, (panel.centerx + 60, panel.centery - lift)))
 
     # --- flow --------------------------------------------------------------
@@ -224,15 +252,23 @@ class CombatScene(Scene):
         self.ticked = set()
         self.elapsed = 0.0
         self.ignore_text = True   # the key that picked the move must not appear in the text box
+        topic = self.battle.question.get("topic")
+        tracker = self.game.run_state.tracker
+        if topic and topic not in self.learned_before:
+            self.learned_before[topic] = tracker.mastery(topic)     # noted before the answer changes it
         self.layout_question()
 
     def layout_question(self):
         """Work out where the question text and its answers go. Done once per question, not per frame."""
         question = self.battle.question
         fonts = self.game.fonts
-        # Long questions get smaller text so they still fit.
-        self.question_font = fonts["big"] if len(question["question"]) < 60 else fonts["normal"]
+        # Big, clear text. Only a question that needs more than 2 lines gets the smaller size,
+        # so even the longest question and 5 answers fit above the hint.
+        self.question_font = fonts["question"]
         self.question_lines = widgets.wrap(self.question_font, question["question"], INSIDE.width)
+        if len(self.question_lines) > QUESTION_MAX_LINES:
+            self.question_font = fonts["question_small"]
+            self.question_lines = widgets.wrap(self.question_font, question["question"], INSIDE.width)
         y = INSIDE.y + 30 + len(self.question_lines) * (self.question_font.get_height() + 6) + 8
         self.choice_buttons = []
         if question["type"] == "typed":
@@ -259,6 +295,8 @@ class CombatScene(Scene):
         lines = [first_line] if first_line else []
         lines.append((t("correct"), theme.GOOD) if out["correct"] else (t("wrong"), theme.BAD))
         sound.play("correct" if out["correct"] else "wrong")
+        if out["correct"]:
+            self.streak_popup(self.battle.engine.streak)
         if not out["correct"]:
             lines.append((t("the_answer", answer=answer_text(question)), theme.TEXT))
         if question.get("explanation"):
@@ -268,6 +306,7 @@ class CombatScene(Scene):
             return
         lines.append((t("damage_dealt", damage=out["damage"]) if out["damage"] else t("miss"), theme.GOLD))
         self.pending_crit = out.get("crit", False)
+        self.pending_weak = is_weak_hit(self.battle.results)
         if self.pending_crit:
             lines.append((t("crit_line"), theme.GOLD))       # explain WHY it hit harder: a fast answer
         if out["damage"]:
@@ -283,9 +322,29 @@ class CombatScene(Scene):
         """How far the player's attack has gone: 0.0 at its start, 1.0 when it is over."""
         return 1 - self.attack / ATTACK_SECONDS
 
+    def streak_popup(self, streak):
+        """ "3 in a row!" over the player after a right answer: bigger and brighter as the streak grows."""
+        if streak < STREAK_POPUP_FROM:
+            return
+        fonts = self.game.fonts
+        top = hud.streak_boxes()                       # the streak where the bonus stops growing
+        font = fonts["title"] if streak >= top else fonts["big"]
+        color = anim.blend(theme.GOLD, theme.GOLD_BRIGHT, min(1.0, streak / top))
+        self.float_text(t("streak_popup", n=streak), color, STREAK_POPUP_AT, lift=60, font=font)
+
     def land_hit(self):
-        """The moment the weapon, arrow or bolt reaches the enemy: shake, flash, sparks, damage number."""
-        self.float_text(f"-{self.pending_damage}", theme.GOLD, ENEMY_PANEL)
+        """The moment the weapon, arrow or bolt reaches the enemy: shake, flash, sparks, damage number.
+
+        The number shows how good the hit was: a crit is huge and bright, a weak hit small and grey."""
+        fonts = self.game.fonts
+        if self.pending_crit:
+            font, color = fonts["title"], theme.GOLD_BRIGHT
+        elif self.pending_weak:
+            font, color = fonts["normal"], theme.TEXT_DIM
+        else:
+            font, color = fonts["big"], theme.GOLD
+        self.float_text(f"-{self.pending_damage}", color, ENEMY_PANEL, font=font)
+        self.pending_weak = False
         if self.pending_crit:
             self.float_text(t("crit_float"), theme.BAD, ENEMY_PANEL, lift=CRIT_LIFT)   # "CRIT!" under the number
             self.pending_crit = False
@@ -341,17 +400,39 @@ class CombatScene(Scene):
             self.hurt = HURT_SECONDS
             sound.play("hurt")
             self.shake.start(strength=10, seconds=0.3)
+            self.red_flash = RED_FLASH_SECONDS
             self.float_text(f"-{out['damage']}", theme.BAD, PLAYER_ART)
-        if out["taunt"]:
-            lines.append((t(out["taunt"]), theme.GOLD))
+        taunt = self.show_taunt(out)
+        if taunt:
+            lines.append((taunt, theme.GOLD))
         self.show_message(lines, self.defeat if self.battle.lost else self.back_to_choose)
 
+    def show_taunt(self, out):
+        """If the enemy changed (out["taunt"] is a strings key), show its bubble over the enemy.
+        Returns the long text for the message box (it also says what changed), or None."""
+        if not out.get("taunt"):
+            return None
+        values = out.get("taunt_values", {})
+        names = {"enemy": self.enemy_name, "topic": topic_name(values["topic"]) if "topic" in values else ""}
+        short = t(f"{out['taunt']}_bubble", **names)
+        self.taunt_bubble = widgets.speech_bubble(self.game.fonts["small"], short, TAUNT_BUBBLE_WIDTH)
+        self.taunt_time = TAUNT_SECONDS
+        sound.play("taunt")
+        return t(out["taunt"], **names)
+
+    def show_learning(self):
+        """Work out the "what you learned" bars once, for the message at the end of the fight."""
+        self.learning = learning_panel.learning_rows(self.learned_before, self.game.run_state.tracker)
+        self.learning_shown_at = anim.now()
+
     def victory(self):
+        self.show_learning()
         sound.play("victory")
         self.show_message([(t("victory_fight", enemy=self.enemy_name), theme.GOOD)],
                           lambda: self.finish(won=True))
 
     def defeat(self):
+        self.show_learning()
         self.dying = 0.0
         sound.play("defeat")
         self.show_message([(t("defeat_fight", enemy=self.enemy_name), theme.BAD)],
@@ -434,6 +515,8 @@ class CombatScene(Scene):
             self.freeze -= dt       # hit pause: nothing moves for a few frames
             return
         self.flash = max(0.0, self.flash - dt)
+        self.red_flash = max(0.0, self.red_flash - dt)
+        self.taunt_time = max(0.0, self.taunt_time - dt)
         self.input.update(dt)
         self.enemy_actor.update(dt)
         self.player_actor.update(dt)
@@ -491,6 +574,10 @@ class CombatScene(Scene):
             self.skill.draw(surface)
         for text in self.floating:
             text.draw(surface)
+        if self.red_flash > 0:
+            # Strong at first, then fading: the whole screen goes a little red for a moment.
+            self.red_layer.set_alpha(round(RED_FLASH_ALPHA * self.red_flash / RED_FLASH_SECONDS))
+            surface.blit(self.red_layer, (0, 0))
 
     def draw_enemy(self, surface, fonts):
         inside = theme.draw_frame(surface, ENEMY_PANEL)
@@ -509,6 +596,12 @@ class CombatScene(Scene):
             progress = 1 - self.spark / SPARK_SECONDS
             spark = self.sparks[min(int(progress * len(self.sparks)), len(self.sparks) - 1)]
             surface.blit(spark, spark.get_rect(center=rect.center))
+        if self.taunt_time > 0 and self.taunt_bubble:
+            # The bubble sits in the empty part left of the enemy, under the HP bar, so it never
+            # covers the enemy itself.
+            bubble = self.taunt_bubble.get_rect(topleft=(inside.x + 4, inside.y + 60))
+            bubble.right = min(bubble.right, rect.left + image.get_bounding_rect().left - 4)
+            surface.blit(self.taunt_bubble, bubble)
 
     def player_image(self):
         """Which picture of the player to show: dying, attacking, using an item, hurt, or just standing."""
@@ -584,7 +677,7 @@ class CombatScene(Scene):
             y += self.question_font.get_height() + 6
 
         if question["type"] == "typed":
-            self.input.draw(surface, fonts["big"])
+            self.input.draw(surface, fonts["question"])
             self.hint(surface, fonts, t("hint_typed"))
             return
         multi = question["type"] == "multi_select"
@@ -593,7 +686,7 @@ class CombatScene(Scene):
             ticked = multi and i in self.ticked
             mark = ("[x] " if ticked else "[  ] ") if multi else ""
             button.label = f"{i + 1}. {mark}{question['choices'][i]}"
-            button.draw(surface, fonts["normal"], mouse, selected=ticked)
+            button.draw(surface, fonts["answer"], mouse, selected=ticked)
         count = len(self.choice_buttons)
         self.hint(surface, fonts, t("hint_multi", n=count) if multi else t("hint_choice", n=count))
 
@@ -602,4 +695,6 @@ class CombatScene(Scene):
         for i, (line, color) in enumerate(self.lines):
             font = fonts["big"] if i == 0 else fonts["normal"]
             y = widgets.wrapped(surface, font, line, color, (INSIDE.x, y), INSIDE.width) + 8
+        # Only set when the fight is over (victory or defeat): what this fight taught you.
+        learning_panel.draw_learning(surface, fonts, self.learning, (INSIDE.x, y + 12), self.learning_shown_at)
         self.hint(surface, fonts, t("press_continue"))

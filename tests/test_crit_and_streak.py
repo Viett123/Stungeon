@@ -152,9 +152,18 @@ def test_crit_windows_are_tight():
     assert min(rule["within"] for rule in CRIT_TIERS) <= 0.1
 
 
-def test_easy_questions_are_never_a_crit():
-    """The basic move asks easy questions: even a very fast right answer is no crit."""
+def test_easy_questions_can_crit_again():
+    """The basic move asks easy questions. After the play-test (the game felt too hard) a very fast
+    right answer to an easy question is a crit again, so players feel themselves winning."""
     battle, slash, result = answer_slash(seconds=0.1, move_id="slash")
-    assert slash["difficulty"] == "easy"
+    assert slash["difficulty"] == "easy" and "easy" in NUMBERS["crit_difficulties"]
+    assert battle.last_crit is True
+    assert result["damage"] == round(slash["damage"] * 2 * 1.1)      # crit x2 and the streak of 1
+
+
+def test_a_difficulty_left_out_of_crit_difficulties_never_crits(monkeypatch):
+    """The switch still works: take "easy" out of the list and easy questions stop critting."""
+    numbers = dict(NUMBERS, crit_difficulties=["medium", "hard"])
+    monkeypatch.setattr(effects, "load_data", lambda name: numbers)
+    battle, slash, result = answer_slash(seconds=0.1, move_id="slash")
     assert battle.last_crit is False
-    assert result["damage"] == round(slash["damage"] * 1.1)          # only the streak of 1

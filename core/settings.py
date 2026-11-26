@@ -6,16 +6,23 @@ ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = ROOT / "data"
 FONT_DIR = ROOT / "assets" / "fonts"
 
-# The pixel fonts (free, SIL Open Font License, see assets/CREDITS.md). Both can draw English,
-# German (ä ö ü ß) and Vietnamese. Tiny5 is chunky, for titles; VT323 is easier to read, for
-# everything else. Sizes were picked so text is about as wide as with the old built-in font.
+# The pixel font VT323 (free, SIL Open Font License, see assets/CREDITS.md). It can draw English,
+# German (ä ö ü ß) and Vietnamese. Every text uses it (26 Nov 2026: the chunky Tiny5 title font
+# was dropped, VT323 looks best and is easier to read). Only the size changes.
 FONTS = {
-    "title": ("Tiny5.ttf", 72),
-    "big": ("Tiny5.ttf", 36),
+    "title": ("VT323-Regular.ttf", 80),
+    "big": ("VT323-Regular.ttf", 40),
     "normal": ("VT323-Regular.ttf", 28),
     "small": ("VT323-Regular.ttf", 22),
+    # Questions and answers: big, because this is the text players must read fast.
+    # A question that needs more than 2 lines at "question" size uses "question_small"
+    # (combat/combat_scene.py).
+    "question": ("VT323-Regular.ttf", 44),
+    "question_small": ("VT323-Regular.ttf", 34),
+    "answer": ("VT323-Regular.ttf", 34),
 }
-OLD_FONT_SIZES = {"title": 96, "big": 48, "normal": 32, "small": 26}   # pygame's built-in font, if a file is missing
+OLD_FONT_SIZES = {"title": 96, "big": 48, "normal": 32, "small": 26,
+                  "question": 48, "question_small": 38, "answer": 36}   # pygame's built-in font, if a file is missing
 
 # Where the game may write files (logs). In a built exe (tools/build.py) the code lives in a
 # hidden folder, so we write next to Stungeon.exe instead, where people can find the log.
