@@ -37,6 +37,9 @@ class Battle:
         self.time_limit = 0
         self.base_time_limit = 1     # the time limit before items change it (set for each question)
         self.missed = False
+        self.war_cry = False
+        self.reveal = False
+        self.evasion_attacks = 0
         self.last_crit = False # set by effects.change_player_damage: was the last hit a critical hit?
 
     # --- state -------------------------------------------------------------

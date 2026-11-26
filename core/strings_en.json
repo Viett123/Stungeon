@@ -52,7 +52,10 @@
   "time_up": "Time is up!",
   "press_continue": "Press Enter to continue",
 
-  "utility_used": "You use {move}. (It has no effect yet.)",
+  "utility_used": "You use {move}.",
+  "utility_war_cry": "Your next attack hits harder.",
+  "utility_reveal": "Your next multiple-choice question loses one wrong answer.",
+  "utility_evasion": "The enemy's next attacks may miss.",
 
   "enemy_hits": "The {enemy} hits you for {damage}.",
   "enemy_misses": "The {enemy} attacks, but it does no damage!",

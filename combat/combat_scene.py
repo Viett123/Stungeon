@@ -71,6 +71,15 @@ def is_weak_hit(results):
     return any(results) and not all(results)
 
 
+def utility_lines(move):
+    """The message after a utility move: "You use War Cry." and, under it, what the move does."""
+    lines = [(t("utility_used", move=move["name"]), theme.GOLD)]
+    hint = effects.UTILITY_HINTS.get(move["id"])
+    if hint:
+        lines.append((t(hint), theme.TEXT))
+    return lines
+
+
 class CombatScene(Scene):
     def __init__(self, game, player, enemy, on_end):
         super().__init__(game)
@@ -183,8 +192,7 @@ class CombatScene(Scene):
             # Only a picture: what the move really does is decided in combat/effects.py.
             self.skill = SkillLook(move["id"], self.player_center, self.player_center, AURA_SECONDS)
             sound.play(sound.skill_sound("aura"))
-            # TODO(B): once combat/effects.py has real effects, show what the move did here.
-            self.show_message([(t("utility_used", move=move["name"]), theme.GOLD)], self.enemy_turn)
+            self.show_message(utility_lines(move), self.enemy_turn)
         else:
             self.start_question()
 

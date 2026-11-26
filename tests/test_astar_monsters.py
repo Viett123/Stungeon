@@ -1,0 +1,70 @@
+"""Mission 8 in the running game: only the monsters listed in data/enemies.json walk round walls."""
+import json
+import os
+from pathlib import Path
+
+import pytest
+
+os.environ.setdefault("SDL_VIDEODRIVER", "dummy")
+os.environ.setdefault("SDL_AUDIODRIVER", "dummy")
+pygame = pytest.importorskip("pygame")
+
+from core import flow                                  # noqa: E402
+from core.game import Game                             # noqa: E402
+from dungeon.floor import FLOOR, WALL                  # noqa: E402
+from systems.enemies import chase_rules                # noqa: E402
+
+ROOT = Path(__file__).resolve().parent.parent
+
+# A corridor with a wall on the straight line from (5, 5) to (9, 5). The only way round is down, along row 6.
+ROUTE = [(5, 5), (5, 6), (6, 6), (7, 6), (8, 6), (9, 6), (9, 5)]
+
+
+@pytest.fixture
+def dungeon():
+    game = Game()
+    flow.start_new_run(game, "warrior")
+    yield game, game.scenes.current
+    pygame.quit()
+
+
+def test_the_list_is_the_five_monsters_from_the_mission():
+    assert chase_rules()["astar_enemies"] == [
+        "vocab_slime", "article_goblin", "plural_bat", "abbrev_imp", "while_wisp",
+    ]
+
+
+@pytest.mark.parametrize("enemy_id", [
+    "vocab_slime",
+    "article_goblin",
+    "plural_bat",
+    "abbrev_imp",
+    "while_wisp",
+])
+def test_every_listed_monster_exists_in_enemies_json(enemy_id):
+    enemies = json.loads((ROOT / "data" / "enemies.json").read_text(encoding="utf-8"))["enemies"]
+    assert enemy_id in enemies
+
+
+@pytest.mark.parametrize("enemy_id, walks_round", [
+    ("vocab_slime", True),
+    ("article_goblin", True),
+    ("plural_bat", True),
+    ("grammar_ghost", False),      # not in the list: keeps the old straight-line step, so it stays stuck
+    ("boss_floor_1", False),
+])
+def test_only_the_listed_monsters_walk_round_a_wall(dungeon, enemy_id, walks_round):
+    game, scene = dungeon
+    for row in scene.floor.grid:                       # the whole floor is wall ...
+        row[:] = [WALL] * len(row)
+    for x, y in ROUTE:                                 # ... except the one corridor
+        scene.floor.grid[y][x] = FLOOR
+    scene.floor.chests[:] = []
+    enemy = scene.floor.enemies[0]
+    scene.floor.enemies[:] = [enemy]
+    enemy["id"], enemy["pos"] = enemy_id, (5, 5)
+    scene.player_pos = (9, 5)
+
+    scene.enemy_step(enemy)
+
+    assert enemy["pos"] == ((5, 6) if walks_round else (5, 5))

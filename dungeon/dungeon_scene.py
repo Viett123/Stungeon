@@ -271,7 +271,8 @@ class DungeonScene(Scene):
         """Move one monster one tile. Returns True if it reached the player and a fight started."""
         blocked = {other["pos"] for other in self.floor.enemies if other is not e}
         blocked |= {c["pos"] for c in self.floor.chests if not c["opened"]}
-        target = chase.next_step(self.floor, e["pos"], self.player_pos, blocked)
+        use_astar = e["id"] in self.chase["astar_enemies"]      # only the listed monsters walk around walls
+        target = chase.next_step(self.floor, e["pos"], self.player_pos, blocked, use_astar=use_astar)
         if target == self.player_pos:
             e["actor"].face(self.player_pos)
             self.start_fight(e)

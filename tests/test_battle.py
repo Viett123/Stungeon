@@ -40,6 +40,13 @@ def first_move(battle, tier):
     return next(m for m in battle.moves() if m["tier"] == tier)
 
 
+def test_battle_starts_with_utility_effects_inactive():
+    battle, _ = make_battle()
+    assert not battle.war_cry
+    assert not battle.reveal
+    assert battle.evasion_attacks == 0
+
+
 def test_answer_uses_the_damage_hook(monkeypatch):
     seen = {}
 
