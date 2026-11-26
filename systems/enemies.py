@@ -26,6 +26,7 @@ class Enemy:
     loot_table: str = "enemy"   # which table in data/loot_tables.json this enemy drops from
     elite: bool = False         # a stronger version of a normal enemy with better loot
     large_art: bool = False     # its pictures are 32 pixels wide, so it is never drawn extra big
+    adapted: bool = False          # has the enemy already changed in this fight? (for habits.py)
 
     @property
     def alive(self):

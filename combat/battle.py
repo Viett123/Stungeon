@@ -109,7 +109,7 @@ class Battle:
     def _record_answer(self, question, correct, seconds) -> dict:
         self.engine.report_answer(question, correct, seconds)
         if self.habits:
-            self.habits.record_move(self.move["id"], self.move["tier"], seconds / self.expected_seconds, correct)
+            self.habits.record_move(self.move["id"], self.move["tier"], seconds / self.expected_seconds, correct, question.get("topic"))
 
         self.results.append(correct)
         self.seconds.append(seconds)
@@ -137,7 +137,8 @@ class Battle:
         "skipped": True if the enemy lost its turn (see effects.enemy_loses_turn)}."""
         if effects.enemy_loses_turn(self):
             self.missed = False
-            return {"damage": 0, "taunt": None, "skipped": True}
+            taunt = self.habits.adapt(self.enemy) if self.habits else None
+            return {"damage": 0, "taunt": taunt, "skipped": True}
         amount = damage.enemy_damage(self.enemy, self.player)
         amount = effects.change_enemy_damage(amount, self)
         lost = self.player.take_damage(amount)

@@ -235,5 +235,6 @@
   "level_german_B1_text": "Intermediate. Das Leben B1, Einheiten 1-3.",
   "level_questions": "{n} questions",
   "level_coming_soon": "Coming soon",
-  "level_locked": "Level {level} has no questions yet."
+  "level_locked": "Level {level} has no questions yet.",
+  "taunt_spam": "The same move again? I saw that coming! (enemy hits harder)"
 }
