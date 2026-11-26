@@ -143,7 +143,7 @@ def test_bumping_into_the_merchant_opens_his_shop_and_esc_comes_back(game):
     scene.try_move(x, y)
     shop_scene = game.scenes.current
     assert isinstance(shop_scene, ShopScene) and shop_scene.wandering
-    assert [item["id"] for item, _ in shop_scene.entries] == shop.wandering_stock(1)
+    assert [item["id"] for item, _ in shop_scene.entries] == shop.wandering_stock(1, game.run_state.seed)
     shop_scene.draw(game.screen)                                   # the dungeon is drawn darkened behind
     shop_scene.handle_event(key(pygame.K_ESCAPE))
     assert game.scenes.current is scene
@@ -263,6 +263,7 @@ def test_the_boss_room_plays_its_own_music(game):
 def test_the_merchant_breathes_and_hops(game, monkeypatch):
     from ui import anim
     merchant = Merchant(6)
+    merchant.frames = []                                           # the still picture: breathing made in code
     clock = {"now": 0.0}
     monkeypatch.setattr(anim, "now", lambda: clock["now"])
     _, low = merchant.frame()
@@ -273,3 +274,45 @@ def test_the_merchant_breathes_and_hops(game, monkeypatch):
     clock["now"] += 0.17                                           # the middle of the hop
     _, hop = merchant.frame()
     assert hop > high
+
+
+# --- the wandering merchant's random stock ----------------------------------------------
+def test_the_merchant_sells_a_random_mix_that_stays_the_same_in_one_run():
+    rules = load_data("shop.json")["wandering"]
+    stocks = {tuple(shop.wandering_stock(2, seed)) for seed in range(30)}
+    assert len(stocks) > 5                                          # different runs, different items
+    for stock in stocks:
+        assert len(stock) == len(set(stock)) == len(rules["always"]) + rules["items"]
+        assert all(item_id in stock for item_id in rules["always"])
+    assert shop.wandering_stock(2, 7) == shop.wandering_stock(2, 7)   # come back: the same items
+
+
+def test_the_merchant_only_picks_rarities_allowed_on_that_floor():
+    allowed = load_data("shop.json")["wandering"]["rarity_weights"]["1"]
+    for seed in range(30):
+        for item_id in shop.wandering_stock(1, seed):
+            assert items.get_item(item_id)["rarity"] in allowed
+
+
+def test_the_shop_owner_is_animated_and_still_hops(game, monkeypatch):
+    from ui import anim
+    merchant = Merchant(3)
+    assert len(merchant.frames) > 1                                # the dwarf's idle animation
+    clock = {"now": 0.0}
+    monkeypatch.setattr(anim, "now", lambda: clock["now"])
+    first, _ = merchant.frame()
+    clock["now"] = 1 / 6 + 0.01                                    # one picture later
+    second, lift = merchant.frame()
+    assert first is not second and lift == 0
+    merchant.react()
+    clock["now"] += 0.17
+    assert merchant.frame()[1] > 0
+
+
+def test_the_shop_has_its_own_music_and_a_welcome_bubble(game):
+    music = json.loads((ROOT / "data" / "sounds.json").read_text(encoding="utf-8"))["music"]
+    scene = ShopScene(game)
+    assert scene.music == "shop" and "shop" in music
+    assert (ROOT / "assets" / "sounds" / "music_shop.wav").exists()
+    assert scene.bubble.get_width() <= 280 + 4
+    scene.draw(game.screen)

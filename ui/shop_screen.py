@@ -24,12 +24,15 @@ LIST_TOP = 92             # how far below the top of the panel the list starts (
 TABS_TOP = 54             # where the Buy / Sell tabs are, under the title
 VISIBLE_ROWS = 7          # rows shown at once; a longer list scrolls with the selection
 MERCHANT_SCALE = 6        # the shopkeeper is drawn 6 times the size of the art
+BUBBLE_WIDTH = 280        # the widest his talk bubble may be
 ENTER_KEYS = (pygame.K_RETURN, pygame.K_KP_ENTER)
 SWITCH_KEYS = (pygame.K_TAB, pygame.K_LEFT, pygame.K_RIGHT, pygame.K_a, pygame.K_d)
 MODES = ["buy", "sell"]
 
 
 class ShopScene(Scene):
+    music = "shop"     # core/sound.py: both shops play their own tune; leaving goes back to the floor's music
+
     def __init__(self, game, wandering=False):
         super().__init__(game)
         self.run = game.run_state
@@ -42,14 +45,15 @@ class ShopScene(Scene):
         self.message = ""
         self.inside = theme.inner(PANEL)
         # The stock does not change while the shop is open, so read it once.
-        ids = shop.wandering_stock(self.run.floor_number) if wandering else shop.stock(self.run.floor_number)
+        ids = shop.wandering_stock(self.run.floor_number, self.run.seed) if wandering else shop.stock(self.run.floor_number)
         self.stock = [items.get_item(item_id) for item_id in ids]
         self.rows = [Button((self.inside.x, self.inside.y + LIST_TOP + i * (ROW_H + GAP), 520, ROW_H), "")
                      for i in range(VISIBLE_ROWS)]
         label = t("shop_leave_wandering") if wandering else t("shop_leave", n=self.run.floor_number + 1)
         self.leave = Button((self.inside.right - 330, self.inside.bottom - 84, 330, 48), label)
         self.side_x = self.inside.x + 560
-        self.merchant = Merchant(MERCHANT_SCALE)
+        self.merchant = Merchant(MERCHANT_SCALE, facing_left=True)     # he looks at his goods
+        self.bubble = widgets.speech_bubble(game.fonts["small"], t("shop_welcome"), BUBBLE_WIDTH)   # made once
         self.refresh()
 
     # --- the list on the left ---------------------------------------------------
@@ -154,12 +158,24 @@ class ShopScene(Scene):
         self.draw_tabs(surface, fonts)
         self.draw_list(surface, fonts, mouse)
         self.draw_details(surface, fonts)
-        self.merchant.draw(surface, (inside.right - 70, self.leave.rect.top - 14))
+        feet = (inside.right - 70, self.leave.rect.top - 14)
+        self.merchant.draw(surface, feet)
+        self.draw_bubble(surface, feet)
         self.leave.draw(surface, fonts["normal"], mouse)
         if self.message:
             widgets.text(surface, small, self.message, theme.GOLD, (inside.x, inside.bottom - 28), "bottomleft")
         widgets.text(surface, small, t("shop_hint_wandering") if self.wandering else t("shop_hint"),
                      theme.TEXT_DIM, inside.bottomleft, "bottomleft")
+
+    def draw_bubble(self, surface, feet):
+        """His talk bubble just above his head, kept inside the shop panel."""
+        image, lift = self.merchant.frame()
+        if image is None:
+            return
+        head = feet[1] - lift - image.get_height() + image.get_bounding_rect().top    # the first pixel of his picture
+        rect = self.bubble.get_rect(midbottom=(feet[0], head - 4))
+        rect.right = min(rect.right, self.inside.right)
+        surface.blit(self.bubble, rect)
 
     def draw_tabs(self, surface, fonts):
         """'Buy' and 'Sell' under the title: the open one is gold and underlined, the other one dim."""

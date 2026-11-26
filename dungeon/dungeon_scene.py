@@ -22,6 +22,7 @@ from systems.enemies import chase_rules, floor_theme, make_enemy
 from systems.loot import roll_chest_gold, roll_loot
 from systems.player import load_data
 from ui import hud, move_info, theme
+from ui import theme as ui_theme      # "theme" is also the floor look in make_pictures()
 from ui.hotbar import Hotbar
 from ui.merchant import Merchant
 from ui.minimap import Minimap
@@ -73,6 +74,7 @@ class DungeonScene(Scene):
         theme = floor_theme(self.run.floor_number, self.run.seed)
         self.theme_music = theme.get("music", "dungeon")     # data/themes.json: stone, jungle and desert sound different
         self.renderer = DungeonRenderer(self.floor, theme["folder"], theme["background"])
+        ui_theme.set_frame_style(theme["folder"])     # menus, fights and the shop use this floor's frame
         self.camera = Camera(VIEW.width, VIEW.height, self.renderer.world_w, self.renderer.world_h)
         font = self.game.fonts["small"]
         player = self.run.player

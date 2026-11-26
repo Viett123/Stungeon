@@ -1,14 +1,15 @@
 
 
 {
-  "_note": "Numbers invented for the damage, time, crit, streak and enemy-skip rules (owner B, missions 2-5). Check them. min_enemy_damage: an enemy hit never does less than this. rounding: round = half goes up, floor = always down, ceil = always up. time_limit_seconds: seconds per question by difficulty. typed_extra_seconds: extra seconds for a typed answer. crit_tiers: an answer that uses at most this share of its time limit is a crit; checked from the fastest. streak: bonus_per_right for each right answer in a row, up to max_multiplier. enemy_skip_chance: chance the enemy skips its turn after a miss. Tier damage and bonus_damage are in moves.json; enemy damage is in enemies.json.",
+  "_note": "Numbers invented for the damage, time, crit, streak and enemy-skip rules (owner B, missions 2-5). Check them. min_enemy_damage: an enemy hit never does less than this. rounding: round = half goes up, floor = always down, ceil = always up. time_limit_seconds: seconds per question by difficulty. typed_extra_seconds: extra seconds for a typed answer. min_time_limit_seconds: a heavy weapon takes seconds away, but a question never gets less time than this. crit_tiers: an answer that uses at most this share of its time limit is a crit; checked from the fastest. The share is measured on the normal time limit, without the seconds that items add (26 Nov 2026: made tighter after the play-test, was 0.15 and 0.30). streak: bonus_per_right for each right answer in a row, up to max_multiplier. enemy_skip_chance: chance the enemy skips its turn after a miss. Tier damage and bonus_damage are in moves.json; enemy damage is in enemies.json.",
   "min_enemy_damage": 1,
   "rounding": "round",
   "time_limit_seconds": {"easy": 15, "medium": 20, "hard": 30},
   "typed_extra_seconds": 10,
+  "min_time_limit_seconds": 8,
   "crit_tiers": [
-    {"within": 0.15, "multiplier": 2.0},
-    {"within": 0.30, "multiplier": 1.5}
+    {"within": 0.08, "multiplier": 2.0},
+    {"within": 0.18, "multiplier": 1.5}
   ],
   "streak": {"bonus_per_right": 0.10, "max_multiplier": 1.5},
   "enemy_skip_chance": 0.25

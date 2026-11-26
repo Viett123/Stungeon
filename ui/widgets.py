@@ -46,6 +46,35 @@ def wrapped(surface, font, string, color, topleft, width, line_gap=6):
     return y
 
 
+BUBBLE_PAD = 10          # space between the edge of a talk bubble and its text
+BUBBLE_TAIL = 12         # how far the little point under a talk bubble sticks out
+BUBBLE_FILL = (238, 230, 210)
+BUBBLE_TEXT = (40, 32, 30)
+
+
+def speech_bubble(font, string, max_width):
+    """A talk bubble picture, like in a comic: light box, dark text, a point at the bottom middle.
+
+    Make it once and blit it every frame with its midbottom on the speaker's head.
+    """
+    lines = wrap(font, string, max_width - 2 * BUBBLE_PAD)
+    line_h = font.get_height()
+    width = max(font.size(line)[0] for line in lines) + 2 * BUBBLE_PAD
+    height = len(lines) * line_h + 2 * BUBBLE_PAD
+    bubble = pygame.Surface((width + 4, height + BUBBLE_TAIL + 4), pygame.SRCALPHA)
+    box = pygame.Rect(2, 2, width, height)
+    middle = box.centerx
+    tail = [(middle - BUBBLE_TAIL, box.bottom - 2), (middle + BUBBLE_TAIL // 2, box.bottom - 2), (middle, box.bottom + BUBBLE_TAIL)]
+    pygame.draw.polygon(bubble, theme.OUTLINE, [(x, y + 2) for x, y in tail])        # dark edge of the point
+    pygame.draw.rect(bubble, theme.OUTLINE, box.inflate(4, 4), border_radius=8)      # dark edge of the box
+    pygame.draw.rect(bubble, BUBBLE_FILL, box, border_radius=6)
+    pygame.draw.polygon(bubble, BUBBLE_FILL, tail)
+    for i, line in enumerate(lines):
+        image = font.render(line, True, BUBBLE_TEXT)
+        bubble.blit(image, image.get_rect(midtop=(middle, box.y + BUBBLE_PAD + i * line_h)))
+    return bubble
+
+
 _dim_cover = None   # made once, the first time dim() is used
 
 

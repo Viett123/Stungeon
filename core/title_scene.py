@@ -1,7 +1,8 @@
 """The title menu: New game, Continue, Demo, Credits, Quit (owner: lead).
 
-It looks like a torch-lit dungeon room (ui/backdrop.py) with the game's name carved
-in gold at the top and the three heroes standing guard beside the menu.
+It looks like a torch-lit dungeon room cut into the three floor looks, jungle | stone | desert
+(ui/backdrop.py), with the game's name at the top and the three heroes standing guard beside
+the menu. The menu's frame is made of all three biome frames, one third each.
 """
 import pygame
 
@@ -10,7 +11,7 @@ from core.strings import t
 from dungeon.actor import make_actor
 from systems.player import load_data
 from ui import anim, theme, widgets
-from ui.backdrop import Backdrop
+from ui.backdrop import Backdrop, biome_columns
 from ui.menu import BUTTON_H, BUTTON_W, GAP, MenuScene
 
 MENU_TOP = 370            # y of the first button
@@ -76,6 +77,23 @@ def _glow(size):
     return pygame.transform.smoothscale(small, size)
 
 
+def draw_mixed_frame(surface, rect):
+    """The menu frame in three slices: the left third uses the jungle frame, the middle the stone
+    one, the right the desert one, in the same order as the biomes behind it.
+
+    Each frame is drawn whole, but a clip rectangle lets only its own slice reach the screen.
+    """
+    rect = pygame.Rect(rect)
+    folders = [folder for _, folder, _ in biome_columns()]
+    third = rect.width // len(folders)
+    old_clip = surface.get_clip()
+    for i, folder in enumerate(folders):
+        right = rect.right if i == len(folders) - 1 else rect.x + (i + 1) * third
+        surface.set_clip(pygame.Rect(rect.x + i * third, rect.y, right - rect.x - i * third, rect.height))
+        theme.draw_frame(surface, rect, style=folder)
+    surface.set_clip(old_clip)
+
+
 class TitleScene(MenuScene):
     music = "title"   # core/sound.py: the title tune keeps playing through the new-game screens
 
@@ -89,7 +107,8 @@ class TitleScene(MenuScene):
         ]
         super().__init__(game, t("title"), options, top=MENU_TOP)
         # Everything below is made once here, never inside draw().
-        self.backdrop = Backdrop()
+        self.backdrop = Backdrop(biomes=True)
+        theme.set_frame_style("")     # back at the title: other menus use the stone frame until a floor starts
         # A drawn logo (assets/sprites/logo.png) wins; without one, the logo is made from the font.
         self.logo = _drawn_logo() or _logo(game.fonts["title"], t("title").upper())
         self.logo_rect = self.logo.get_rect(midtop=(settings.SCREEN_W // 2, LOGO_TOP))
@@ -146,7 +165,7 @@ class TitleScene(MenuScene):
         surface.blit(self.logo, self.logo_rect)
         widgets.text(surface, fonts["normal"], t("subtitle"), theme.OUTLINE, (cx + 2, self.subtitle_y + 2), "center")
         widgets.text(surface, fonts["normal"], t("subtitle"), theme.TEXT, (cx, self.subtitle_y), "center")
-        theme.draw_frame(surface, self.button_frame)
+        draw_mixed_frame(surface, self.button_frame)
         mouse = pygame.mouse.get_pos()
         for i, button in enumerate(self.buttons):
             button.draw(surface, fonts["normal"], mouse, selected=(i == self.selected))

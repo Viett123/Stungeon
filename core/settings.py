@@ -4,6 +4,18 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = ROOT / "data"
+FONT_DIR = ROOT / "assets" / "fonts"
+
+# The pixel fonts (free, SIL Open Font License, see assets/CREDITS.md). Both can draw English,
+# German (ä ö ü ß) and Vietnamese. Tiny5 is chunky, for titles; VT323 is easier to read, for
+# everything else. Sizes were picked so text is about as wide as with the old built-in font.
+FONTS = {
+    "title": ("Tiny5.ttf", 72),
+    "big": ("Tiny5.ttf", 36),
+    "normal": ("VT323-Regular.ttf", 28),
+    "small": ("VT323-Regular.ttf", 22),
+}
+OLD_FONT_SIZES = {"title": 96, "big": 48, "normal": 32, "small": 26}   # pygame's built-in font, if a file is missing
 
 # Where the game may write files (logs). In a built exe (tools/build.py) the code lives in a
 # hidden folder, so we write next to Stungeon.exe instead, where people can find the log.

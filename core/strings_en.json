@@ -124,6 +124,7 @@
   "shop_leave_wandering": "Leave  (Esc)",
   "shop_hint_wandering": "Up/Down to choose  -  Tab: buy / sell  -  Enter to buy or sell  -  Esc to leave",
   "merchant_hello": "A wandering merchant! Walk into him to trade.",
+  "shop_welcome": "Welcome to my shop, buy or sell anything you want!",
 
   "inv_equipment": "Equipment",
   "slot_head": "Head",

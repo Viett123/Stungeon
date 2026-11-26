@@ -33,7 +33,7 @@ To replace a placeholder, put a PNG with the right name in `assets/sprites/`. No
 | `tile_stairs.png` | Stairs down |
 | `torch_0.png`, `torch_1.png`, ... | A burning torch for the walls behind rooms (animated) |
 | `chest_golden_0.png`, `chest_golden_1.png`, ... | The treasure-room chest: closed first, open last |
-| `npc_merchant.png` | The shopkeeper shown in the shop |
+| `npc_merchant_idle_0.png`, `_1.png`, ... | The shopkeeper (shop and wandering merchant), animated. Without these, the still `npc_merchant.png` is used |
 | `tile_spikes.png` | Spikes of a trap room, see-through around the spikes; drawn on top of the floor |
 | `chest_0.png`, `chest_1.png`, ... | A chest opening: the first picture is closed, the last is fully open |
 | `player_<class>_idle_0.png`, `_1.png`, ... | The player standing, one set per class id in `data/classes.json` (`warrior`, `mage`, `archer`) |
@@ -60,8 +60,10 @@ Themes and their background colour are listed in `data/themes.json`, and `data/e
 which floor uses which theme. To make your own theme: copy a theme folder, repaint the tiles,
 add it to `data/themes.json`.
 
-The frames, bars and slots of the menus are drawn in code (`ui/theme.py`), so they need no art files.
-A real font is still missing: the game uses pygame's built-in font until someone picks a CC0 pixel font.
+Each theme folder may have its own `ui_frame.png`: every panel then uses that frame while the player is on
+such a floor (`ui/theme.py`). The bars and slots of the menus are still drawn in code.
+Fonts are in `assets/fonts/` and chosen in `core/settings.py` (FONTS): Tiny5 for titles, VT323 for the rest.
+Without the files the game falls back to pygame's built-in font.
 
 A broken image file does not crash the game: it is written to `logs/error.log` and the placeholder is used.
 

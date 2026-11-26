@@ -8,6 +8,8 @@ picture. So attacks are animated in code, with the weapon the player has equippe
   staff  the staff is raised while a glowing bolt flies to the enemy
 
 Which style a weapon uses is its "attack" value in data/items.json (melee if it has none).
+How it is held (where the hand grips it, how big it is drawn, how it leans) is in data/weapon_grips.json:
+a sword is held at the handle, a staff a bit above its middle, a bow upright at arm's length.
 An attack has three parts, timed like a hand-drawn attack animation: wind up, strike, recover.
 All turned and mirrored pictures are made once when the weapon is created, never while the game runs.
 """
@@ -16,12 +18,9 @@ import pygame
 from core import assets
 from dungeon import sprites
 from systems import items
+from systems.player import load_data
 
-HAND_X = 6                                     # the hand, in art pixels: this far in front of the body...
-HAND_Y = 8                                     # ...and this far above the feet
 SWING_ANGLES = [40, 55, 10, -40, -95, -120]    # melee: raise behind the shoulder, then swing forward
-HOLD_ANGLE = {"melee": -30, "bow": 0, "staff": -12}     # how the weapon is tilted while just held
-RAISED_ANGLE = {"bow": 0, "staff": 22}                  # how a bow or staff is held during its attack
 
 # When things happen during an attack; 0.0 is its start and 1.0 its end.
 STRIKE_START = 0.35       # the wind-up is over: the swing comes down, the arrow or bolt leaves
@@ -29,16 +28,40 @@ IMPACT = 0.6              # the hit lands on the enemy
 SLASH_END = 0.8           # the white slash of a melee swing is gone
 
 
-def _turned(image, angle):
-    """Turn a weapon picture around its handle (the bottom middle of the picture).
+def grip_rules(item_id, style):
+    """How this weapon is held: its style's values from data/weapon_grips.json, with its own changes on top."""
+    data = load_data("weapon_grips.json")
+    rules = dict(data["styles"][style])
+    rules.update(data["weapons"].get(item_id, {}))
+    if rules.get("big") and "big_max_length" in rules:
+        rules["max_length"] = rules["big_max_length"]
+    return rules
 
-    pygame turns a picture around its centre. So the weapon is first put on a bigger
-    see-through square with its handle exactly in the centre; turning that square
-    then turns the weapon around its handle.
+
+def pixel_size(art_length, factor, max_length):
+    """How many screen pixels one art pixel of the weapon gets: a whole number from 1 to factor.
+
+    factor is how much the characters are scaled (3 on the map, 4 in fights). A weapon longer than
+    max_length gets a smaller whole number, so it shrinks but its pixels stay sharp squares.
+    """
+    if art_length <= max_length:
+        return factor
+    return max(1, min(factor, round(factor * max_length / art_length)))
+
+
+def _turned(image, angle, grip=0.0):
+    """Turn a weapon picture around the point where the hand holds it.
+
+    grip: where the hand is, as a share of the weapon's length from its bottom end
+    (0.0 = the very bottom, 0.5 = the middle). pygame turns a picture around its centre,
+    so the weapon is first put on a bigger see-through square with the grip point exactly
+    in the centre; turning that square then turns the weapon around the hand.
     """
     width, height = image.get_size()
-    square = pygame.Surface((2 * height, 2 * height), pygame.SRCALPHA)
-    square.blit(image, (height - width // 2, 0))          # the handle lands on the centre
+    pivot_y = height - round(height * grip)              # from the top of the picture
+    side = 2 * max(pivot_y, height - pivot_y, width) + 2
+    square = pygame.Surface((side, side), pygame.SRCALPHA)
+    square.blit(image, (side // 2 - width // 2, side // 2 - pivot_y))   # the grip lands on the centre
     return pygame.transform.rotate(square, angle)
 
 
@@ -87,18 +110,26 @@ class HeldWeapon:
         except KeyError:
             item = {}                                      # art without an item entry: a plain melee weapon
         self.style = item.get("attack", "melee")
-        image = assets.load_sprite(f"weapon_{item_id}", factor)
-        self.has_art = image is not None                   # no weapon_<id>.png: nothing is drawn
+        rules = grip_rules(item_id, self.style)
+        self.hand_offset = tuple(rules["hand"])            # art pixels: in front of the body, above the feet
+        art = assets.load_sprite(f"weapon_{item_id}", factor=1)
+        self.has_art = art is not None                     # no weapon_<id>.png: nothing is drawn
         if not self.has_art:
             return
-        self.held = _both_sides(_turned(image, HOLD_ANGLE[self.style]))
+        bounds = art.get_bounding_rect()
+        if bounds.width and bounds.height:
+            art = art.subsurface(bounds).copy()            # cut off empty space, so the grip is measured on the weapon itself
+        self.pixel = pixel_size(art.get_height(), factor, rules["max_length"])
+        image = assets.scale_up(art, self.pixel)
+        grip = rules["grip"]
+        self.held = _both_sides(_turned(image, rules["hold_angle"], grip))
         if self.style == "melee":
-            swing = [_turned(image, angle) for angle in SWING_ANGLES]
+            swing = [_turned(image, angle, grip) for angle in SWING_ANGLES]
             self.swing = (swing, [_mirrored(frame) for frame in swing])
             self.slash = _both_sides(_slash_picture(factor))
             self.projectile = None
         else:
-            self.raised = _both_sides(_turned(image, RAISED_ANGLE[self.style]))
+            self.raised = _both_sides(_turned(image, rules.get("raised_angle", rules["hold_angle"]), grip))
             picture = _arrow_picture(factor) if self.style == "bow" else _bolt_picture(tuple(item.get("color", (150, 170, 230))), factor)
             self.projectile = _both_sides(picture)          # what flies to the enemy
 
@@ -115,7 +146,8 @@ class HeldWeapon:
     def hand(self, feet_x, feet_y, facing_left):
         """Where the hand is, given the point the character stands on."""
         direction = -1 if facing_left else 1
-        return feet_x + direction * HAND_X * self.factor, feet_y - HAND_Y * self.factor
+        hand_x, hand_y = self.hand_offset
+        return feet_x + direction * hand_x * self.factor, feet_y - hand_y * self.factor
 
     def thing(self, feet_x, feet_y, facing_left):
         """The held weapon as an entry for DungeonRenderer.draw(): (x, y, image, lift).
@@ -127,6 +159,7 @@ class HeldWeapon:
         hand_x, hand_y = self.hand(feet_x, feet_y, facing_left)
         sort_y = feet_y + 1
         lift = sort_y - (hand_y + image.get_height() // 2) - 3   # 3 = the renderer's own small lift
+        # (the turned picture has the grip point in its centre, so its centre goes on the hand)
         return hand_x, sort_y, image, lift
 
     def draw(self, surface, feet, facing_left, swing=None):

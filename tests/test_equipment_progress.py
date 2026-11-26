@@ -222,5 +222,33 @@ def test_items_with_bonus_seconds_give_more_time_to_answer():
 
 def test_every_item_that_promises_more_time_has_bonus_seconds():
     for item_id, item in ALL.items():
-        if "s answer time" in item["text"] or "seconds to answer" in item["text"]:
-            assert item.get("bonus_seconds", 0) > 0, item_id
+        if "+" in item["text"] and ("s answer time" in item["text"] or "seconds to answer" in item["text"]):
+            assert item.get("bonus_seconds", 0) != 0, item_id
+
+
+def test_heavy_weapons_hit_harder_but_give_less_time_and_light_ones_the_opposite():
+    """Each weapon is compared with the normal weapons of the same rarity."""
+    weapons = {i: item for i, item in ALL.items() if item.get("slot") == "weapon"}
+    assert {item["weight"] for item in weapons.values()} == {"heavy", "light", "normal"}
+    for item_id, item in weapons.items():
+        normal = [w["damage_multiplier"] for w in weapons.values()
+                  if w["weight"] == "normal" and w["rarity"] == item["rarity"]]
+        average = sum(normal) / len(normal) if normal else None
+        seconds = item.get("bonus_seconds", 0)
+        if item["weight"] == "heavy":
+            assert seconds < 0, item_id
+            assert average is None or item["damage_multiplier"] > average, item_id
+        elif item["weight"] == "light":
+            assert seconds > 0, item_id
+            assert average is None or item["damage_multiplier"] < average, item_id
+        else:
+            assert seconds == 0, item_id
+
+
+def test_a_question_never_gets_less_time_than_the_minimum():
+    player = Player("warrior")
+    player.equipped["weapon"] = "sledgehammer"
+    player.bonus_seconds = lambda: -100                                # far more than any weapon takes away
+    battle = Battle(player, make_enemy("article_goblin"), QuestionEngine(rng=random.Random(5)), floor=1)
+    battle.choose_move(battle.moves()[0]["id"])
+    assert battle.time_limit == load_data("combat.json")["min_time_limit_seconds"]

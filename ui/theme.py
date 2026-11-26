@@ -49,20 +49,49 @@ def inner(rect):
     return pygame.Rect(rect).inflate(-2 * FRAME_PAD, -2 * FRAME_PAD)
 
 
-_borders = {}   # (width, height) -> a finished border picture, made once per panel size
+_borders = {}   # (style, width, height) -> a finished border picture, made once per panel size
+
+# Which floor look the frames follow: "" (stone), "jungle" or "desert", the same folder names as
+# data/themes.json. Each look has its own ui_frame.png in that folder; the dungeon sets it.
+_style = ""
 
 
-def _art_border(size):
-    """The border of a panel of this size, built from assets/sprites/ui_frame.png. None without that art.
+def set_frame_style(style):
+    """Use the frame of this floor look from now on (the folder name from data/themes.json)."""
+    global _style
+    _style = style or ""
 
+
+def frame_style():
+    return _style
+
+
+def frame_art(style):
+    """The frame picture of a floor look, e.g. assets/sprites/jungle/ui_frame.png.
+
+    A look without its own frame uses assets/sprites/ui_frame.png. None if there is no frame art at all.
+    """
+    if style:
+        art = assets.load_sprite(f"{style}/ui_frame", FRAME_ART_SCALE)
+        if art is not None:
+            return art
+    return assets.load_sprite("ui_frame", FRAME_ART_SCALE)
+
+
+def _art_border(size, style=None):
+    """The border of a panel of this size, built from the floor look's ui_frame.png. None without that art.
+
+    style: the floor look to use; None = the one set by set_frame_style.
     The art is one small square frame. It is cut into 9 pieces: the 4 corners are used
     as they are, and the 4 edge pieces are repeated to fill the sides ("9-slice").
     """
-    if size in _borders:
-        return _borders[size]
-    art = assets.load_sprite("ui_frame", FRAME_ART_SCALE)
+    style = _style if style is None else style
+    key = (style, size[0], size[1])
+    if key in _borders:
+        return _borders[key]
+    art = frame_art(style)
     if art is None or size[0] < 2 * FRAME_CORNER or size[1] < 2 * FRAME_CORNER:
-        _borders[size] = None
+        _borders[key] = None
         return None
     width, height = size
     side = art.get_width()
@@ -79,18 +108,19 @@ def _art_border(size):
     for x, source_x in ((0, 0), (width - corner, side - corner)):          # the four corners
         for y, source_y in ((0, 0), (height - corner, side - corner)):
             border.blit(art, (x, y), (source_x, source_y, corner, corner))
-    _borders[size] = border
+    _borders[key] = border
     return border
 
 
-def draw_frame(surface, rect, highlight=False, fill=PANEL_FILL):
+def draw_frame(surface, rect, highlight=False, fill=PANEL_FILL, style=None):
     """Draw a framed panel: dark outline, stone border, metal line, dark inside, metal corner studs.
 
     highlight=True uses bright metal for the line (for the selected card or slot).
+    style: which floor look's frame to use ("", "jungle", "desert"); None = the current one.
     Returns the inner rect for content.
     """
     rect = pygame.Rect(rect)
-    border = _art_border(rect.size)
+    border = _art_border(rect.size, style)
     if border is not None:
         pygame.draw.rect(surface, fill, rect.inflate(-10, -10))
         surface.blit(border, rect)
