@@ -74,7 +74,8 @@ To use your own sound instead, save it as a .wav with the same name. A missing f
 ## The title logo
 
 Draw the logo yourself and save it as `assets/sprites/logo.png` (a see-through background works best).
-Draw it small, about 200 x 50 pixels: the game makes it bigger by a whole number (x2, x3, x4), so the
-pixels stay sharp, as big as fits in 900 x 140 on screen. A bigger picture is shrunk to fit.
+It is shown as big as fits in 1100 x 280 on screen, resized by a whole number so the pixels stay sharp:
+a small drawing (e.g. 200 x 70) is made 2, 3 or 4 times bigger; a big one (e.g. 1504 x 560) is made 2, 3...
+times smaller until it fits.
 Without the file, the title shows the name made from the font (`core/title_scene.py`).
 

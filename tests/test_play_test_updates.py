@@ -51,7 +51,7 @@ def test_without_logo_png_the_logo_is_made_in_code(monkeypatch, tmp_path):
     assets.clear_cache()
 
 
-@pytest.mark.parametrize("size", [(200, 50), (60, 20), (2000, 300)])
+@pytest.mark.parametrize("size", [(200, 50), (60, 20), (2000, 300), (1504, 560)])
 def test_a_drawn_logo_is_scaled_to_fit_above_the_menu(monkeypatch, tmp_path, size):
     Game()                                                        # a display, so images can be converted
     pygame.image.save(pygame.Surface(size), str(tmp_path / "logo.png"))
@@ -62,6 +62,8 @@ def test_a_drawn_logo_is_scaled_to_fit_above_the_menu(monkeypatch, tmp_path, siz
     assert width <= title_scene.LOGO_MAX[0] and height <= title_scene.LOGO_MAX[1]
     if size[0] <= title_scene.LOGO_MAX[0]:
         assert width % size[0] == 0                               # a whole number bigger: sharp pixels
+    else:
+        assert size[0] // width == size[0] / width or size[0] % width < size[0] // width   # a whole number smaller
     assets.clear_cache()
 
 
