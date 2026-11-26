@@ -42,7 +42,6 @@ is changed: it is the pack's plain floor with the pack's skull drawn on top.
 | `enemy_mini_floor_2_idle_N`, `_run_N` | `ogre_idle_anim_fN`, `ogre_run_anim_fN` |
 | `enemy_mini_floor_3_idle_N`, `_run_N` | `big_demon_idle_anim_fN`, `big_demon_run_anim_fN` |
 | `tile_spikes.png` | `floor_spikes_anim_f3.png` |
-| `item_tonic.png` | `flask_blue.png` |
 | `item_old_sword.png`, `weapon_old_sword.png` | `weapon_rusty_sword.png` |
 | `item_apprentice_staff.png`, `weapon_apprentice_staff.png` | `weapon_red_magic_staff.png` |
 | `item_katana`, `item_mace`, `item_spear`, `item_cleaver`, `item_golden_sword`, `item_lavish_sword`, `item_duel_sword` (and the same with `weapon_`) | `weapon_katana`, `weapon_mace`, `weapon_spear`, `weapon_cleaver`, `weapon_golden_sword`, `weapon_lavish_sword`, `weapon_duel_sword` |
@@ -77,13 +76,15 @@ No file from this pack is in the game any more. `ui_frame.png` used to be its sm
 
 ## Item icons: drawn by us
 
-Drawn by the team (16 x 16 each); handed over as `new_asset.zip` and `potion.zip` on 26 Nov 2026.
+Drawn mainly by **conchuotbiluoc** (GitHub: ahihilili299-wq), 16 x 16 each; handed over as
+`new_asset.zip` and `potion.zip` on 26 Nov 2026, plus the new Big Potion and Tonic drawings.
 `item_cloth_hood.png` came from the first art branch (`c/new_asset`, commit d8717a9 by Tien Le).
+Also on the in-game Credits screen (`data/credits.json`).
 They replace the 0x72 pictures where an item already had one. Nothing to license.
 
 | File in `assets/sprites/` | Drawn as |
 |---|---|
-| `item_small_potion.png`, `item_big_potion.png` | `potion/small_potion.png`, `potion/big_potion.png` |
+| `item_small_potion.png`, `item_big_potion.png`, `item_tonic.png` | `potion/small_potion.png`, `potion/big_potion.png`, and a later Tonic drawing |
 | `item_copper_ring.png`, `item_gold_ring.png` | `copper_ring.png`, `gold_ring.png` |
 | `item_leather_vest.png`, `item_wool_trousers.png`, `item_worn_boots.png` | `leather_vest.png`, `wool_trousers.png`, `worn boots.png` |
 | `item_lucky_charm.png` | `lucky_charm.png` |

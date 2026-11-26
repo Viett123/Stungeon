@@ -132,3 +132,15 @@ def test_a_missing_font_file_falls_back_to_the_built_in_font(monkeypatch, tmp_pa
     from core import game as game_module, settings
     monkeypatch.setattr(settings, "FONT_DIR", tmp_path)          # an empty folder
     assert game_module.load_font("normal") is not None
+
+
+# --- credits ------------------------------------------------------------------------------
+def test_every_credit_fits_on_the_screen_above_the_hint(game):
+    from ui.credits_screen import HINT_SPACE, PANEL, CreditsScene
+    scene = CreditsScene(game)
+    bottom = theme.inner(PANEL).bottom - HINT_SPACE
+    for font, line, _, (x, y) in scene.layout:
+        width, height = game.fonts[font].size(line)
+        assert y + height <= bottom + 4 and x + width <= PANEL.right, line
+    names = " ".join(entry["author"] for entry in scene.entries)
+    assert "conchuotbiluoc" in names                                # the team's artist is named
