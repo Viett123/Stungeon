@@ -6,6 +6,12 @@ starts, onto two big images:
   cap_image  - the stone strips on top of walls. They are drawn AFTER the characters,
                so someone standing behind a wall is partly hidden by it.
 Every frame we only copy the visible part of those images to the screen.
+
+Speed: cap_image and fog_image are see-through, but every pixel is either fully see-through
+or fully solid. So they use a "colorkey" (one colour, KEY, means "skip this pixel") instead of
+per-pixel transparency. Blending every pixel was far too slow in the web version (about 13 ms
+per image per frame); skipping pixels is several times faster. cap_image never changes, so it also
+gets RLEACCEL, which stores the skipped runs and makes it almost free to draw.
 """
 import pygame
 
@@ -19,6 +25,8 @@ TORCH_EVERY = 7               # about one brick in 7 behind a room carries a tor
 TORCH_FRAME_MS = 100          # each torch picture is shown this long (milliseconds)
 SHADOW_HEIGHT = 12            # pixels of shadow a wall casts on the floor below it
 SHADOW_COLOR = (0, 0, 0, 70)  # black, mostly see-through
+KEY = (1, 255, 2)             # "skip this pixel" in cap_image and fog_image. No art uses it
+                              # (not magenta: that is the colour of a missing picture).
 
 
 def _variant(x, y, count):
@@ -42,8 +50,9 @@ class DungeonRenderer:
         self.torch_frames = sprites.torch_frames()
         self.torches = [(x, y) for y in range(floor.height) for x in range(floor.width)
                         if self._has_torch(x, y)] if self.torch_frames else []
-        self.fog_image = pygame.Surface((self.world_w, self.world_h), pygame.SRCALPHA)
+        self.fog_image = pygame.Surface((self.world_w, self.world_h))
         self.fog_image.fill(self.background)
+        self.fog_image.set_colorkey(KEY)   # no RLEACCEL: the fog changes at every step
 
     def _has_torch(self, x, y):
         """True for about one in TORCH_EVERY bricks that have floor right below them."""
@@ -82,7 +91,7 @@ class DungeonRenderer:
     def reveal(self, cells):
         """Remove the fog from these (x, y) cells."""
         for x, y in cells:
-            self.fog_image.fill((0, 0, 0, 0), (x * TILE, y * TILE, TILE, TILE))
+            self.fog_image.fill(KEY, (x * TILE, y * TILE, TILE, TILE))
 
     def _tile_image(self, name, x, y):
         if name == tiles.FLOOR:
@@ -92,12 +101,14 @@ class DungeonRenderer:
         return sprites.tile_sprite(name, folder=self.folder)
 
     def _draw_caps(self):
-        image = pygame.Surface((self.world_w, self.world_h), pygame.SRCALPHA)   # see-through
+        image = pygame.Surface((self.world_w, self.world_h))
+        image.fill(KEY)                                     # see-through everywhere at first
         cap = sprites.tile_sprite(tiles.CAP, folder=self.folder)
         for y in range(self.floor.height):
             for x in range(self.floor.width):
                 if tiles.has_cap(self.floor.grid, x, y):
                     image.blit(cap, (x * TILE, y * TILE))
+        image.set_colorkey(KEY, pygame.RLEACCEL)
         return image
 
     # --- every frame -------------------------------------------------------

@@ -15,6 +15,7 @@ A screen chooses its music with a class attribute, which the game loop reads eve
     music = "off"                  # silence
 """
 import logging
+import sys
 
 import pygame
 
@@ -33,11 +34,18 @@ _cache = {}                                  # name -> Sound or None, so each fi
 _state = {"ready": False, "muted": False, "music": None}
 
 
+def buffer_size(in_browser=None):
+    """The sound buffer from data/sounds.json: small on the desktop, bigger in a browser."""
+    if in_browser is None:
+        in_browser = sys.platform == "emscripten"
+    return _config["mixer_buffer"]["web" if in_browser else "desktop"]
+
+
 def pre_init():
-    """Ask for a small sound buffer (512), so effects play right when they happen, not a moment
-    later. Call once, before pygame.init(). Does nothing if there is no mixer."""
+    """Set the sound buffer (see buffer_size). Call once, before pygame.init().
+    Does nothing if there is no mixer."""
     try:
-        pygame.mixer.pre_init(44100, -16, 2, 512)
+        pygame.mixer.pre_init(44100, -16, 2, buffer_size())
     except (AttributeError, pygame.error):
         logging.exception("No sound: the mixer could not be set up")
 

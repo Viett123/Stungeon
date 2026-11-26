@@ -2,6 +2,8 @@
   "_note": "Every sound in the game is MADE from these recipes by tools/make_sounds.py (no downloaded sounds, so nothing to license). Change a number, then run: python tools/make_sounds.py  -- it rewrites assets/sounds/. EFFECT LAYER: wave = square, triangle, saw, sine or noise; freq = start pitch in Hz (for noise: how rough, low = rumble, high = hiss); to = end pitch (a slide); seconds = length; delay = when it starts; attack = fade-in seconds; fade = how fast it dies away (1 = steady, 2+ = quick); duty = square only, 0.5 = full, 0.125 = thin; vibrato = wobbles per second; notes + step = play these notes one after another, step seconds apart. volume (effect) = how loud its loudest point is, 0 to 1. MUSIC: bpm = speed; each track's steps are eighth notes: a note name starts a note, - holds it, . is silence, | only marks the bars. A drums track uses k = kick, s = snare, h = hi-hat. Which dungeon music plays on which floor look is in data/themes.json (music); boss_room plays in the room with the stairs; shop plays in both shops.",
   "sample_rate": 22050,
   "volume": {"effects": 0.7, "music": 0.35},
+  "_buffer_note": "mixer_buffer = how many sound samples are prepared at once. Small = effects play sooner after they happen. Too small = crackling, because the sound runs out before the next part is ready. The web version (pygbag) is slower, so it needs a bigger buffer.",
+  "mixer_buffer": {"desktop": 512, "web": 2048},
   "skill_kinds": {"slash": "swing", "projectile": "shoot", "rain": "rain", "aura": "aura"},
 
   "effects": {
