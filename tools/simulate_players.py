@@ -90,7 +90,7 @@ def next_goal(scene):
 def wear_upgrades(player, items, inventory):
     """Put on anything in the bag that is better than what is worn."""
     def score(item):
-        return item.get("damage_multiplier", 1) * 10 + item.get("defense", 0) + item.get("bonus_seconds", 0) * 0.2
+        return player.item_damage_multiplier(item) * 10 + item.get("defense", 0) + item.get("bonus_seconds", 0) * 0.2   # a weapon of another class counts for less
     for item_id in list(player.inventory):
         item = items.get_item(item_id)
         if item["kind"] != "equipment":

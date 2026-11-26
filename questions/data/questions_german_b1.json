@@ -21819,6 +21819,5454 @@
       "answer": "Unsere Diskussion heute hat das Thema ...",
       "explanation": "Vielen Dank für Ihre Teilnahme is used to close the discussion.",
       "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-konjunktiv2_modalverben-009",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "konjunktiv2_modalverben",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "Polite question: \"___ ich bitte das Salz haben?\"",
+      "choices": [
+        "Könnte",
+        "Konnte",
+        "Kann",
+        "Musste"
+      ],
+      "answer": "Könnte",
+      "explanation": "Könnte (Konjunktiv II of können) makes a request polite.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-konjunktiv2_modalverben-010",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "konjunktiv2_modalverben",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "Advice: \"Ihr ___ vor der Prüfung früh ins Bett gehen.\"",
+      "choices": [
+        "solltet",
+        "sollt",
+        "solltest",
+        "sollten"
+      ],
+      "answer": "solltet",
+      "explanation": "ihr + sollen in Konjunktiv II: ihr solltet.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-konjunktiv2_modalverben-011",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "konjunktiv2_modalverben",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "Which sentence gives ADVICE?",
+      "choices": [
+        "Du solltest einen Sprachkurs machen.",
+        "Du musstest einen Sprachkurs machen.",
+        "Du hast einen Sprachkurs gemacht.",
+        "Du machst einen Sprachkurs."
+      ],
+      "answer": "Du solltest einen Sprachkurs machen.",
+      "explanation": "solltest + infinitive is the usual way to give advice.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-konjunktiv2_modalverben-012",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "konjunktiv2_modalverben",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "\"___ Sie mir bitte helfen?\" (very polite)",
+      "choices": [
+        "Könnten",
+        "Können",
+        "Konnten",
+        "Kannst"
+      ],
+      "answer": "Könnten",
+      "explanation": "Sie + können in Konjunktiv II: Sie könnten.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-konjunktiv2_modalverben-013",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "konjunktiv2_modalverben",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "What does \"Du dürftest hier eigentlich nicht rauchen.\" mean?",
+      "choices": [
+        "Actually you are not allowed to smoke here.",
+        "You will smoke here.",
+        "You wanted to smoke here.",
+        "You had to smoke here."
+      ],
+      "answer": "Actually you are not allowed to smoke here.",
+      "explanation": "dürfte + nicht softens a rule: actually it is not allowed.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-konjunktiv2_modalverben-014",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "konjunktiv2_modalverben",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "Which form is Konjunktiv II?",
+      "choices": [
+        "wir müssten",
+        "wir mussten",
+        "wir müssen",
+        "wir muss"
+      ],
+      "answer": "wir müssten",
+      "explanation": "müssten has an umlaut. mussten (no umlaut) is the past tense.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-konjunktiv2_modalverben-015",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "konjunktiv2_modalverben",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "\"Wenn du mehr Zeit hättest, ___ du ein Instrument lernen.\" (it would be possible)",
+      "choices": [
+        "könntest",
+        "konntest",
+        "kannst",
+        "musst"
+      ],
+      "answer": "könntest",
+      "explanation": "könntest = would be able to (Konjunktiv II of können).",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-konjunktiv2_modalverben-016",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "konjunktiv2_modalverben",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "\"Man ___ die Hausaufgaben eigentlich jeden Tag machen.\" (advice: one should)",
+      "choices": [
+        "sollte",
+        "söllte",
+        "soll",
+        "sollt"
+      ],
+      "answer": "sollte",
+      "explanation": "man + sollen in Konjunktiv II: man sollte. sollen never gets an umlaut.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-konjunktiv2_modalverben-017",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "konjunktiv2_modalverben",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "\"Wir ___ uns mal wieder treffen!\" (a suggestion: it would be good)",
+      "choices": [
+        "sollten",
+        "sollen",
+        "sollte",
+        "solltet"
+      ],
+      "answer": "sollten",
+      "explanation": "wir + sollen in Konjunktiv II: wir sollten.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-konjunktiv2_modalverben-018",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "konjunktiv2_modalverben",
+      "difficulty": "medium",
+      "type": "multi_select",
+      "question": "Select ALL Konjunktiv II forms.",
+      "choices": [
+        "ich könnte",
+        "du müsstest",
+        "er durfte",
+        "wir konnten"
+      ],
+      "answer": [
+        "ich könnte",
+        "du müsstest"
+      ],
+      "explanation": "könnte and müsstest have an umlaut: Konjunktiv II. durfte and konnten are the past tense.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-konjunktiv2_modalverben-019",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "konjunktiv2_modalverben",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "Which request is the MOST polite?",
+      "choices": [
+        "Könnten Sie das bitte noch einmal erklären?",
+        "Erklären Sie das noch einmal!",
+        "Sie müssen das noch einmal erklären.",
+        "Erklär das noch einmal."
+      ],
+      "answer": "Könnten Sie das bitte noch einmal erklären?",
+      "explanation": "Konjunktiv II (könnten) + Sie + bitte is the most polite form.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-konjunktiv2_modalverben-020",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "konjunktiv2_modalverben",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "Advice for a friend: \"Du ___ (sollen, Konjunktiv II) mehr Wasser trinken.\"",
+      "answer": "solltest",
+      "accept": [],
+      "explanation": "du + sollen in Konjunktiv II: du solltest.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-konjunktiv2_modalverben-021",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "konjunktiv2_modalverben",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "\"Er ___ (können, Konjunktiv II) ein Auslandssemester machen.\"",
+      "answer": "könnte",
+      "accept": [
+        "koennte"
+      ],
+      "explanation": "er + können in Konjunktiv II: er könnte.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-konjunktiv2_modalverben-022",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "konjunktiv2_modalverben",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "\"Ihr ___ (müssen, Konjunktiv II) eigentlich schon zu Hause sein.\"",
+      "answer": "müsstet",
+      "accept": [
+        "muesstet"
+      ],
+      "explanation": "ihr + müssen in Konjunktiv II: ihr müsstet.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-irgend_woerter-006",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "irgend_woerter",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "What does \"irgendwann\" mean?",
+      "choices": [
+        "some time (we don't know when)",
+        "somewhere",
+        "somebody",
+        "somehow"
+      ],
+      "answer": "some time (we don't know when)",
+      "explanation": "irgendwann = at some time, no exact time.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-irgend_woerter-007",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "irgend_woerter",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "What does \"irgendwer\" mean?",
+      "choices": [
+        "somebody",
+        "somewhere",
+        "something",
+        "some day"
+      ],
+      "answer": "somebody",
+      "explanation": "irgendwer (= irgendjemand) is an unknown person.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-irgend_woerter-008",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "irgend_woerter",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "\"___ hat meinen Kaffee getrunken!\" (I don't know who)",
+      "choices": [
+        "Irgendwer",
+        "Irgendwo",
+        "Irgendwann",
+        "Irgendwie"
+      ],
+      "answer": "Irgendwer",
+      "explanation": "Irgendwer = somebody, an unknown person.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-irgend_woerter-009",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "irgend_woerter",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "\"Ich möchte ___ in Spanien studieren.\" (some time in the future)",
+      "choices": [
+        "irgendwann",
+        "irgendwer",
+        "irgendwas",
+        "irgendwen"
+      ],
+      "answer": "irgendwann",
+      "explanation": "irgendwann = at some time.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-irgend_woerter-010",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "irgend_woerter",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "What does \"irgendwie\" mean?",
+      "choices": [
+        "somehow",
+        "somewhere",
+        "somebody",
+        "sometime"
+      ],
+      "answer": "somehow",
+      "explanation": "irgendwie = in some way, we don't know how.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-irgend_woerter-011",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "irgend_woerter",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "\"Hast du ___ gehört? Da war ein Geräusch!\" (anything)",
+      "choices": [
+        "irgendwas",
+        "irgendwo",
+        "irgendwann",
+        "irgendwie"
+      ],
+      "answer": "irgendwas",
+      "explanation": "irgendwas (= irgendetwas) = something, anything.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-irgend_woerter-012",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "irgend_woerter",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "\"Wir finden schon ___ einen Parkplatz.\" (some place)",
+      "choices": [
+        "irgendwo",
+        "irgendwer",
+        "irgendwas",
+        "irgendwann"
+      ],
+      "answer": "irgendwo",
+      "explanation": "irgendwo = somewhere.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-irgend_woerter-013",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "irgend_woerter",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "\"Er hat ___ Buch gekauft, ich weiß nicht welches.\"",
+      "choices": [
+        "irgendein",
+        "irgendeine",
+        "irgendwo",
+        "irgendwer"
+      ],
+      "answer": "irgendein",
+      "explanation": "das Buch is neuter: irgendein Buch.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-irgend_woerter-014",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "irgend_woerter",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "\"Sie wohnt in ___ kleinen Stadt im Norden.\"",
+      "choices": [
+        "irgendeiner",
+        "irgendein",
+        "irgendeinen",
+        "irgendwo"
+      ],
+      "answer": "irgendeiner",
+      "explanation": "in + Dativ, die Stadt is feminine: in irgendeiner Stadt.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-irgend_woerter-015",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "irgend_woerter",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "\"Ich habe ___ meinen Schlüssel verloren.\" (some place)",
+      "choices": [
+        "irgendwo",
+        "irgendwann",
+        "irgendwer",
+        "irgendwas"
+      ],
+      "answer": "irgendwo",
+      "explanation": "irgendwo = at some place, we don't know where.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-irgend_woerter-016",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "irgend_woerter",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "\"Kennst du ___, der Französisch spricht?\"",
+      "choices": [
+        "irgendjemanden",
+        "irgendwo",
+        "irgendwas",
+        "irgendwann"
+      ],
+      "answer": "irgendjemanden",
+      "explanation": "kennen + Akkusativ: irgendjemanden = anybody.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-irgend_woerter-017",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "irgend_woerter",
+      "difficulty": "medium",
+      "type": "multi_select",
+      "question": "Select ALL words that are about an unknown PERSON.",
+      "choices": [
+        "irgendwer",
+        "irgendjemand",
+        "irgendwo",
+        "irgendwie"
+      ],
+      "answer": [
+        "irgendwer",
+        "irgendjemand"
+      ],
+      "explanation": "irgendwo is a place and irgendwie is a way.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-irgend_woerter-018",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "irgend_woerter",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "\"Gib mir ___ Stift, egal welchen.\"",
+      "choices": [
+        "irgendeinen",
+        "irgendein",
+        "irgendeine",
+        "irgendeinem"
+      ],
+      "answer": "irgendeinen",
+      "explanation": "geben + Akkusativ, der Stift is masculine: irgendeinen Stift.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-irgend_woerter-019",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "irgend_woerter",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "\"___ (irgend- + wann) möchte ich nach Japan reisen.\"",
+      "answer": "Irgendwann",
+      "accept": [],
+      "explanation": "irgendwann = some time in the future.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-irgend_woerter-020",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "irgend_woerter",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "\"Hat ___ (irgend- + wer) meine Brille gesehen?\"",
+      "answer": "irgendwer",
+      "accept": [
+        "irgendjemand"
+      ],
+      "explanation": "irgendwer = somebody.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-irgend_woerter-021",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "irgend_woerter",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "\"Ich habe meine Tasche ___ (irgend- + wo) liegen lassen.\"",
+      "answer": "irgendwo",
+      "accept": [],
+      "explanation": "irgendwo = somewhere.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-irgend_woerter-022",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "irgend_woerter",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "\"Wir müssen das Problem ___ (irgend- + wie) lösen.\"",
+      "answer": "irgendwie",
+      "accept": [],
+      "explanation": "irgendwie = somehow.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-ziemlich_sehr_besonders-004",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "ziemlich_sehr_besonders",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "What does \"ziemlich\" mean?",
+      "choices": [
+        "quite, rather",
+        "very",
+        "especially",
+        "not at all"
+      ],
+      "answer": "quite, rather",
+      "explanation": "ziemlich gut = quite good, rather good.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-ziemlich_sehr_besonders-005",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "ziemlich_sehr_besonders",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "What does \"besonders\" mean?",
+      "choices": [
+        "especially",
+        "rather",
+        "almost",
+        "never"
+      ],
+      "answer": "especially",
+      "explanation": "besonders schön = especially beautiful.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-ziemlich_sehr_besonders-006",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "ziemlich_sehr_besonders",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "\"Der Test war ___ schwer. Fast niemand hat bestanden.\" (very)",
+      "choices": [
+        "sehr",
+        "ziemlich",
+        "kaum",
+        "fast"
+      ],
+      "answer": "sehr",
+      "explanation": "sehr = very.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-ziemlich_sehr_besonders-007",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "ziemlich_sehr_besonders",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "Which word makes \"Das Essen war gut.\" a little WEAKER?",
+      "choices": [
+        "ziemlich",
+        "sehr",
+        "besonders",
+        "total"
+      ],
+      "answer": "ziemlich",
+      "explanation": "ziemlich gut = quite good, not perfect.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-ziemlich_sehr_besonders-008",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "ziemlich_sehr_besonders",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "\"Mathe finde ich schwer, aber Physik ist ___ schwer.\" (even more than others)",
+      "choices": [
+        "besonders",
+        "ziemlich",
+        "wenig",
+        "kaum"
+      ],
+      "answer": "besonders",
+      "explanation": "besonders = especially.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-ziemlich_sehr_besonders-009",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "ziemlich_sehr_besonders",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "What does \"sehr\" mean?",
+      "choices": [
+        "very",
+        "rather",
+        "especially",
+        "hardly"
+      ],
+      "answer": "very",
+      "explanation": "sehr kalt = very cold.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-ziemlich_sehr_besonders-010",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "ziemlich_sehr_besonders",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "\"Ich freue mich ___ auf die Ferien.\" (very much)",
+      "choices": [
+        "sehr",
+        "ziemlich",
+        "fast",
+        "kaum"
+      ],
+      "answer": "sehr",
+      "explanation": "sich sehr freuen = to look forward very much. sehr can strengthen a verb.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-ziemlich_sehr_besonders-011",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "ziemlich_sehr_besonders",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "Where does \"sehr\" go? \"Das Praktikum war interessant.\"",
+      "choices": [
+        "Das Praktikum war sehr interessant.",
+        "Das Praktikum sehr war interessant.",
+        "Sehr das Praktikum war interessant.",
+        "Das Praktikum war interessant sehr."
+      ],
+      "answer": "Das Praktikum war sehr interessant.",
+      "explanation": "sehr stands directly in front of the adjective.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-ziemlich_sehr_besonders-012",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "ziemlich_sehr_besonders",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "\"Mir hat ___ der letzte Tag gefallen.\" (more than the other days)",
+      "choices": [
+        "besonders",
+        "ziemlich",
+        "sehr",
+        "fast"
+      ],
+      "answer": "besonders",
+      "explanation": "besonders can point to one thing: especially the last day.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-ziemlich_sehr_besonders-013",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "ziemlich_sehr_besonders",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "Which sentence is correct?",
+      "choices": [
+        "Ich habe mich sehr gefreut.",
+        "Ich habe sehr mich gefreut.",
+        "Ich sehr habe mich gefreut.",
+        "Ich habe mich gefreut sehr."
+      ],
+      "answer": "Ich habe mich sehr gefreut.",
+      "explanation": "sehr comes after the reflexive pronoun, in front of the part it strengthens.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-ziemlich_sehr_besonders-014",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "ziemlich_sehr_besonders",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "\"Die Wohnung ist ___ teuer, aber noch okay.\"",
+      "choices": [
+        "ziemlich",
+        "besonders",
+        "überhaupt",
+        "gar"
+      ],
+      "answer": "ziemlich",
+      "explanation": "ziemlich teuer, aber okay: rather expensive, not too much.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-ziemlich_sehr_besonders-015",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "ziemlich_sehr_besonders",
+      "difficulty": "medium",
+      "type": "multi_select",
+      "question": "Select ALL words that make an adjective STRONGER.",
+      "choices": [
+        "sehr",
+        "besonders",
+        "kaum",
+        "wenig"
+      ],
+      "answer": [
+        "sehr",
+        "besonders"
+      ],
+      "explanation": "kaum (hardly) and wenig (little) make it weaker.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-ziemlich_sehr_besonders-016",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "ziemlich_sehr_besonders",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "Order from weakest to strongest:",
+      "choices": [
+        "ziemlich gut - sehr gut - besonders gut",
+        "sehr gut - ziemlich gut - besonders gut",
+        "besonders gut - sehr gut - ziemlich gut",
+        "ziemlich gut - besonders gut - sehr gut"
+      ],
+      "answer": "ziemlich gut - sehr gut - besonders gut",
+      "explanation": "ziemlich is the weakest; besonders points out something special.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-ziemlich_sehr_besonders-017",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "ziemlich_sehr_besonders",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "Translate the missing word: \"Der Film war ___ lang.\" (rather)",
+      "answer": "ziemlich",
+      "accept": [],
+      "explanation": "rather / quite = ziemlich.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-ziemlich_sehr_besonders-018",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "ziemlich_sehr_besonders",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "Translate the missing word: \"Ich mag ___ italienisches Essen.\" (especially)",
+      "answer": "besonders",
+      "accept": [],
+      "explanation": "especially = besonders.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-ziemlich_sehr_besonders-019",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "ziemlich_sehr_besonders",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "Translate the missing word: \"Das Wetter ist heute ___ schön.\" (very)",
+      "answer": "sehr",
+      "accept": [],
+      "explanation": "very = sehr.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-ziemlich_sehr_besonders-020",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "ziemlich_sehr_besonders",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "Translate the missing word: \"Die Prüfung war ___ einfach.\" (quite)",
+      "answer": "ziemlich",
+      "accept": [],
+      "explanation": "quite = ziemlich.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-ziemlich_sehr_besonders-021",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "ziemlich_sehr_besonders",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "Translate the missing word: \"Wir haben uns ___ über das Geschenk gefreut.\" (very much)",
+      "answer": "sehr",
+      "accept": [],
+      "explanation": "very much = sehr.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-ziemlich_sehr_besonders-022",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "ziemlich_sehr_besonders",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "Translate the missing word: \"___ im Sommer ist die Stadt voll.\" (especially)",
+      "answer": "Besonders",
+      "accept": [],
+      "explanation": "especially = besonders.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-um_zu-003",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "um_zu",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "What does \"um ... zu\" say?",
+      "choices": [
+        "the purpose (in order to)",
+        "the time (when)",
+        "the reason (because)",
+        "a contrast (but)"
+      ],
+      "answer": "the purpose (in order to)",
+      "explanation": "um ... zu + infinitive = in order to.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-um_zu-004",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "um_zu",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "\"Ich spare Geld, ___ ein Auto zu kaufen.\"",
+      "choices": [
+        "um",
+        "weil",
+        "dass",
+        "wenn"
+      ],
+      "answer": "um",
+      "explanation": "um ... zu = in order to.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-um_zu-005",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "um_zu",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "Where is the infinitive in an um-zu sentence?",
+      "choices": [
+        "at the end, after zu",
+        "right after um",
+        "at the start",
+        "after the subject"
+      ],
+      "answer": "at the end, after zu",
+      "explanation": "um ... zu + infinitive: the infinitive goes last.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-um_zu-006",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "um_zu",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "\"Sie fährt nach Berlin, um ihre Oma zu ___.\"",
+      "choices": [
+        "besuchen",
+        "besucht",
+        "besuchte",
+        "besuchst"
+      ],
+      "answer": "besuchen",
+      "explanation": "After zu comes the infinitive: zu besuchen.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-um_zu-007",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "um_zu",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "\"Wir gehen in die Bibliothek, ___ zu lernen.\"",
+      "choices": [
+        "um",
+        "damit",
+        "weil",
+        "obwohl"
+      ],
+      "answer": "um",
+      "explanation": "Same subject in both parts (wir): um ... zu.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-um_zu-008",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "um_zu",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "Which sentence is correct?",
+      "choices": [
+        "Ich lerne viel, um die Prüfung zu bestehen.",
+        "Ich lerne viel, um zu die Prüfung bestehen.",
+        "Ich lerne viel, um die Prüfung bestehen zu.",
+        "Ich lerne viel, zu die Prüfung um bestehen."
+      ],
+      "answer": "Ich lerne viel, um die Prüfung zu bestehen.",
+      "explanation": "um ... zu + infinitive at the end.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-um_zu-009",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "um_zu",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "\"Er joggt jeden Morgen, ___ fit zu bleiben.\"",
+      "choices": [
+        "um",
+        "dass",
+        "wenn",
+        "als"
+      ],
+      "answer": "um",
+      "explanation": "um ... zu = in order to stay fit.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-um_zu-010",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "um_zu",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "\"Man braucht einen Pass, um ins Ausland zu ___.\"",
+      "choices": [
+        "reisen",
+        "reist",
+        "gereist",
+        "reiste"
+      ],
+      "answer": "reisen",
+      "explanation": "zu + infinitive: zu reisen.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-um_zu-011",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "um_zu",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "\"Ich stehe früh auf, um den Bus nicht zu ___.\" Which fits?",
+      "choices": [
+        "verpassen",
+        "verpasst",
+        "zu verpassen",
+        "verpasse"
+      ],
+      "answer": "verpassen",
+      "explanation": "zu is already there: um den Bus nicht zu verpassen.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-um_zu-012",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "um_zu",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "Separable verb: \"Ich gehe in die Stadt, um ___.\" (einkaufen)",
+      "choices": [
+        "einzukaufen",
+        "zu einkaufen",
+        "einkaufen zu",
+        "eingekauft"
+      ],
+      "answer": "einzukaufen",
+      "explanation": "With separable verbs zu goes in the middle: einzukaufen.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-um_zu-013",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "um_zu",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "When do you use \"damit\" instead of \"um ... zu\"?",
+      "choices": [
+        "when the two parts have different subjects",
+        "always in questions",
+        "when the sentence is in the past",
+        "never"
+      ],
+      "answer": "when the two parts have different subjects",
+      "explanation": "Ich erkläre es dir, damit DU es verstehst. Different subjects: damit.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-um_zu-014",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "um_zu",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "\"Ich rufe an, ___ du dir keine Sorgen machst.\"",
+      "choices": [
+        "damit",
+        "um",
+        "zu",
+        "weil"
+      ],
+      "answer": "damit",
+      "explanation": "Two different subjects (ich / du): damit, not um ... zu.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-um_zu-015",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "um_zu",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "Join: \"Ich lerne Deutsch. Ich will in Wien arbeiten.\"",
+      "choices": [
+        "Ich lerne Deutsch, um in Wien zu arbeiten.",
+        "Ich lerne Deutsch, um in Wien arbeiten.",
+        "Ich lerne Deutsch, damit in Wien zu arbeiten.",
+        "Ich lerne Deutsch, um zu in Wien arbeiten."
+      ],
+      "answer": "Ich lerne Deutsch, um in Wien zu arbeiten.",
+      "explanation": "Same subject: um ... zu + infinitive.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-um_zu-016",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "um_zu",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "\"Sie macht ein Praktikum, um Erfahrungen ___.\"",
+      "choices": [
+        "zu sammeln",
+        "sammeln",
+        "zu sammelt",
+        "gesammelt"
+      ],
+      "answer": "zu sammeln",
+      "explanation": "um ... zu + infinitive.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-um_zu-017",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "um_zu",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "Separable verb: \"Ich nehme ein Taxi, um pünktlich ___.\" (ankommen)",
+      "choices": [
+        "anzukommen",
+        "zu ankommen",
+        "ankommen",
+        "angekommen"
+      ],
+      "answer": "anzukommen",
+      "explanation": "Separable: an + zu + kommen = anzukommen.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-um_zu-018",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "um_zu",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "\"Ich brauche Geld, um eine Reise ___.\" (machen)",
+      "answer": "zu machen",
+      "accept": [],
+      "explanation": "um ... zu + infinitive: zu machen.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-um_zu-019",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "um_zu",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "\"Er trinkt Kaffee, um wach ___.\" (bleiben)",
+      "answer": "zu bleiben",
+      "accept": [],
+      "explanation": "um ... zu + infinitive: zu bleiben.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-um_zu-020",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "um_zu",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "\"Wir treffen uns, um das Projekt ___.\" (besprechen)",
+      "answer": "zu besprechen",
+      "accept": [],
+      "explanation": "besprechen is not separable: zu besprechen.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-um_zu-021",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "um_zu",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "\"Ich rufe dich an, um dich ___.\" (einladen)",
+      "answer": "einzuladen",
+      "accept": [],
+      "explanation": "Separable verb: ein + zu + laden = einzuladen.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-um_zu-022",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "um_zu",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "Which word starts the purpose clause? \"Ich übe jeden Tag, ___ besser zu werden.\"",
+      "answer": "um",
+      "accept": [],
+      "explanation": "um ... zu = in order to.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-nomen_verb-005",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "nomen_verb",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "Which noun belongs to \"lernen\"?",
+      "choices": [
+        "das Lernen",
+        "die Lerne",
+        "der Lernung",
+        "die Lernheit"
+      ],
+      "answer": "das Lernen",
+      "explanation": "An infinitive becomes a neuter noun: das Lernen.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-nomen_verb-006",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "nomen_verb",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "Which noun belongs to \"bewerben\"?",
+      "choices": [
+        "die Bewerbung",
+        "die Bewerbe",
+        "der Bewerbt",
+        "die Bewerbheit"
+      ],
+      "answer": "die Bewerbung",
+      "explanation": "-ung nouns are feminine: die Bewerbung.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-nomen_verb-007",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "nomen_verb",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "What is the article of nouns ending in -ung?",
+      "choices": [
+        "die",
+        "der",
+        "das",
+        "it depends"
+      ],
+      "answer": "die",
+      "explanation": "Nouns with -ung are always feminine.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-nomen_verb-008",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "nomen_verb",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "Which noun belongs to \"prüfen\"?",
+      "choices": [
+        "die Prüfung",
+        "der Prüf",
+        "das Prüfung",
+        "die Prüfe"
+      ],
+      "answer": "die Prüfung",
+      "explanation": "prüfen → die Prüfung.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-nomen_verb-009",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "nomen_verb",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "Which noun belongs to \"wohnen\"?",
+      "choices": [
+        "die Wohnung",
+        "der Wohn",
+        "das Wohnung",
+        "die Wohne"
+      ],
+      "answer": "die Wohnung",
+      "explanation": "wohnen → die Wohnung.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-nomen_verb-010",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "nomen_verb",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "Which verb belongs to \"die Erklärung\"?",
+      "choices": [
+        "erklären",
+        "erklaren",
+        "klären",
+        "erklärt"
+      ],
+      "answer": "erklären",
+      "explanation": "die Erklärung → erklären (to explain).",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-nomen_verb-011",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "nomen_verb",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "What is the article of an infinitive used as a noun (das Schwimmen, ... Lesen)?",
+      "choices": [
+        "das",
+        "der",
+        "die",
+        "it depends"
+      ],
+      "answer": "das",
+      "explanation": "Infinitives used as nouns are neuter: das Lesen.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-nomen_verb-012",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "nomen_verb",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "Which noun belongs to \"üben\"?",
+      "choices": [
+        "die Übung",
+        "der Üb",
+        "das Übung",
+        "die Übe"
+      ],
+      "answer": "die Übung",
+      "explanation": "üben → die Übung.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-nomen_verb-013",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "nomen_verb",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "Which verb belongs to \"die Bildung\"?",
+      "choices": [
+        "bilden",
+        "bildern",
+        "bildet",
+        "abbilden"
+      ],
+      "answer": "bilden",
+      "explanation": "die Bildung (education) → bilden (to form, to educate).",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-nomen_verb-014",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "nomen_verb",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "Which verb belongs to \"die Erfahrung\"?",
+      "choices": [
+        "erfahren",
+        "fahren",
+        "erfahrt",
+        "verfahren"
+      ],
+      "answer": "erfahren",
+      "explanation": "die Erfahrung (experience) → erfahren.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-nomen_verb-015",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "nomen_verb",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "Which verb belongs to \"die Entscheidung\"?",
+      "choices": [
+        "entscheiden",
+        "scheiden",
+        "entschieden",
+        "unterscheiden"
+      ],
+      "answer": "entscheiden",
+      "explanation": "die Entscheidung → entscheiden (to decide).",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-nomen_verb-016",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "nomen_verb",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "\"Beim ___ höre ich gern Musik.\" (lernen as a noun)",
+      "choices": [
+        "Lernen",
+        "Lernung",
+        "Gelerne",
+        "Lernheit"
+      ],
+      "answer": "Lernen",
+      "explanation": "beim + infinitive as a noun, with a capital letter: beim Lernen.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-nomen_verb-017",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "nomen_verb",
+      "difficulty": "medium",
+      "type": "multi_select",
+      "question": "Select ALL nouns that are feminine.",
+      "choices": [
+        "Vorbereitung",
+        "Ausbildung",
+        "Studium",
+        "Lernen"
+      ],
+      "answer": [
+        "Vorbereitung",
+        "Ausbildung"
+      ],
+      "explanation": "-ung nouns are feminine. das Studium, das Lernen are neuter.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-nomen_verb-018",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "nomen_verb",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "Which noun belongs to \"vorbereiten\"?",
+      "choices": [
+        "die Vorbereitung",
+        "die Vorbereite",
+        "der Vorbereit",
+        "die Bereitheit"
+      ],
+      "answer": "die Vorbereitung",
+      "explanation": "vorbereiten → die Vorbereitung (preparation).",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-nomen_verb-019",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "nomen_verb",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "Which noun belongs to \"erziehen\"?",
+      "choices": [
+        "die Erziehung",
+        "die Erziehe",
+        "der Erzieh",
+        "die Ziehheit"
+      ],
+      "answer": "die Erziehung",
+      "explanation": "erziehen (to bring up) → die Erziehung (upbringing, education).",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-nomen_verb-020",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "nomen_verb",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "Write the -ung noun for \"üben\" (with article).",
+      "answer": "die Übung",
+      "accept": [
+        "die uebung"
+      ],
+      "explanation": "üben → die Übung.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-nomen_verb-021",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "nomen_verb",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "Write the verb for \"die Prüfung\".",
+      "answer": "prüfen",
+      "accept": [
+        "pruefen"
+      ],
+      "explanation": "die Prüfung → prüfen.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-nomen_verb-022",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "nomen_verb",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "Write the -ung noun for \"ausbilden\" (with article).",
+      "answer": "die Ausbildung",
+      "accept": [],
+      "explanation": "ausbilden → die Ausbildung.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-abkuerzungen-004",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "abkuerzungen",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "What does \"usw.\" stand for?",
+      "choices": [
+        "und so weiter",
+        "und so wenig",
+        "unser Wissen",
+        "und sonst was"
+      ],
+      "answer": "und so weiter",
+      "explanation": "usw. = und so weiter (etc.).",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-abkuerzungen-005",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "abkuerzungen",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "What does \"Uni\" stand for?",
+      "choices": [
+        "Universität",
+        "Uniform",
+        "Union",
+        "Unterricht"
+      ],
+      "answer": "Universität",
+      "explanation": "die Uni = die Universität.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-abkuerzungen-006",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "abkuerzungen",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "What does \"Abi\" stand for?",
+      "choices": [
+        "Abitur",
+        "Abend",
+        "Abteilung",
+        "Abfahrt"
+      ],
+      "answer": "Abitur",
+      "explanation": "das Abi = das Abitur (the school-leaving exam).",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-abkuerzungen-007",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "abkuerzungen",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "What does \"d. h.\" stand for?",
+      "choices": [
+        "das heißt",
+        "dein Haus",
+        "die Hälfte",
+        "der Herr"
+      ],
+      "answer": "das heißt",
+      "explanation": "d. h. = das heißt (that is, i.e.).",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-abkuerzungen-008",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "abkuerzungen",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "What does \"Nr.\" stand for?",
+      "choices": [
+        "Nummer",
+        "Norden",
+        "nur",
+        "Nachricht"
+      ],
+      "answer": "Nummer",
+      "explanation": "Nr. = Nummer.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-abkuerzungen-009",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "abkuerzungen",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "What does \"bzw.\" stand for?",
+      "choices": [
+        "beziehungsweise",
+        "bezahlt wird",
+        "bis zum Wochenende",
+        "bezüglich"
+      ],
+      "answer": "beziehungsweise",
+      "explanation": "bzw. = beziehungsweise (or, respectively).",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-abkuerzungen-010",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "abkuerzungen",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "What does \"Azubi\" stand for?",
+      "choices": [
+        "Auszubildende(r)",
+        "Autobahn-Bus",
+        "Auslandsstudium",
+        "Abschlusszeugnis"
+      ],
+      "answer": "Auszubildende(r)",
+      "explanation": "der/die Azubi = der/die Auszubildende (a trainee, an apprentice).",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-abkuerzungen-011",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "abkuerzungen",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "What does \"BAföG\" give students?",
+      "choices": [
+        "money from the state for studying",
+        "a student flat",
+        "a bus ticket",
+        "a language course"
+      ],
+      "answer": "money from the state for studying",
+      "explanation": "BAföG = Bundesausbildungsförderungsgesetz: state money for education.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-abkuerzungen-012",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "abkuerzungen",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "What does \"Mo.\" stand for in a timetable?",
+      "choices": [
+        "Montag",
+        "Monat",
+        "Morgen",
+        "Moment"
+      ],
+      "answer": "Montag",
+      "explanation": "Mo. = Montag, Di. = Dienstag, ...",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-abkuerzungen-013",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "abkuerzungen",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "What does \"Std.\" stand for?",
+      "choices": [
+        "Stunde",
+        "Stadt",
+        "Student",
+        "Stand"
+      ],
+      "answer": "Stunde",
+      "explanation": "Std. = Stunde (hour, lesson).",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-abkuerzungen-014",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "abkuerzungen",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "What does \"Tel.\" stand for?",
+      "choices": [
+        "Telefon",
+        "Teller",
+        "Teil",
+        "Tempo"
+      ],
+      "answer": "Telefon",
+      "explanation": "Tel. = Telefon.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-abkuerzungen-015",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "abkuerzungen",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "What does \"Str.\" stand for in an address?",
+      "choices": [
+        "Straße",
+        "Strand",
+        "Strom",
+        "Stress"
+      ],
+      "answer": "Straße",
+      "explanation": "Str. = Straße.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-abkuerzungen-016",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "abkuerzungen",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "What does \"Kita\" stand for?",
+      "choices": [
+        "Kindertagesstätte",
+        "Kinokarte",
+        "Kinderturnen",
+        "Kirchentag"
+      ],
+      "answer": "Kindertagesstätte",
+      "explanation": "die Kita = die Kindertagesstätte (day nursery).",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-abkuerzungen-017",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "abkuerzungen",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "Write the long form of \"z. B.\"",
+      "answer": "zum Beispiel",
+      "accept": [],
+      "explanation": "z. B. = zum Beispiel.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-abkuerzungen-018",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "abkuerzungen",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "Write the long form of \"usw.\"",
+      "answer": "und so weiter",
+      "accept": [],
+      "explanation": "usw. = und so weiter.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-abkuerzungen-019",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "abkuerzungen",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "Write the long form of \"d. h.\"",
+      "answer": "das heißt",
+      "accept": [
+        "das heisst"
+      ],
+      "explanation": "d. h. = das heißt.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-abkuerzungen-020",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "abkuerzungen",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "Write the short form (abbreviation) of \"Wohngemeinschaft\".",
+      "answer": "WG",
+      "accept": [],
+      "explanation": "die Wohngemeinschaft = die WG.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-abkuerzungen-021",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "abkuerzungen",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "Write the long form of \"Uni\".",
+      "answer": "Universität",
+      "accept": [
+        "Universitaet"
+      ],
+      "explanation": "die Uni = die Universität.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e1-abkuerzungen-022",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 1,
+      "topic": "abkuerzungen",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "Write the long form of \"bzw.\"",
+      "answer": "beziehungsweise",
+      "accept": [],
+      "explanation": "bzw. = beziehungsweise.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-infinitiv_mit_zu-007",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "infinitiv_mit_zu",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "\"Ich habe keine Lust, heute ___ kochen.\"",
+      "choices": [
+        "zu",
+        "um",
+        "für",
+        "-"
+      ],
+      "answer": "zu",
+      "explanation": "keine Lust haben + zu + infinitive.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-infinitiv_mit_zu-008",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "infinitiv_mit_zu",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "\"Es ist schwer, früh ___.\" (aufstehen)",
+      "choices": [
+        "aufzustehen",
+        "zu aufstehen",
+        "aufstehen zu",
+        "aufgestanden"
+      ],
+      "answer": "aufzustehen",
+      "explanation": "Separable verb: auf + zu + stehen.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-infinitiv_mit_zu-009",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "infinitiv_mit_zu",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "Which sentence is correct?",
+      "choices": [
+        "Ich versuche, pünktlich zu sein.",
+        "Ich versuche, zu pünktlich sein.",
+        "Ich versuche pünktlich sein zu.",
+        "Ich versuche, pünktlich sein."
+      ],
+      "answer": "Ich versuche, pünktlich zu sein.",
+      "explanation": "versuchen + zu + infinitive at the end.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-infinitiv_mit_zu-010",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "infinitiv_mit_zu",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "\"Vergiss nicht, die Tür ___ schließen!\"",
+      "choices": [
+        "zu",
+        "um",
+        "zum",
+        "-"
+      ],
+      "answer": "zu",
+      "explanation": "vergessen + zu + infinitive.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-infinitiv_mit_zu-011",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "infinitiv_mit_zu",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "Which verb is NOT followed by zu + infinitive?",
+      "choices": [
+        "können",
+        "versuchen",
+        "vergessen",
+        "anfangen"
+      ],
+      "answer": "können",
+      "explanation": "Modal verbs (können, müssen, ...) take the infinitive without zu.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-infinitiv_mit_zu-012",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "infinitiv_mit_zu",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "\"Hast du Zeit, mir ___ helfen?\"",
+      "choices": [
+        "zu",
+        "um",
+        "zum",
+        "-"
+      ],
+      "answer": "zu",
+      "explanation": "Zeit haben + zu + infinitive.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-infinitiv_mit_zu-013",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "infinitiv_mit_zu",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "\"Es macht Spaß, im Theater ___ spielen.\"",
+      "choices": [
+        "zu",
+        "um",
+        "für",
+        "-"
+      ],
+      "answer": "zu",
+      "explanation": "Es macht Spaß + zu + infinitive.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-infinitiv_mit_zu-014",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "infinitiv_mit_zu",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "\"Ich habe beschlossen, mehr Sport ___.\"",
+      "choices": [
+        "zu machen",
+        "machen",
+        "zu macht",
+        "gemacht zu"
+      ],
+      "answer": "zu machen",
+      "explanation": "beschließen + zu + infinitive.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-infinitiv_mit_zu-015",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "infinitiv_mit_zu",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "\"Er hat angefangen, Gitarre ___.\" (üben)",
+      "choices": [
+        "zu üben",
+        "üben",
+        "zu übt",
+        "geübt"
+      ],
+      "answer": "zu üben",
+      "explanation": "anfangen + zu + infinitive.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-infinitiv_mit_zu-016",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "infinitiv_mit_zu",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "\"Es ist wichtig, regelmäßig ___.\" (mitmachen)",
+      "choices": [
+        "mitzumachen",
+        "zu mitmachen",
+        "mitmachen zu",
+        "mitgemacht"
+      ],
+      "answer": "mitzumachen",
+      "explanation": "Separable verb: mit + zu + machen.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-infinitiv_mit_zu-017",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "infinitiv_mit_zu",
+      "difficulty": "medium",
+      "type": "multi_select",
+      "question": "Select ALL sentences that are correct.",
+      "choices": [
+        "Ich hoffe, dich bald zu sehen.",
+        "Wir planen, im Mai zu verreisen.",
+        "Ich kann gut zu singen.",
+        "Sie möchte zu tanzen."
+      ],
+      "answer": [
+        "Ich hoffe, dich bald zu sehen.",
+        "Wir planen, im Mai zu verreisen."
+      ],
+      "explanation": "können and möchten are modal verbs: no zu.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-infinitiv_mit_zu-018",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "infinitiv_mit_zu",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "\"Der Regisseur bittet die Schauspieler, leise ___.\" (sein)",
+      "choices": [
+        "zu sein",
+        "sein",
+        "zu ist",
+        "gewesen"
+      ],
+      "answer": "zu sein",
+      "explanation": "bitten + zu + infinitive.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-infinitiv_mit_zu-019",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "infinitiv_mit_zu",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "\"Ich freue mich darauf, dich ___.\" (wiedersehen)",
+      "choices": [
+        "wiederzusehen",
+        "zu wiedersehen",
+        "wiedersehen zu",
+        "wiedergesehen"
+      ],
+      "answer": "wiederzusehen",
+      "explanation": "wieder + zu + sehen: wiederzusehen.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-infinitiv_mit_zu-020",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "infinitiv_mit_zu",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "\"Ich habe vergessen, dich ___.\" (anrufen)",
+      "answer": "anzurufen",
+      "accept": [],
+      "explanation": "Separable verb: an + zu + rufen.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-infinitiv_mit_zu-021",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "infinitiv_mit_zu",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "\"Es ist nicht leicht, eine Rolle ___.\" (lernen)",
+      "answer": "zu lernen",
+      "accept": [],
+      "explanation": "Es ist nicht leicht + zu + infinitive.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-infinitiv_mit_zu-022",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "infinitiv_mit_zu",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "\"Sie hat keine Zeit, ins Kino ___.\" (gehen)",
+      "answer": "zu gehen",
+      "accept": [],
+      "explanation": "keine Zeit haben + zu + infinitive.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-nebensatz_waehrend-004",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "nebensatz_waehrend",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "What does \"während\" mean in \"Während ich koche, höre ich Radio.\"?",
+      "choices": [
+        "while",
+        "because",
+        "although",
+        "after"
+      ],
+      "answer": "while",
+      "explanation": "während = while: two things happen at the same time.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-nebensatz_waehrend-005",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "nebensatz_waehrend",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "\"___ die Kinder schlafen, lese ich ein Buch.\"",
+      "choices": [
+        "Während",
+        "Deshalb",
+        "Sondern",
+        "Trotzdem"
+      ],
+      "answer": "Während",
+      "explanation": "während starts a clause about the same time.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-nebensatz_waehrend-006",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "nebensatz_waehrend",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "Where is the verb in a während clause?",
+      "choices": [
+        "at the end",
+        "in second place",
+        "at the start",
+        "after während"
+      ],
+      "answer": "at the end",
+      "explanation": "während is a subordinating word: the verb goes to the end.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-nebensatz_waehrend-007",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "nebensatz_waehrend",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "\"Ich esse, während ich ___.\"",
+      "choices": [
+        "fernsehe",
+        "sehe fern",
+        "fern sehe ich",
+        "fernsehen"
+      ],
+      "answer": "fernsehe",
+      "explanation": "In the clause, a separable verb stays together at the end: fernsehe.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-nebensatz_waehrend-008",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "nebensatz_waehrend",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "\"Er telefoniert, ___ er Auto fährt.\" (at the same time)",
+      "choices": [
+        "während",
+        "weil",
+        "dass",
+        "ob"
+      ],
+      "answer": "während",
+      "explanation": "während = at the same time.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-nebensatz_waehrend-009",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "nebensatz_waehrend",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "Which sentence is correct?",
+      "choices": [
+        "Sie singt, während sie duscht.",
+        "Sie singt, während duscht sie.",
+        "Sie singt, während sie sich duscht nicht.",
+        "Sie singt während, sie duscht."
+      ],
+      "answer": "Sie singt, während sie duscht.",
+      "explanation": "während + subject ... verb at the end.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-nebensatz_waehrend-010",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "nebensatz_waehrend",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "\"Während der Pause ...\" - here während is a ...",
+      "choices": [
+        "preposition (+ Genitiv)",
+        "verb",
+        "adjective",
+        "article"
+      ],
+      "answer": "preposition (+ Genitiv)",
+      "explanation": "während can also be a preposition: während der Pause (Genitiv).",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-nebensatz_waehrend-011",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "nebensatz_waehrend",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "Join: \"Ich mache Hausaufgaben. Mein Bruder spielt.\"",
+      "choices": [
+        "Während ich Hausaufgaben mache, spielt mein Bruder.",
+        "Während ich mache Hausaufgaben, spielt mein Bruder.",
+        "Während ich Hausaufgaben mache, mein Bruder spielt.",
+        "Während mache ich Hausaufgaben, mein Bruder spielt."
+      ],
+      "answer": "Während ich Hausaufgaben mache, spielt mein Bruder.",
+      "explanation": "Verb at the end of the während clause; then the main verb comes first.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-nebensatz_waehrend-012",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "nebensatz_waehrend",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "\"Während die Zuschauer ___, verbeugen sich die Schauspieler.\"",
+      "choices": [
+        "klatschen",
+        "klatscht",
+        "klatschten sie",
+        "zu klatschen"
+      ],
+      "answer": "klatschen",
+      "explanation": "die Zuschauer = they: klatschen, at the end.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-nebensatz_waehrend-013",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "nebensatz_waehrend",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "Separable verb: \"Während ich die Wohnung ___, kocht er.\" (aufräumen)",
+      "choices": [
+        "aufräume",
+        "räume auf",
+        "aufzuräumen",
+        "aufgeräumt"
+      ],
+      "answer": "aufräume",
+      "explanation": "In a subordinate clause a separable verb is written together: aufräume.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-nebensatz_waehrend-014",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "nebensatz_waehrend",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "\"Ich bin müde, ___ meine Schwester noch fit ist.\" (contrast)",
+      "choices": [
+        "während",
+        "weil",
+        "deshalb",
+        "um"
+      ],
+      "answer": "während",
+      "explanation": "während can also show a contrast: whereas.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-nebensatz_waehrend-015",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "nebensatz_waehrend",
+      "difficulty": "medium",
+      "type": "multi_select",
+      "question": "Select ALL sentences that are correct.",
+      "choices": [
+        "Während er liest, trinkt er Tee.",
+        "Er trinkt Tee, während er liest.",
+        "Während er liest, er trinkt Tee.",
+        "Er trinkt Tee, während liest er."
+      ],
+      "answer": [
+        "Während er liest, trinkt er Tee.",
+        "Er trinkt Tee, während er liest."
+      ],
+      "explanation": "The während clause has its verb at the end; if it comes first, the main verb follows it.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-nebensatz_waehrend-016",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "nebensatz_waehrend",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "\"Während des Films ___ ich eingeschlafen.\"",
+      "choices": [
+        "bin",
+        "habe",
+        "ist",
+        "hat"
+      ],
+      "answer": "bin",
+      "explanation": "einschlafen takes sein in the Perfekt: ich bin eingeschlafen.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-nebensatz_waehrend-017",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "nebensatz_waehrend",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "\"Während ___ Vorstellung darf man nicht fotografieren.\"",
+      "choices": [
+        "der",
+        "die",
+        "den",
+        "dem"
+      ],
+      "answer": "der",
+      "explanation": "Preposition während + Genitiv: die Vorstellung → während der Vorstellung.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-nebensatz_waehrend-018",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "nebensatz_waehrend",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "\"Ich höre Musik, ___ ich jogge.\" (at the same time)",
+      "answer": "während",
+      "accept": [
+        "waehrend"
+      ],
+      "explanation": "während = while.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-nebensatz_waehrend-019",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "nebensatz_waehrend",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "\"Während ich ___ (duschen), klingelt das Telefon.\"",
+      "answer": "dusche",
+      "accept": [],
+      "explanation": "ich dusche, at the end of the clause.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-nebensatz_waehrend-020",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "nebensatz_waehrend",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "\"Während er ___ (einkaufen), wartet sie im Auto.\"",
+      "answer": "einkauft",
+      "accept": [],
+      "explanation": "Separable verb at the end of the clause, written together: einkauft.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-nebensatz_waehrend-021",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "nebensatz_waehrend",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "\"Während wir ___ (proben), ist das Theater geschlossen.\"",
+      "answer": "proben",
+      "accept": [],
+      "explanation": "wir proben, at the end of the clause.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-nebensatz_waehrend-022",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "nebensatz_waehrend",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "Write the missing word: \"Ich lese, ___ der Zug fährt.\" (while)",
+      "answer": "während",
+      "accept": [
+        "waehrend"
+      ],
+      "explanation": "während = while.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-verben_mit_praepositionen-007",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "verben_mit_praepositionen",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "\"Ich warte ___ den Bus.\"",
+      "choices": [
+        "auf",
+        "für",
+        "an",
+        "mit"
+      ],
+      "answer": "auf",
+      "explanation": "warten auf + Akkusativ.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-verben_mit_praepositionen-008",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "verben_mit_praepositionen",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "\"Sie interessiert sich ___ Theater.\"",
+      "choices": [
+        "für",
+        "auf",
+        "an",
+        "über"
+      ],
+      "answer": "für",
+      "explanation": "sich interessieren für + Akkusativ.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-verben_mit_praepositionen-009",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "verben_mit_praepositionen",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "\"Wir sprechen ___ den Film.\"",
+      "choices": [
+        "über",
+        "an",
+        "auf",
+        "für"
+      ],
+      "answer": "über",
+      "explanation": "sprechen über + Akkusativ.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-verben_mit_praepositionen-010",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "verben_mit_praepositionen",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "\"Ich denke oft ___ meine Oma.\"",
+      "choices": [
+        "an",
+        "über",
+        "für",
+        "mit"
+      ],
+      "answer": "an",
+      "explanation": "denken an + Akkusativ.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-verben_mit_praepositionen-011",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "verben_mit_praepositionen",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "\"Er freut sich ___ das Wochenende.\" (it is in the future)",
+      "choices": [
+        "auf",
+        "über",
+        "an",
+        "für"
+      ],
+      "answer": "auf",
+      "explanation": "sich freuen auf = to look forward to (future).",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-verben_mit_praepositionen-012",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "verben_mit_praepositionen",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "\"Ich habe Angst ___ der Prüfung.\"",
+      "choices": [
+        "vor",
+        "für",
+        "auf",
+        "über"
+      ],
+      "answer": "vor",
+      "explanation": "Angst haben vor + Dativ.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-verben_mit_praepositionen-013",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "verben_mit_praepositionen",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "\"Kannst du mir ___ den Hausaufgaben helfen?\"",
+      "choices": [
+        "bei",
+        "für",
+        "an",
+        "auf"
+      ],
+      "answer": "bei",
+      "explanation": "helfen bei + Dativ.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-verben_mit_praepositionen-014",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "verben_mit_praepositionen",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "\"Sie hat sich ___ das Geschenk gefreut.\" (it is already here)",
+      "choices": [
+        "über",
+        "auf",
+        "an",
+        "für"
+      ],
+      "answer": "über",
+      "explanation": "sich freuen über = to be happy about something that happened.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-verben_mit_praepositionen-015",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "verben_mit_praepositionen",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "\"Ich ärgere mich ___ den Lärm.\"",
+      "choices": [
+        "über",
+        "auf",
+        "für",
+        "an"
+      ],
+      "answer": "über",
+      "explanation": "sich ärgern über + Akkusativ.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-verben_mit_praepositionen-016",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "verben_mit_praepositionen",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "\"Er nimmt ___ einem Workshop teil.\"",
+      "choices": [
+        "an",
+        "bei",
+        "mit",
+        "auf"
+      ],
+      "answer": "an",
+      "explanation": "teilnehmen an + Dativ.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-verben_mit_praepositionen-017",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "verben_mit_praepositionen",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "\"___ wartest du?\" - \"Auf meine Freundin.\" (a person)",
+      "choices": [
+        "Auf wen",
+        "Worauf",
+        "Wofür",
+        "An wen"
+      ],
+      "answer": "Auf wen",
+      "explanation": "For people: preposition + wen/wem (auf wen). For things: wo(r) + preposition (worauf).",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-verben_mit_praepositionen-018",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "verben_mit_praepositionen",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "\"___ interessierst du dich?\" - \"Für Musik.\" (a thing)",
+      "choices": [
+        "Wofür",
+        "Für wen",
+        "Worüber",
+        "Woran"
+      ],
+      "answer": "Wofür",
+      "explanation": "For things: wo + für = wofür.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-verben_mit_praepositionen-019",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "verben_mit_praepositionen",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "Write the preposition: \"Ich träume ___ einer Reise nach Island.\"",
+      "answer": "von",
+      "accept": [],
+      "explanation": "träumen von + Dativ.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-verben_mit_praepositionen-020",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "verben_mit_praepositionen",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "Write the preposition: \"Wir haben lange ___ das Problem diskutiert.\"",
+      "answer": "über",
+      "accept": [
+        "ueber"
+      ],
+      "explanation": "diskutieren über + Akkusativ.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-verben_mit_praepositionen-021",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "verben_mit_praepositionen",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "Write the preposition: \"Sie bereitet sich ___ die Premiere vor.\"",
+      "answer": "auf",
+      "accept": [],
+      "explanation": "sich vorbereiten auf + Akkusativ.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-verben_mit_praepositionen-022",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "verben_mit_praepositionen",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "Write the question word: \"___ denkst du?\" - \"An den Urlaub.\"",
+      "answer": "Woran",
+      "accept": [],
+      "explanation": "For things: wo + r + an = woran.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-passiv_praesens-004",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "passiv_praesens",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "How is the Passiv Präsens made?",
+      "choices": [
+        "werden + Partizip II",
+        "haben + Partizip II",
+        "sein + infinitive",
+        "werden + infinitive"
+      ],
+      "answer": "werden + Partizip II",
+      "explanation": "Das Stück wird gespielt: werden + Partizip II.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-passiv_praesens-005",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "passiv_praesens",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "\"Das Theaterstück ___ heute gespielt.\"",
+      "choices": [
+        "wird",
+        "werden",
+        "ist",
+        "hat"
+      ],
+      "answer": "wird",
+      "explanation": "das Stück = es: wird + Partizip II.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-passiv_praesens-006",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "passiv_praesens",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "\"Die Karten ___ an der Kasse verkauft.\"",
+      "choices": [
+        "werden",
+        "wird",
+        "sind",
+        "haben"
+      ],
+      "answer": "werden",
+      "explanation": "die Karten = plural: werden.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-passiv_praesens-007",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "passiv_praesens",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "Which sentence is Passiv?",
+      "choices": [
+        "Das Haus wird gebaut.",
+        "Er baut ein Haus.",
+        "Er hat ein Haus gebaut.",
+        "Er will ein Haus bauen."
+      ],
+      "answer": "Das Haus wird gebaut.",
+      "explanation": "werden + Partizip II = Passiv.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-passiv_praesens-008",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "passiv_praesens",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "\"Hier ___ Deutsch gesprochen.\"",
+      "choices": [
+        "wird",
+        "werden",
+        "ist",
+        "hat"
+      ],
+      "answer": "wird",
+      "explanation": "Hier wird Deutsch gesprochen. (One form: wird.)",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-passiv_praesens-009",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "passiv_praesens",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "What is the Partizip II of \"spielen\"?",
+      "choices": [
+        "gespielt",
+        "gespielen",
+        "spielte",
+        "gespielte"
+      ],
+      "answer": "gespielt",
+      "explanation": "spielen → gespielt.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-passiv_praesens-010",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "passiv_praesens",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "\"Die Bühne ___ für die Vorstellung geschmückt.\"",
+      "choices": [
+        "wird",
+        "werden",
+        "worden",
+        "hat"
+      ],
+      "answer": "wird",
+      "explanation": "die Bühne = sie: wird.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-passiv_praesens-011",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "passiv_praesens",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "In Passiv, the person who does the action can come with ...",
+      "choices": [
+        "von + Dativ",
+        "für + Akkusativ",
+        "mit + Akkusativ",
+        "durch + Dativ only"
+      ],
+      "answer": "von + Dativ",
+      "explanation": "Das Lied wird von einer Sängerin gesungen.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-passiv_praesens-012",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "passiv_praesens",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "Make it Passiv: \"Der Regisseur probt die Szene.\"",
+      "choices": [
+        "Die Szene wird vom Regisseur geprobt.",
+        "Die Szene wird den Regisseur geprobt.",
+        "Die Szene ist vom Regisseur proben.",
+        "Die Szene wird vom Regisseur probt."
+      ],
+      "answer": "Die Szene wird vom Regisseur geprobt.",
+      "explanation": "werden + Partizip II, the doer with von + Dativ.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-passiv_praesens-013",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "passiv_praesens",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "\"Die Kostüme ___ vom Schneider genäht.\"",
+      "choices": [
+        "werden",
+        "wird",
+        "worden",
+        "sind geworden"
+      ],
+      "answer": "werden",
+      "explanation": "Plural: werden + Partizip II.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-passiv_praesens-014",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "passiv_praesens",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "What is the Partizip II of \"schreiben\"?",
+      "choices": [
+        "geschrieben",
+        "geschreibt",
+        "schrieb",
+        "geschriebt"
+      ],
+      "answer": "geschrieben",
+      "explanation": "schreiben is irregular: geschrieben.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-passiv_praesens-015",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "passiv_praesens",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "\"Im Theater ___ nicht gegessen.\" (a rule)",
+      "choices": [
+        "wird",
+        "werden",
+        "ist",
+        "hat"
+      ],
+      "answer": "wird",
+      "explanation": "A rule in Passiv without a subject: es wird ... / hier wird ...",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-passiv_praesens-016",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "passiv_praesens",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "With a modal verb: \"Das Handy muss ausgeschaltet ___.\"",
+      "choices": [
+        "werden",
+        "wird",
+        "worden",
+        "geworden"
+      ],
+      "answer": "werden",
+      "explanation": "Modal verb + Partizip II + werden (infinitive at the end).",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-passiv_praesens-017",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "passiv_praesens",
+      "difficulty": "medium",
+      "type": "multi_select",
+      "question": "Select ALL Passiv sentences.",
+      "choices": [
+        "Der Text wird übersetzt.",
+        "Die Fenster werden geputzt.",
+        "Ich werde Ärztin.",
+        "Er wird müde."
+      ],
+      "answer": [
+        "Der Text wird übersetzt.",
+        "Die Fenster werden geputzt."
+      ],
+      "explanation": "werden + adjective or noun (Ärztin, müde) is not Passiv: it means 'to become'.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-passiv_praesens-018",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "passiv_praesens",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "What is the Partizip II of \"einladen\"?",
+      "choices": [
+        "eingeladen",
+        "geeinladen",
+        "einlud",
+        "eingeladet"
+      ],
+      "answer": "eingeladen",
+      "explanation": "Separable verb: ein + ge + laden.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-passiv_praesens-019",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "passiv_praesens",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "\"Das Licht ___ (werden) ausgemacht.\"",
+      "answer": "wird",
+      "accept": [],
+      "explanation": "das Licht = es: wird.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-passiv_praesens-020",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "passiv_praesens",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "\"Die Zuschauer werden ___.\" (begrüßen)",
+      "answer": "begrüßt",
+      "accept": [
+        "begruesst",
+        "begrüsst"
+      ],
+      "explanation": "begrüßen → begrüßt (no ge- with be-).",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-passiv_praesens-021",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "passiv_praesens",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "\"Die Rollen ___ (werden) neu verteilt.\"",
+      "answer": "werden",
+      "accept": [],
+      "explanation": "Plural: werden.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-passiv_praesens-022",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "passiv_praesens",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "\"Der Vorhang wird ___.\" (öffnen)",
+      "answer": "geöffnet",
+      "accept": [
+        "geoeffnet"
+      ],
+      "explanation": "öffnen → geöffnet.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-wechselpraepositionen-006",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "wechselpraepositionen",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "Where? (Wo?) takes which case after in, an, auf ...?",
+      "choices": [
+        "Dativ",
+        "Akkusativ",
+        "Genitiv",
+        "Nominativ"
+      ],
+      "answer": "Dativ",
+      "explanation": "Wo? (a place, no movement) → Dativ.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-wechselpraepositionen-007",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "wechselpraepositionen",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "Where to? (Wohin?) takes which case after in, an, auf ...?",
+      "choices": [
+        "Akkusativ",
+        "Dativ",
+        "Genitiv",
+        "Nominativ"
+      ],
+      "answer": "Akkusativ",
+      "explanation": "Wohin? (a movement to a place) → Akkusativ.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-wechselpraepositionen-008",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "wechselpraepositionen",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "\"Das Buch liegt auf ___ Tisch.\"",
+      "choices": [
+        "dem",
+        "den",
+        "der",
+        "das"
+      ],
+      "answer": "dem",
+      "explanation": "Wo? → Dativ: der Tisch → dem Tisch.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-wechselpraepositionen-009",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "wechselpraepositionen",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "\"Ich lege das Buch auf ___ Tisch.\"",
+      "choices": [
+        "den",
+        "dem",
+        "der",
+        "des"
+      ],
+      "answer": "den",
+      "explanation": "Wohin? → Akkusativ: den Tisch.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-wechselpraepositionen-010",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "wechselpraepositionen",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "\"Wir gehen in ___ Theater.\"",
+      "choices": [
+        "das",
+        "dem",
+        "der",
+        "den"
+      ],
+      "answer": "das",
+      "explanation": "Wohin? → Akkusativ: das Theater (ins Theater).",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-wechselpraepositionen-011",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "wechselpraepositionen",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "\"Wir sind in ___ Theater.\"",
+      "choices": [
+        "dem",
+        "das",
+        "den",
+        "die"
+      ],
+      "answer": "dem",
+      "explanation": "Wo? → Dativ: im (= in dem) Theater.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-wechselpraepositionen-012",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "wechselpraepositionen",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "\"Das Bild hängt an ___ Wand.\"",
+      "choices": [
+        "der",
+        "die",
+        "den",
+        "das"
+      ],
+      "answer": "der",
+      "explanation": "Wo? → Dativ: die Wand → der Wand.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-wechselpraepositionen-013",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "wechselpraepositionen",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "\"Er hängt das Plakat an ___ Wand.\"",
+      "choices": [
+        "die",
+        "der",
+        "dem",
+        "den"
+      ],
+      "answer": "die",
+      "explanation": "Wohin? → Akkusativ: die Wand.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-wechselpraepositionen-014",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "wechselpraepositionen",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "stellen or stehen? \"Die Lampe ___ neben dem Sofa.\"",
+      "choices": [
+        "steht",
+        "stellt",
+        "stellen",
+        "gestellt"
+      ],
+      "answer": "steht",
+      "explanation": "stehen (no movement) + Dativ. stellen = to put, with Akkusativ.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-wechselpraepositionen-015",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "wechselpraepositionen",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "\"Die Katze springt auf ___ Sofa.\"",
+      "choices": [
+        "das",
+        "dem",
+        "den",
+        "der"
+      ],
+      "answer": "das",
+      "explanation": "Movement (springen auf) → Akkusativ: das Sofa.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-wechselpraepositionen-016",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "wechselpraepositionen",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "\"Der Schauspieler steht hinter ___ Vorhang.\"",
+      "choices": [
+        "dem",
+        "den",
+        "der",
+        "das"
+      ],
+      "answer": "dem",
+      "explanation": "Wo? → Dativ: der Vorhang → dem Vorhang.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-wechselpraepositionen-017",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "wechselpraepositionen",
+      "difficulty": "medium",
+      "type": "multi_select",
+      "question": "Select ALL Wechselpräpositionen (they take Dativ or Akkusativ).",
+      "choices": [
+        "in",
+        "auf",
+        "mit",
+        "für"
+      ],
+      "answer": [
+        "in",
+        "auf"
+      ],
+      "explanation": "mit always takes Dativ, für always takes Akkusativ.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-wechselpraepositionen-018",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "wechselpraepositionen",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "legen or liegen? \"Ich ___ den Schlüssel auf den Tisch.\"",
+      "choices": [
+        "lege",
+        "liege",
+        "liegt",
+        "gelegen"
+      ],
+      "answer": "lege",
+      "explanation": "legen = to put (lying), with Akkusativ: auf den Tisch.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-wechselpraepositionen-019",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "wechselpraepositionen",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "Write the article: \"Wir sitzen in ___ ersten Reihe.\" (die Reihe)",
+      "answer": "der",
+      "accept": [],
+      "explanation": "Wo? → Dativ: die Reihe → der Reihe.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-wechselpraepositionen-020",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "wechselpraepositionen",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "Write the article: \"Ich stelle die Blumen auf ___ Bühne.\" (die Bühne)",
+      "answer": "die",
+      "accept": [],
+      "explanation": "Wohin? → Akkusativ: die Bühne.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-wechselpraepositionen-021",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "wechselpraepositionen",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "Write the article: \"Der Hund liegt unter ___ Tisch.\" (der Tisch)",
+      "answer": "dem",
+      "accept": [],
+      "explanation": "Wo? → Dativ: dem Tisch.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-wechselpraepositionen-022",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "wechselpraepositionen",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "Write the article: \"Sie geht in ___ Garten.\" (der Garten)",
+      "answer": "den",
+      "accept": [],
+      "explanation": "Wohin? → Akkusativ: den Garten.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-nicht_sondern-002",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "nicht_sondern",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "What does \"nicht ..., sondern ...\" do?",
+      "choices": [
+        "it corrects: not this, but that",
+        "it gives a reason",
+        "it adds a time",
+        "it asks a question"
+      ],
+      "answer": "it corrects: not this, but that",
+      "explanation": "Ich trinke nicht Kaffee, sondern Tee.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-nicht_sondern-003",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "nicht_sondern",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "\"Das ist nicht mein Bruder, ___ mein Cousin.\"",
+      "choices": [
+        "sondern",
+        "aber",
+        "oder",
+        "und"
+      ],
+      "answer": "sondern",
+      "explanation": "After nicht, a correction: sondern.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-nicht_sondern-004",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "nicht_sondern",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "\"Ich komme nicht heute, ___ morgen.\"",
+      "choices": [
+        "sondern",
+        "aber",
+        "denn",
+        "oder"
+      ],
+      "answer": "sondern",
+      "explanation": "nicht heute, sondern morgen.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-nicht_sondern-005",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "nicht_sondern",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "\"Das Wetter ist nicht schön, ___ wir gehen trotzdem raus.\"",
+      "choices": [
+        "aber",
+        "sondern",
+        "oder",
+        "denn"
+      ],
+      "answer": "aber",
+      "explanation": "No correction here, a contrast: aber.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-nicht_sondern-006",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "nicht_sondern",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "\"Er spielt nicht Gitarre, ___ Klavier.\"",
+      "choices": [
+        "sondern",
+        "aber",
+        "und",
+        "dann"
+      ],
+      "answer": "sondern",
+      "explanation": "Correction after nicht: sondern.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-nicht_sondern-007",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "nicht_sondern",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "\"Wir fahren nicht mit dem Auto, ___ mit dem Zug.\"",
+      "choices": [
+        "sondern",
+        "aber",
+        "oder",
+        "weil"
+      ],
+      "answer": "sondern",
+      "explanation": "Correction after nicht: sondern.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-nicht_sondern-008",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "nicht_sondern",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "What comes before \"sondern\"?",
+      "choices": [
+        "a negation (nicht or kein)",
+        "a question",
+        "a number",
+        "a time"
+      ],
+      "answer": "a negation (nicht or kein)",
+      "explanation": "sondern only comes after a negative part: nicht ... / kein ...",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-nicht_sondern-009",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "nicht_sondern",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "\"Sie hat keinen Hund, ___ eine Katze.\"",
+      "choices": [
+        "sondern",
+        "aber",
+        "oder",
+        "denn"
+      ],
+      "answer": "sondern",
+      "explanation": "kein ..., sondern ... also corrects.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-nicht_sondern-010",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "nicht_sondern",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "aber or sondern? \"Ich bin müde, ___ ich muss noch lernen.\"",
+      "choices": [
+        "aber",
+        "sondern",
+        "oder",
+        "denn"
+      ],
+      "answer": "aber",
+      "explanation": "No negation that is corrected: aber.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-nicht_sondern-011",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "nicht_sondern",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "aber or sondern? \"Das Stück ist lang, ___ sehr spannend.\"",
+      "choices": [
+        "aber",
+        "sondern",
+        "oder",
+        "denn"
+      ],
+      "answer": "aber",
+      "explanation": "No negation before it, so no correction: aber. Compare: nicht lang, sondern kurz.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-nicht_sondern-012",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "nicht_sondern",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "aber or sondern? \"Die Vorstellung beginnt nicht um sieben, ___ um acht.\"",
+      "choices": [
+        "sondern",
+        "aber",
+        "oder",
+        "denn"
+      ],
+      "answer": "sondern",
+      "explanation": "Correction of a wrong time: sondern.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-nicht_sondern-013",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "nicht_sondern",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "Where does \"nicht\" go? \"Ich lerne ___ Französisch, sondern Spanisch.\"",
+      "choices": [
+        "Ich lerne nicht Französisch, sondern Spanisch.",
+        "Ich nicht lerne Französisch, sondern Spanisch.",
+        "Ich lerne Französisch nicht, sondern Spanisch.",
+        "Nicht ich lerne Französisch, sondern Spanisch."
+      ],
+      "answer": "Ich lerne nicht Französisch, sondern Spanisch.",
+      "explanation": "nicht stands right in front of the part that is corrected.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-nicht_sondern-014",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "nicht_sondern",
+      "difficulty": "medium",
+      "type": "multi_select",
+      "question": "Select ALL sentences where \"sondern\" is right.",
+      "choices": [
+        "Er ist nicht Lehrer, sondern Arzt.",
+        "Ich habe kein Auto, sondern ein Fahrrad.",
+        "Ich mag Pizza, sondern keine Pasta.",
+        "Es regnet, sondern es ist warm."
+      ],
+      "answer": [
+        "Er ist nicht Lehrer, sondern Arzt.",
+        "Ich habe kein Auto, sondern ein Fahrrad."
+      ],
+      "explanation": "sondern needs a negation before it that is corrected.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-nicht_sondern-015",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "nicht_sondern",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "\"Nicht nur ..., sondern auch ...\" means ...",
+      "choices": [
+        "not only ..., but also ...",
+        "neither ... nor ...",
+        "either ... or ...",
+        "not ..., but ..."
+      ],
+      "answer": "not only ..., but also ...",
+      "explanation": "Sie singt nicht nur, sondern tanzt auch.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-nicht_sondern-016",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "nicht_sondern",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "\"Er spricht nicht nur Deutsch, ___ auch Italienisch.\"",
+      "choices": [
+        "sondern",
+        "aber",
+        "oder",
+        "und"
+      ],
+      "answer": "sondern",
+      "explanation": "nicht nur ..., sondern auch ...",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-nicht_sondern-017",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "nicht_sondern",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "After \"sondern\", where is the verb in a full clause?",
+      "choices": [
+        "in second place (normal order)",
+        "at the end",
+        "at the start",
+        "there is no verb"
+      ],
+      "answer": "in second place (normal order)",
+      "explanation": "sondern does not change the word order: ..., sondern ich bleibe zu Hause.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-nicht_sondern-018",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "nicht_sondern",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "\"Ich trinke nicht Kaffee, ___ Tee.\"",
+      "answer": "sondern",
+      "accept": [],
+      "explanation": "Correction after nicht: sondern.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-nicht_sondern-019",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "nicht_sondern",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "\"Er wohnt nicht in Wien, ___ in Graz.\"",
+      "answer": "sondern",
+      "accept": [],
+      "explanation": "Correction after nicht: sondern.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-nicht_sondern-020",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "nicht_sondern",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "\"Das ist kein Fehler, ___ Absicht.\"",
+      "answer": "sondern",
+      "accept": [],
+      "explanation": "kein ..., sondern ...",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-nicht_sondern-021",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "nicht_sondern",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "aber or sondern? \"Ich habe wenig Zeit, ___ ich helfe dir.\"",
+      "answer": "aber",
+      "accept": [],
+      "explanation": "No correction, a contrast: aber.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-nicht_sondern-022",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "nicht_sondern",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "\"Sie ist nicht nur klug, sondern ___ lustig.\"",
+      "answer": "auch",
+      "accept": [],
+      "explanation": "nicht nur ..., sondern auch ...",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e2-nicht_sondern-023",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 2,
+      "topic": "nicht_sondern",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "Write the word that starts the correction: \"Wir treffen uns nicht im Café, ___ im Park.\"",
+      "answer": "sondern",
+      "accept": [],
+      "explanation": "Correction after nicht: sondern.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-konjunktiv2_praesens-009",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "konjunktiv2_praesens",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "\"Wenn ich Zeit ___, würde ich dir helfen.\"",
+      "choices": [
+        "hätte",
+        "habe",
+        "hatte",
+        "hat"
+      ],
+      "answer": "hätte",
+      "explanation": "Unreal condition: wenn ich ... hätte.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-konjunktiv2_praesens-010",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "konjunktiv2_praesens",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "\"Ich ___ gern am Meer wohnen.\" (a wish)",
+      "choices": [
+        "würde",
+        "werde",
+        "wurde",
+        "wird"
+      ],
+      "answer": "würde",
+      "explanation": "Wish: würde + infinitive.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-konjunktiv2_praesens-011",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "konjunktiv2_praesens",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "\"Wenn das Wetter schön ___, gingen wir schwimmen.\"",
+      "choices": [
+        "wäre",
+        "ist",
+        "war",
+        "sei"
+      ],
+      "answer": "wäre",
+      "explanation": "sein in Konjunktiv II: wäre.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-konjunktiv2_praesens-012",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "konjunktiv2_praesens",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "Which sentence is a WISH?",
+      "choices": [
+        "Ich hätte gern mehr Freizeit.",
+        "Ich habe mehr Freizeit.",
+        "Ich hatte mehr Freizeit.",
+        "Ich werde mehr Freizeit haben."
+      ],
+      "answer": "Ich hätte gern mehr Freizeit.",
+      "explanation": "hätte gern = I would like to have.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-konjunktiv2_praesens-013",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "konjunktiv2_praesens",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "What does \"Ich wäre gern Schauspielerin.\" mean?",
+      "choices": [
+        "I would like to be an actress.",
+        "I was an actress.",
+        "I am an actress.",
+        "I will be an actress."
+      ],
+      "answer": "I would like to be an actress.",
+      "explanation": "wäre gern = would like to be.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-konjunktiv2_praesens-014",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "konjunktiv2_praesens",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "\"An deiner Stelle ___ ich mehr schlafen.\"",
+      "choices": [
+        "würde",
+        "werde",
+        "wurde",
+        "will"
+      ],
+      "answer": "würde",
+      "explanation": "Advice: An deiner Stelle würde ich ...",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-konjunktiv2_praesens-015",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "konjunktiv2_praesens",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "\"Wenn wir mehr Geld ___, ___ wir ein Haus kaufen.\"",
+      "choices": [
+        "hätten / würden",
+        "haben / werden",
+        "hatten / wurden",
+        "hätten / werden"
+      ],
+      "answer": "hätten / würden",
+      "explanation": "Unreal: wenn + hätten ..., würden + infinitive.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-konjunktiv2_praesens-016",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "konjunktiv2_praesens",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "\"Es ___ schön, wenn du mitkommen würdest.\"",
+      "choices": [
+        "wäre",
+        "war",
+        "ist",
+        "würde"
+      ],
+      "answer": "wäre",
+      "explanation": "Es wäre schön = it would be nice.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-konjunktiv2_praesens-017",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "konjunktiv2_praesens",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "Make it unreal: \"Ich habe kein Auto. Ich fahre nicht ans Meer.\"",
+      "choices": [
+        "Wenn ich ein Auto hätte, würde ich ans Meer fahren.",
+        "Wenn ich ein Auto habe, fahre ich ans Meer.",
+        "Wenn ich ein Auto hatte, fuhr ich ans Meer.",
+        "Wenn ich ein Auto hätte, ich würde ans Meer fahren."
+      ],
+      "answer": "Wenn ich ein Auto hätte, würde ich ans Meer fahren.",
+      "explanation": "Konjunktiv II for an unreal condition; after the wenn clause the verb comes first.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-konjunktiv2_praesens-018",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "konjunktiv2_praesens",
+      "difficulty": "medium",
+      "type": "multi_select",
+      "question": "Select ALL Konjunktiv II forms.",
+      "choices": [
+        "du wärst",
+        "sie hätte",
+        "wir waren",
+        "ihr hattet"
+      ],
+      "answer": [
+        "du wärst",
+        "sie hätte"
+      ],
+      "explanation": "wärst and hätte have an umlaut. waren and hattet are the past tense.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-konjunktiv2_praesens-019",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "konjunktiv2_praesens",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "\"___ du Lust, mit ins Kino zu kommen?\" (polite question)",
+      "choices": [
+        "Hättest",
+        "Hattest",
+        "Hast",
+        "Würdest"
+      ],
+      "answer": "Hättest",
+      "explanation": "Hättest du Lust ...? is a polite invitation.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-konjunktiv2_praesens-020",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "konjunktiv2_praesens",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "\"Wenn ich reich ___ (sein), würde ich viel reisen.\"",
+      "answer": "wäre",
+      "accept": [
+        "waere"
+      ],
+      "explanation": "ich + sein in Konjunktiv II: wäre.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-konjunktiv2_praesens-021",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "konjunktiv2_praesens",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "\"Wir ___ (haben) gern einen Garten.\"",
+      "answer": "hätten",
+      "accept": [
+        "haetten"
+      ],
+      "explanation": "wir + haben in Konjunktiv II: hätten.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-konjunktiv2_praesens-022",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "konjunktiv2_praesens",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "\"Er ___ (werden) gern Pilot werden.\" (Konjunktiv II)",
+      "answer": "würde",
+      "accept": [
+        "wuerde"
+      ],
+      "explanation": "er + werden in Konjunktiv II: würde.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-deshalb_darum_deswegen-005",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "deshalb_darum_deswegen",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "What does \"deshalb\" mean?",
+      "choices": [
+        "that's why, so",
+        "because",
+        "although",
+        "while"
+      ],
+      "answer": "that's why, so",
+      "explanation": "deshalb = that's why. darum and deswegen mean the same.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-deshalb_darum_deswegen-006",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "deshalb_darum_deswegen",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "\"Ich bin krank, ___ bleibe ich zu Hause.\"",
+      "choices": [
+        "deshalb",
+        "weil",
+        "denn",
+        "obwohl"
+      ],
+      "answer": "deshalb",
+      "explanation": "deshalb + verb in second place.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-deshalb_darum_deswegen-007",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "deshalb_darum_deswegen",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "Which word means the same as \"deshalb\"?",
+      "choices": [
+        "deswegen",
+        "weil",
+        "trotzdem",
+        "sondern"
+      ],
+      "answer": "deswegen",
+      "explanation": "deshalb = darum = deswegen.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-deshalb_darum_deswegen-008",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "deshalb_darum_deswegen",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "What comes right after \"deshalb\" in a sentence?",
+      "choices": [
+        "the verb",
+        "the subject",
+        "the end",
+        "a comma"
+      ],
+      "answer": "the verb",
+      "explanation": "deshalb takes position 1, so the verb comes next: deshalb bleibe ich ...",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-deshalb_darum_deswegen-009",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "deshalb_darum_deswegen",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "\"Es regnet, ___ nehme ich einen Schirm mit.\"",
+      "choices": [
+        "darum",
+        "weil",
+        "denn",
+        "dass"
+      ],
+      "answer": "darum",
+      "explanation": "darum = that's why.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-deshalb_darum_deswegen-010",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "deshalb_darum_deswegen",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "weil or deshalb? \"Ich lerne viel, ___ ich die Prüfung bestehen will.\"",
+      "choices": [
+        "weil",
+        "deshalb",
+        "darum",
+        "deswegen"
+      ],
+      "answer": "weil",
+      "explanation": "The second part is the reason (verb at the end): weil.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-deshalb_darum_deswegen-011",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "deshalb_darum_deswegen",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "\"Der Bus kam nicht, ___ bin ich zu spät gekommen.\"",
+      "choices": [
+        "deswegen",
+        "weil",
+        "denn",
+        "ob"
+      ],
+      "answer": "deswegen",
+      "explanation": "deswegen + verb in second place.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-deshalb_darum_deswegen-012",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "deshalb_darum_deswegen",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "Which sentence is correct?",
+      "choices": [
+        "Ich habe Hunger, deshalb esse ich ein Brot.",
+        "Ich habe Hunger, deshalb ich esse ein Brot.",
+        "Ich habe Hunger, deshalb ein Brot ich esse.",
+        "Ich habe Hunger, deshalb esse ein Brot ich."
+      ],
+      "answer": "Ich habe Hunger, deshalb esse ich ein Brot.",
+      "explanation": "deshalb, then the verb, then the subject.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-deshalb_darum_deswegen-013",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "deshalb_darum_deswegen",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "Join with deshalb: \"Der Verein braucht Hilfe. Ich arbeite dort freiwillig.\"",
+      "choices": [
+        "Der Verein braucht Hilfe, deshalb arbeite ich dort freiwillig.",
+        "Der Verein braucht Hilfe, deshalb ich arbeite dort freiwillig.",
+        "Deshalb der Verein braucht Hilfe, ich arbeite dort freiwillig.",
+        "Der Verein braucht Hilfe, deshalb ich dort freiwillig arbeite."
+      ],
+      "answer": "Der Verein braucht Hilfe, deshalb arbeite ich dort freiwillig.",
+      "explanation": "The consequence gets deshalb + verb in second place.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-deshalb_darum_deswegen-014",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "deshalb_darum_deswegen",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "denn or deshalb? \"Ich bleibe zu Hause, ___ ich bin müde.\"",
+      "choices": [
+        "denn",
+        "deshalb",
+        "darum",
+        "deswegen"
+      ],
+      "answer": "denn",
+      "explanation": "denn gives the reason and keeps normal word order (ich bin).",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-deshalb_darum_deswegen-015",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "deshalb_darum_deswegen",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "\"Sie hilft gern anderen. ___ engagiert sie sich im Ehrenamt.\"",
+      "choices": [
+        "Deshalb",
+        "Weil",
+        "Denn",
+        "Obwohl"
+      ],
+      "answer": "Deshalb",
+      "explanation": "Consequence + verb next: Deshalb engagiert sie sich.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-deshalb_darum_deswegen-016",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "deshalb_darum_deswegen",
+      "difficulty": "medium",
+      "type": "multi_select",
+      "question": "Select ALL words that introduce a CONSEQUENCE (that's why).",
+      "choices": [
+        "deshalb",
+        "darum",
+        "weil",
+        "denn"
+      ],
+      "answer": [
+        "deshalb",
+        "darum"
+      ],
+      "explanation": "weil and denn give the reason, not the consequence.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-deshalb_darum_deswegen-017",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "deshalb_darum_deswegen",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "\"Ich hatte keine Zeit. ___ habe ich nicht angerufen.\"",
+      "choices": [
+        "Darum",
+        "Weil",
+        "Denn",
+        "Dass"
+      ],
+      "answer": "Darum",
+      "explanation": "Darum + verb in second place.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-deshalb_darum_deswegen-018",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "deshalb_darum_deswegen",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "Write the missing word (that's why): \"Ich spare, ___ fahre ich nicht in den Urlaub.\"",
+      "answer": "deshalb",
+      "accept": [
+        "darum",
+        "deswegen"
+      ],
+      "explanation": "deshalb = that's why.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-deshalb_darum_deswegen-019",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "deshalb_darum_deswegen",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "Put the verb in: \"Es ist kalt, deshalb ___ ich eine Jacke an.\" (ziehen)",
+      "answer": "ziehe",
+      "accept": [],
+      "explanation": "ich ziehe ... an; the verb follows deshalb.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-deshalb_darum_deswegen-020",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "deshalb_darum_deswegen",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "Put the verb in: \"Er ist neu hier, deswegen ___ er niemanden.\" (kennen)",
+      "answer": "kennt",
+      "accept": [],
+      "explanation": "er kennt; the verb follows deswegen.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-deshalb_darum_deswegen-021",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "deshalb_darum_deswegen",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "weil or deshalb? \"Ich trinke Kaffee, ___ ich müde bin.\"",
+      "answer": "weil",
+      "accept": [],
+      "explanation": "The reason, with the verb at the end: weil.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-deshalb_darum_deswegen-022",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "deshalb_darum_deswegen",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "Put the verb in: \"Wir haben gewonnen, darum ___ wir.\" (feiern)",
+      "answer": "feiern",
+      "accept": [],
+      "explanation": "wir feiern; the verb follows darum.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-komposita_artikel-007",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "komposita_artikel",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "Which word gives a compound noun its article?",
+      "choices": [
+        "the last word",
+        "the first word",
+        "the longest word",
+        "it is always das"
+      ],
+      "answer": "the last word",
+      "explanation": "das Haus + die Tür = die Haustür: the last part decides.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-komposita_artikel-008",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "komposita_artikel",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "___ Haustür (das Haus + die Tür)",
+      "choices": [
+        "die",
+        "das",
+        "der"
+      ],
+      "answer": "die",
+      "explanation": "The last part: die Tür → die Haustür.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-komposita_artikel-009",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "komposita_artikel",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "___ Kinderzimmer (die Kinder + das Zimmer)",
+      "choices": [
+        "das",
+        "die",
+        "der"
+      ],
+      "answer": "das",
+      "explanation": "das Zimmer → das Kinderzimmer.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-komposita_artikel-010",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "komposita_artikel",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "___ Sportverein (der Sport + der Verein)",
+      "choices": [
+        "der",
+        "die",
+        "das"
+      ],
+      "answer": "der",
+      "explanation": "der Verein → der Sportverein.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-komposita_artikel-011",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "komposita_artikel",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "___ Stadtbibliothek (die Stadt + die Bibliothek)",
+      "choices": [
+        "die",
+        "der",
+        "das"
+      ],
+      "answer": "die",
+      "explanation": "die Bibliothek → die Stadtbibliothek.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-komposita_artikel-012",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "komposita_artikel",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "___ Hausaufgabe (das Haus + die Aufgabe)",
+      "choices": [
+        "die",
+        "das",
+        "der"
+      ],
+      "answer": "die",
+      "explanation": "die Aufgabe → die Hausaufgabe.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-komposita_artikel-013",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "komposita_artikel",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "___ Fahrrad (fahren + das Rad)",
+      "choices": [
+        "das",
+        "der",
+        "die"
+      ],
+      "answer": "das",
+      "explanation": "das Rad → das Fahrrad.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-komposita_artikel-014",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "komposita_artikel",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "___ Umweltschutz (die Umwelt + der Schutz)",
+      "choices": [
+        "der",
+        "die",
+        "das"
+      ],
+      "answer": "der",
+      "explanation": "der Schutz → der Umweltschutz.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-komposita_artikel-015",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "komposita_artikel",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "___ Nachbarschaftshilfe (die Nachbarschaft + die Hilfe)",
+      "choices": [
+        "die",
+        "der",
+        "das"
+      ],
+      "answer": "die",
+      "explanation": "die Hilfe → die Nachbarschaftshilfe.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-komposita_artikel-016",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "komposita_artikel",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "___ Altersheim (das Alter + das Heim)",
+      "choices": [
+        "das",
+        "der",
+        "die"
+      ],
+      "answer": "das",
+      "explanation": "das Heim → das Altersheim.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-komposita_artikel-017",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "komposita_artikel",
+      "difficulty": "medium",
+      "type": "multi_select",
+      "question": "Select ALL compound nouns with the article \"der\".",
+      "choices": [
+        "Geburtstag",
+        "Wochenmarkt",
+        "Lieblingsfarbe",
+        "Schreibtisch"
+      ],
+      "answer": [
+        "Geburtstag",
+        "Wochenmarkt",
+        "Schreibtisch"
+      ],
+      "explanation": "der Tag, der Markt, der Tisch. die Farbe → die Lieblingsfarbe.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-komposita_artikel-018",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "komposita_artikel",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "___ Spielplatz (spielen + der Platz)",
+      "choices": [
+        "der",
+        "das",
+        "die"
+      ],
+      "answer": "der",
+      "explanation": "der Platz → der Spielplatz.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-komposita_artikel-019",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "komposita_artikel",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "Write the article: ___ Ehrenamt (die Ehre + das Amt)",
+      "answer": "das",
+      "accept": [],
+      "explanation": "das Amt → das Ehrenamt.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-komposita_artikel-020",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "komposita_artikel",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "Write the article: ___ Kleiderspende (die Kleider + die Spende)",
+      "answer": "die",
+      "accept": [],
+      "explanation": "die Spende → die Kleiderspende.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-komposita_artikel-021",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "komposita_artikel",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "Write the article: ___ Stadtteil (die Stadt + der Teil)",
+      "answer": "der",
+      "accept": [],
+      "explanation": "der Teil → der Stadtteil.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-komposita_artikel-022",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "komposita_artikel",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "Write the article: ___ Mitgliedsbeitrag (das Mitglied + der Beitrag)",
+      "answer": "der",
+      "accept": [],
+      "explanation": "der Beitrag → der Mitgliedsbeitrag.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-passiv_praeteritum-003",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "passiv_praeteritum",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "How is the Passiv Präteritum made?",
+      "choices": [
+        "wurde + Partizip II",
+        "wird + Partizip II",
+        "war + infinitive",
+        "hatte + Partizip II"
+      ],
+      "answer": "wurde + Partizip II",
+      "explanation": "Das Haus wurde gebaut.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-passiv_praeteritum-004",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "passiv_praeteritum",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "\"Die Brücke ___ 1990 gebaut.\"",
+      "choices": [
+        "wurde",
+        "wird",
+        "wurden",
+        "war"
+      ],
+      "answer": "wurde",
+      "explanation": "Past + one thing: wurde + Partizip II.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-passiv_praeteritum-005",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "passiv_praeteritum",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "\"Die Fotos ___ gestern gemacht.\"",
+      "choices": [
+        "wurden",
+        "wurde",
+        "werden",
+        "waren"
+      ],
+      "answer": "wurden",
+      "explanation": "Plural in the past: wurden.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-passiv_praeteritum-006",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "passiv_praeteritum",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "Which sentence is Passiv Präteritum?",
+      "choices": [
+        "Der Brief wurde geschrieben.",
+        "Der Brief wird geschrieben.",
+        "Er schrieb einen Brief.",
+        "Er hat einen Brief geschrieben."
+      ],
+      "answer": "Der Brief wurde geschrieben.",
+      "explanation": "wurde + Partizip II.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-passiv_praeteritum-007",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "passiv_praeteritum",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "Präsens \"wird gebaut\" → Präteritum?",
+      "choices": [
+        "wurde gebaut",
+        "war gebaut",
+        "hat gebaut",
+        "würde gebaut"
+      ],
+      "answer": "wurde gebaut",
+      "explanation": "wird → wurde.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-passiv_praeteritum-008",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "passiv_praeteritum",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "\"Das Fest ___ von den Nachbarn organisiert.\" (last year)",
+      "choices": [
+        "wurde",
+        "wird",
+        "würde",
+        "hat"
+      ],
+      "answer": "wurde",
+      "explanation": "Past: wurde + Partizip II.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-passiv_praeteritum-009",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "passiv_praeteritum",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "What is the Präteritum of \"werden\" for \"sie\" (plural)?",
+      "choices": [
+        "wurden",
+        "wurde",
+        "würden",
+        "werden"
+      ],
+      "answer": "wurden",
+      "explanation": "sie wurden.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-passiv_praeteritum-010",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "passiv_praeteritum",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "\"Früher ___ hier Kohle abgebaut.\"",
+      "choices": [
+        "wurde",
+        "wird",
+        "wurden",
+        "würde"
+      ],
+      "answer": "wurde",
+      "explanation": "Kohle is singular: wurde.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-passiv_praeteritum-011",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "passiv_praeteritum",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "Make it Passiv: \"Die Stadt baute 2010 eine Schule.\"",
+      "choices": [
+        "2010 wurde von der Stadt eine Schule gebaut.",
+        "2010 wird von der Stadt eine Schule gebaut.",
+        "2010 wurde von der Stadt eine Schule bauen.",
+        "2010 wurde die Stadt eine Schule gebaut."
+      ],
+      "answer": "2010 wurde von der Stadt eine Schule gebaut.",
+      "explanation": "wurde + Partizip II, the doer with von + Dativ.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-passiv_praeteritum-012",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "passiv_praeteritum",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "\"Die Gäste ___ herzlich begrüßt.\"",
+      "choices": [
+        "wurden",
+        "wurde",
+        "werden",
+        "worden"
+      ],
+      "answer": "wurden",
+      "explanation": "Plural, past: wurden.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-passiv_praeteritum-013",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "passiv_praeteritum",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "What is the Partizip II of \"gründen\"?",
+      "choices": [
+        "gegründet",
+        "gegrundet",
+        "gründete",
+        "gegründen"
+      ],
+      "answer": "gegründet",
+      "explanation": "gründen → gegründet.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-passiv_praeteritum-014",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "passiv_praeteritum",
+      "difficulty": "medium",
+      "type": "multi_select",
+      "question": "Select ALL Passiv Präteritum sentences.",
+      "choices": [
+        "Das Auto wurde repariert.",
+        "Die Türen wurden geschlossen.",
+        "Er wurde Lehrer.",
+        "Das Auto wird repariert."
+      ],
+      "answer": [
+        "Das Auto wurde repariert.",
+        "Die Türen wurden geschlossen."
+      ],
+      "explanation": "wurde + noun (Lehrer) is 'became', not Passiv. wird repariert is Präsens.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-passiv_praeteritum-015",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "passiv_praeteritum",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "\"Das Geld ___ für einen guten Zweck gespendet.\"",
+      "choices": [
+        "wurde",
+        "wurden",
+        "würde",
+        "werden"
+      ],
+      "answer": "wurde",
+      "explanation": "Singular, past: wurde.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-passiv_praeteritum-016",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "passiv_praeteritum",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "\"Im Verein ___ viele Spiele gewonnen.\"",
+      "choices": [
+        "wurden",
+        "wurde",
+        "wird",
+        "würden"
+      ],
+      "answer": "wurden",
+      "explanation": "viele Spiele = plural: wurden.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-passiv_praeteritum-017",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "passiv_praeteritum",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "What is the Partizip II of \"helfen\"?",
+      "choices": [
+        "geholfen",
+        "gehelft",
+        "half",
+        "gehulfen"
+      ],
+      "answer": "geholfen",
+      "explanation": "helfen is irregular: geholfen.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-passiv_praeteritum-018",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "passiv_praeteritum",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "\"Der Film ___ (werden) in Berlin gedreht.\" (Präteritum)",
+      "answer": "wurde",
+      "accept": [],
+      "explanation": "Singular, past: wurde.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-passiv_praeteritum-019",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "passiv_praeteritum",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "\"Die Kinder wurden vom Bahnhof ___.\" (abholen)",
+      "answer": "abgeholt",
+      "accept": [],
+      "explanation": "Separable verb: ab + ge + holt.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-passiv_praeteritum-020",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "passiv_praeteritum",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "\"Die Spenden ___ (werden) am Montag verteilt.\" (Präteritum)",
+      "answer": "wurden",
+      "accept": [],
+      "explanation": "Plural, past: wurden.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-passiv_praeteritum-021",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "passiv_praeteritum",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "\"Das Problem wurde schnell ___.\" (lösen)",
+      "answer": "gelöst",
+      "accept": [
+        "geloest"
+      ],
+      "explanation": "lösen → gelöst.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-passiv_praeteritum-022",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "passiv_praeteritum",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "\"Der Verein wurde 1923 ___.\" (gründen)",
+      "answer": "gegründet",
+      "accept": [
+        "gegruendet"
+      ],
+      "explanation": "gründen → gegründet.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-diskussion_redemittel-004",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "diskussion_redemittel",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "Which phrase gives YOUR opinion?",
+      "choices": [
+        "Ich bin der Meinung, dass ...",
+        "Vielen Dank für Ihre Aufmerksamkeit.",
+        "Darf ich Sie unterbrechen?",
+        "Wie bitte?"
+      ],
+      "answer": "Ich bin der Meinung, dass ...",
+      "explanation": "Ich bin der Meinung = in my opinion.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-diskussion_redemittel-005",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "diskussion_redemittel",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "Which phrase DISAGREES?",
+      "choices": [
+        "Da bin ich anderer Meinung.",
+        "Genau!",
+        "Da haben Sie völlig recht.",
+        "Das finde ich auch."
+      ],
+      "answer": "Da bin ich anderer Meinung.",
+      "explanation": "anderer Meinung = of a different opinion.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-diskussion_redemittel-006",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "diskussion_redemittel",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "Which phrase is used to INTERRUPT politely?",
+      "choices": [
+        "Darf ich kurz etwas sagen?",
+        "Das stimmt.",
+        "Ich glaube nicht.",
+        "Zum Schluss ..."
+      ],
+      "answer": "Darf ich kurz etwas sagen?",
+      "explanation": "A polite way to come in.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-diskussion_redemittel-007",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "diskussion_redemittel",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "\"Meiner ___ nach ist das eine gute Idee.\"",
+      "choices": [
+        "Meinung",
+        "Meine",
+        "Meinen",
+        "Gemeinde"
+      ],
+      "answer": "Meinung",
+      "explanation": "Meiner Meinung nach = in my opinion.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-diskussion_redemittel-008",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "diskussion_redemittel",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "Which phrase is used to CLOSE a discussion?",
+      "choices": [
+        "Zum Schluss möchte ich zusammenfassen ...",
+        "Ich fange mal an.",
+        "Was meinen Sie dazu?",
+        "Das sehe ich anders."
+      ],
+      "answer": "Zum Schluss möchte ich zusammenfassen ...",
+      "explanation": "zum Schluss = at the end.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-diskussion_redemittel-009",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "diskussion_redemittel",
+      "difficulty": "easy",
+      "type": "multiple_choice",
+      "question": "Which phrase ASKS for someone's opinion?",
+      "choices": [
+        "Was halten Sie davon?",
+        "Da stimme ich zu.",
+        "Das ist falsch.",
+        "Ich bin dagegen."
+      ],
+      "answer": "Was halten Sie davon?",
+      "explanation": "Was halten Sie davon? = What do you think of it?",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-diskussion_redemittel-010",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "diskussion_redemittel",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "\"Ich stimme Ihnen ___.\" (I agree with you)",
+      "choices": [
+        "zu",
+        "an",
+        "bei",
+        "mit"
+      ],
+      "answer": "zu",
+      "explanation": "jemandem zustimmen = to agree with somebody.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-diskussion_redemittel-011",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "diskussion_redemittel",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "Which phrase gives a counter-argument?",
+      "choices": [
+        "Andererseits muss man sagen, dass ...",
+        "Das sehe ich genauso.",
+        "Genau!",
+        "Gute Idee!"
+      ],
+      "answer": "Andererseits muss man sagen, dass ...",
+      "explanation": "einerseits ... andererseits = on the one hand ... on the other.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-diskussion_redemittel-012",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "diskussion_redemittel",
+      "difficulty": "medium",
+      "type": "multi_select",
+      "question": "Select ALL phrases that AGREE.",
+      "choices": [
+        "Da haben Sie recht.",
+        "Das finde ich auch.",
+        "Das überzeugt mich nicht.",
+        "Ich bin dagegen."
+      ],
+      "answer": [
+        "Da haben Sie recht.",
+        "Das finde ich auch."
+      ],
+      "explanation": "Das überzeugt mich nicht and Ich bin dagegen disagree.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-diskussion_redemittel-013",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "diskussion_redemittel",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "\"Ich ___ der Meinung, dass Ehrenamt wichtig ist.\"",
+      "choices": [
+        "bin",
+        "habe",
+        "mache",
+        "gebe"
+      ],
+      "answer": "bin",
+      "explanation": "der Meinung sein: ich bin der Meinung.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-diskussion_redemittel-014",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "diskussion_redemittel",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "What does \"Das überzeugt mich nicht.\" mean?",
+      "choices": [
+        "That does not convince me.",
+        "That is a good point.",
+        "I agree completely.",
+        "Let me finish."
+      ],
+      "answer": "That does not convince me.",
+      "explanation": "überzeugen = to convince.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-diskussion_redemittel-015",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "diskussion_redemittel",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "\"Lassen Sie mich bitte ___!\" (let me finish speaking)",
+      "choices": [
+        "ausreden",
+        "aussprechen gehen",
+        "anfangen",
+        "zuhören"
+      ],
+      "answer": "ausreden",
+      "explanation": "Lassen Sie mich bitte ausreden! = Please let me finish.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-diskussion_redemittel-016",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "diskussion_redemittel",
+      "difficulty": "medium",
+      "type": "multiple_choice",
+      "question": "Which phrase is NOT used to disagree?",
+      "choices": [
+        "Das sehe ich genauso.",
+        "Das stimmt so nicht.",
+        "Da bin ich skeptisch.",
+        "Ich sehe das anders."
+      ],
+      "answer": "Das sehe ich genauso.",
+      "explanation": "Das sehe ich genauso = I see it exactly the same way (agreement).",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-diskussion_redemittel-017",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "diskussion_redemittel",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "Complete: \"Meiner Meinung ___ sollten alle helfen.\"",
+      "answer": "nach",
+      "accept": [],
+      "explanation": "Meiner Meinung nach = in my opinion.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-diskussion_redemittel-018",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "diskussion_redemittel",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "Complete: \"Da bin ich anderer ___.\" (I disagree)",
+      "answer": "Meinung",
+      "accept": [],
+      "explanation": "Da bin ich anderer Meinung.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-diskussion_redemittel-019",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "diskussion_redemittel",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "Complete: \"Ich ___ Ihnen zu.\" (agree)",
+      "answer": "stimme",
+      "accept": [],
+      "explanation": "zustimmen: Ich stimme Ihnen zu.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-diskussion_redemittel-020",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "diskussion_redemittel",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "Complete: \"Was ___ Sie davon?\" (What do you think of it?)",
+      "answer": "halten",
+      "accept": [],
+      "explanation": "Was halten Sie davon?",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-diskussion_redemittel-021",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "diskussion_redemittel",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "Complete: \"Einerseits ist es teuer, ___ ist es sehr nützlich.\"",
+      "answer": "andererseits",
+      "accept": [],
+      "explanation": "einerseits ... andererseits.",
+      "source": "einheit_text_grammar"
+    },
+    {
+      "id": "de-b1-e3-diskussion_redemittel-022",
+      "subject": "german",
+      "level": "B1",
+      "einheit": 3,
+      "topic": "diskussion_redemittel",
+      "difficulty": "hard",
+      "type": "typed",
+      "question": "Complete: \"Lassen Sie mich bitte ___!\" (let me finish)",
+      "answer": "ausreden",
+      "accept": [],
+      "explanation": "ausreden = to finish speaking.",
+      "source": "einheit_text_grammar"
     }
   ]
 }

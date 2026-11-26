@@ -4,11 +4,20 @@
     python main.py --fullscreen    for the exhibit laptop
     python main.py --demo          skip the title menu and start the exhibit demo at once
     python main.py --frames 120    run 120 frames, then quit (used by the smoke test)
+
+In a web browser (built with pygbag, see docs/WEB.md) there are no options, and the game runs
+with run_async() so the page does not freeze.
 """
 import argparse
+import asyncio
+import sys
+
+import pygame  # noqa: F401  pygbag only downloads the packages main.py itself imports
 
 from core import flow
 from core.game import Game
+
+IN_BROWSER = sys.platform == "emscripten"   # pygbag runs Python as WebAssembly ("emscripten")
 
 
 def main():
@@ -23,5 +32,11 @@ def main():
     game.run(max_frames=args.frames)
 
 
-if __name__ == "__main__":
+async def main_web():
+    await Game().run_async()
+
+
+if IN_BROWSER:
+    asyncio.run(main_web())
+elif __name__ == "__main__":
     main()

@@ -49,6 +49,18 @@ is changed: it is the pack's plain floor with the pack's skull drawn on top.
 | `item_knight_sword.png`, `weapon_knight_sword.png` | `weapon_knight_sword.png` |
 | `item_war_axe.png`, `weapon_war_axe.png` | `weapon_axe.png` |
 | `item_oak_staff.png`, `weapon_oak_staff.png` | `weapon_green_magic_staff.png` |
+| `item_spiked_club`, `item_machete`, `item_double_axe`, `item_moon_blade`, `item_hunters_knife` (and the same with `weapon_`) | `weapon_baton_with_spikes`, `weapon_machete`, `weapon_double_axe`, `weapon_anime_sword`, `weapon_knife` |
+
+**Recoloured by us** (26 Nov 2026): the pack has only two staffs and two bows, so the class weapons
+of higher rarities are recoloured copies of them, made by `tools/make_weapon_art.py` (it changes the
+colours of the wood and the stone; the shapes are 0x72's). CC0 allows this.
+
+| Files in `assets/sprites/` (`item_` and `weapon_`) | Recoloured from |
+|---|---|
+| `frost_staff`, `starlight_staff` | `weapon_green_magic_staff.png` |
+| `ember_staff` | `weapon_red_magic_staff.png` |
+| `elm_longbow`, `sunfire_bow` | `weapon_bow.png` |
+| `frost_bow` | `weapon_bow_2.png` |
 
 ## Pixel Art Sprite Mixer by KingBell (reference only)
 
@@ -90,6 +102,12 @@ They replace the 0x72 pictures where an item already had one. Nothing to license
 | `item_lucky_charm.png` | `lucky_charm.png` |
 | `item_iron_armor.png`, `item_iron_helmet.png` (new items) | `armor.png`, `armor_head.png` |
 | `item_cloth_hood.png` | `cloth_hood.png` |
+
+## Move icons
+
+- `icon_reveal.png` (a blue orb) and `icon_war_cry.png` (a flame), 8 x 8 pixels each, handed over by the
+  project lead (Viet) on 26 Nov 2026. **Source and license still to be written here.** Evasion and the
+  other moves still use the coloured placeholder with two letters.
 
 ## UI frames: drawn by us
 

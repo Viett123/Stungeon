@@ -18,7 +18,10 @@ OUT.mkdir(exist_ok=True)
 # What each level is built from. floor_einheiten: the highest Einheit each floor asks about
 # (floors are cumulative). A level without it uses Einheiten 1 to n on floor n, like B1.
 LEVELS = {
+    # grammar_more: files with extra grammar questions, added AFTER grammar.py's list, so every
+    # older question keeps its id (the ids count up per Einheit and topic, in list order).
     "b1": {"vocab": "vocab", "grammar": "grammar",
+           "grammar_more": ["grammar_more_e1", "grammar_more_e2", "grammar_more_e3"],
            "material": "Das Leben B1, Einheiten 1-3 (developer materials)",
            "einheiten": {1: "Bildung (er)leben", 2: "Vorhang auf!", 3: "Miteinander – füreinander!"}},
     "a1": {"vocab": "vocab_a1", "grammar": "grammar_a1",
@@ -58,7 +61,10 @@ def build(level):
     vocab = importlib.import_module(config["vocab"])
     NOUNS, OTHERS = vocab.NOUNS, vocab.OTHERS
     plural_only = set(getattr(vocab, "PLURAL_ONLY", []))   # only used in the plural: no article question
-    GRAMMAR = importlib.import_module(config["grammar"]).GRAMMAR
+    GRAMMAR = list(importlib.import_module(config["grammar"]).GRAMMAR)
+    for name in config.get("grammar_more", []):
+        module = importlib.import_module(name)
+        GRAMMAR += next(value for key, value in vars(module).items() if key.startswith("MORE_"))
     LEVEL = level.upper()
     random.seed(42)
 

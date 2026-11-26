@@ -74,9 +74,9 @@ def is_weak_hit(results):
 def utility_lines(move):
     """The message after a utility move: "You use War Cry." and, under it, what the move does."""
     lines = [(t("utility_used", move=move["name"]), theme.GOLD)]
-    hint = effects.UTILITY_HINTS.get(move["id"])
+    hint = move_info.effect_text(move["id"])      # the same text as the move's tooltip
     if hint:
-        lines.append((t(hint), theme.TEXT))
+        lines.append((hint, theme.TEXT))
     return lines
 
 
@@ -317,6 +317,8 @@ class CombatScene(Scene):
         self.pending_weak = is_weak_hit(self.battle.results)
         if self.pending_crit:
             lines.append((t("crit_line"), theme.GOLD))       # explain WHY it hit harder: a fast answer
+        if out.get("effect"):                                # Shield Bash stunned / Poison Arrow poisoned
+            lines.append((t(f"effect_{out['effect']}", enemy=self.enemy_name), theme.GOOD))
         if out["damage"]:
             # Start the attack animation. The hit itself lands a moment later (see land_hit).
             self.attack = ATTACK_SECONDS
@@ -398,13 +400,22 @@ class CombatScene(Scene):
         return 0, 0
 
     def enemy_turn(self):
+        stunned = self.battle.stunned            # read before the turn: the turn uses the stun up
         out = self.battle.enemy_turn()
-        if out.get("skipped"):   # after your miss, the enemy was caught off guard (effects.enemy_loses_turn)
-            lines = [(t("enemy_loses_turn", enemy=self.enemy_name), theme.GOOD)]
+        lines = []
+        if out.get("poison"):    # Poison Arrow: the poison hurts first, and can finish the enemy
+            lines.append((t("effect_poison_tick", enemy=self.enemy_name, damage=out["poison"]), theme.GOOD))
+            self.float_text(f"-{out['poison']}", theme.GOOD, ENEMY_PANEL)
+        if out.get("poison") and self.battle.won:
+            self.show_message(lines, self.victory)
+            return
+        if out.get("skipped"):   # stunned, or caught off guard after your miss (effects.enemy_loses_turn)
+            key = "enemy_stunned_turn" if stunned else "enemy_loses_turn"
+            lines.append((t(key, enemy=self.enemy_name), theme.GOOD))
         elif out["damage"] == 0:   # e.g. an effect cancelled the attack
-            lines = [(t("enemy_misses", enemy=self.enemy_name), theme.GOOD)]
+            lines.append((t("enemy_misses", enemy=self.enemy_name), theme.GOOD))
         else:
-            lines = [(t("enemy_hits", enemy=self.enemy_name, damage=out["damage"]), theme.BAD)]
+            lines.append((t("enemy_hits", enemy=self.enemy_name, damage=out["damage"]), theme.BAD))
             self.hurt = HURT_SECONDS
             sound.play("hurt")
             self.shake.start(strength=10, seconds=0.3)

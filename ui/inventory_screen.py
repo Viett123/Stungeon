@@ -193,10 +193,12 @@ class InventoryScene(Scene):
         if item is None:
             widgets.text(surface, fonts["small"], t("inv_empty_slot"), theme.TEXT_DIM, (x, y))
             return
-        (name, name_color), (kind, kind_color), (text, text_color) = item_lines(item)
+        (name, name_color), (kind, kind_color), *rest = item_lines(item, self.game.run_state.player)
         widgets.text(surface, fonts["normal"], name, name_color, (x, y))
         widgets.text(surface, fonts["small"], kind, kind_color, (x, y + 30))
-        y = widgets.wrapped(surface, fonts["small"], text, text_color, (x, y + 62), width)
+        y += 62
+        for text, text_color in rest:     # the description, and for a weapon which class it is for
+            y = widgets.wrapped(surface, fonts["small"], text, text_color, (x, y), width) + 4
         if self.on_equipment():
             action = t("inv_action_unequip")
         else:

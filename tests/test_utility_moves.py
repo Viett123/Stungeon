@@ -201,5 +201,34 @@ def test_the_fight_screen_says_what_a_utility_move_does(move_id):
     os.environ.setdefault("SDL_AUDIODRIVER", "dummy")
     from combat.combat_scene import utility_lines
     from core.strings import t
+    from ui import move_info
     lines = utility_lines({"id": move_id, "name": "Some Move"})
-    assert [text for text, _ in lines] == [t("utility_used", move="Some Move"), t(effects.UTILITY_HINTS[move_id])]
+    assert [text for text, _ in lines] == [t("utility_used", move="Some Move"), move_info.effect_text(move_id)]
+
+
+def test_the_move_texts_use_the_numbers_from_combat_json():
+    from ui import move_info
+    assert move_info.effect_text("war_cry") == f"Your next attack deals +{round(UTILITY['war_cry_bonus'] * 100)}% damage."
+    assert f"{UTILITY['evasion_attacks']} attacks" in move_info.effect_text("evasion")
+    assert move_info.effect_text("slash") is None
+
+
+@pytest.mark.parametrize("move_id", ["war_cry", "reveal", "evasion", "shield_bash", "poison_arrow"])
+def test_the_hotbar_tooltip_says_what_the_move_does(move_id):
+    from ui import move_info
+    move = next(m for m in json.loads((ROOT / "data" / "moves.json").read_text(encoding="utf-8"))["moves"] if m["id"] == move_id)
+    tier = json.loads((ROOT / "data" / "moves.json").read_text(encoding="utf-8"))["tiers"][move["tier"]]
+    texts = [text for text, _ in move_info.move_lines({**tier, **move}, "Rage")]
+    assert move_info.effect_text(move_id) in texts
+
+
+@pytest.mark.parametrize("move_id", ["war_cry", "reveal"])
+def test_war_cry_and_reveal_have_icons_that_fill_the_slot(move_id):
+    import os
+    os.environ.setdefault("SDL_VIDEODRIVER", "dummy")
+    import pygame
+    pygame.display.init()
+    pygame.display.set_mode((1, 1))
+    from ui import slots
+    icon = slots._load_icon(f"icon_{move_id}")
+    assert icon is not None and icon.get_size() == (slots.ICON, slots.ICON)

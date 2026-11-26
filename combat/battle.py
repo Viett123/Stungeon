@@ -40,6 +40,8 @@ class Battle:
         self.war_cry = False
         self.reveal = False
         self.evasion_attacks = 0
+        self.stunned = False   # Shield Bash: the enemy loses its next turn (effects.after_hit)
+        self.poison_turns = 0  # Poison Arrow: enemy turns the poison still hurts (effects.poison_tick)
         self.last_crit = False # set by effects.change_player_damage: was the last hit a critical hit?
 
     # --- state -------------------------------------------------------------
@@ -135,6 +137,8 @@ class Battle:
         result["damage"] = self.enemy.take_damage(amount)
         # Only a hit that does damage can be critical (a fast WRONG answer is not a crit).
         result["crit"] = bool(result["damage"]) and self.last_crit
+        # "stun", "poison" or None: what the move's effect did (Shield Bash, Poison Arrow).
+        result["effect"] = effects.after_hit(self.move, result["damage"], self) if self.enemy.alive else None
         self.move = None
         self.question = None
         return result
@@ -143,16 +147,20 @@ class Battle:
     def enemy_turn(self) -> dict:
         """Returns {"damage": hp the player lost, "taunt": a strings key or None,
         "taunt_values": what fills the taunt's {placeholders} (e.g. {"topic": "articles"}),
-        "skipped": True if the enemy lost its turn (see effects.enemy_loses_turn)}."""
+        "skipped": True if the enemy lost its turn (see effects.enemy_loses_turn),
+        "poison": HP the poison took from the enemy first (0 if none; it can kill the enemy)}."""
+        poison = effects.poison_tick(self)
+        if poison and self.won:               # the poison killed it: no attack, no taunt
+            return {"damage": 0, "skipped": True, "poison": poison, "taunt": None, "taunt_values": {}}
         if effects.enemy_loses_turn(self):
             self.missed = False
-            return {"damage": 0, "skipped": True, **self._adapt()}
+            return {"damage": 0, "skipped": True, "poison": poison, **self._adapt()}
         amount = damage.enemy_damage(self.enemy, self.player)
         amount = effects.change_enemy_damage(amount, self)
         lost = self.player.take_damage(amount)
         self.missed = False
         effects.end_of_round(self)
-        return {"damage": lost, "skipped": False, **self._adapt()}
+        return {"damage": lost, "skipped": False, "poison": poison, **self._adapt()}
 
     def _adapt(self) -> dict:
         """Let ai/habits.py change the enemy. {"taunt": key or None, "taunt_values": {...}}."""

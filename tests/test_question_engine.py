@@ -10,7 +10,7 @@ GRAMMAR_FREE = {"vocabulary", "articles", "plurals"}
 
 
 def test_bank_loads():
-    assert len(engine.questions) == 1082
+    assert len(engine.questions) == 1385
 
 
 def test_floor_1_only_uses_einheit_1():

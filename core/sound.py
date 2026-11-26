@@ -18,6 +18,11 @@ import logging
 
 import pygame
 
+try:
+    import pygame.mixer          # in the browser (pygbag) the mixer is only there if imported by name
+except ImportError:
+    logging.exception("No sound: pygame.mixer is missing")
+
 from core import settings
 from systems.player import load_data
 
@@ -28,13 +33,22 @@ _cache = {}                                  # name -> Sound or None, so each fi
 _state = {"ready": False, "muted": False, "music": None}
 
 
+def pre_init():
+    """Ask for a small sound buffer (512), so effects play right when they happen, not a moment
+    later. Call once, before pygame.init(). Does nothing if there is no mixer."""
+    try:
+        pygame.mixer.pre_init(44100, -16, 2, 512)
+    except (AttributeError, pygame.error):
+        logging.exception("No sound: the mixer could not be set up")
+
+
 def init():
     """Start the sound system. Call once, after pygame.init(). Returns True if sound works."""
     try:
         if not pygame.mixer.get_init():
             pygame.mixer.init()
         _state["ready"] = True
-    except pygame.error:
+    except (AttributeError, pygame.error):
         logging.exception("No sound: the mixer could not start")
         _state["ready"] = False
     return _state["ready"]
@@ -57,10 +71,17 @@ def play(name):
         effect.play()
 
 
+def sound_path(stem):
+    """assets/sounds/<stem>.ogg if it exists, else <stem>.wav. The game ships WAV files; the web
+    build (tools/build_web.py) turns them into OGG, because browsers can't play every WAV."""
+    ogg = SOUND_DIR / f"{stem}.ogg"
+    return ogg if ogg.exists() else SOUND_DIR / f"{stem}.wav"
+
+
 def _load(name):
     if name not in _cache:
         _cache[name] = None
-        path = SOUND_DIR / f"{name}.wav"
+        path = sound_path(name)
         if path.exists():
             try:
                 _cache[name] = pygame.mixer.Sound(str(path))
@@ -82,7 +103,7 @@ def play_music(name):
     _state["music"] = name
     if not _state["ready"]:
         return
-    path = SOUND_DIR / f"music_{name}.wav"
+    path = sound_path(f"music_{name}")
     try:
         if name == "off" or not path.exists():
             pygame.mixer.music.fadeout(400)

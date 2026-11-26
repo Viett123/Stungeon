@@ -66,6 +66,7 @@ def test_the_enemy_losing_its_turn_is_said_clearly(fight, monkeypatch):
 
 def test_an_attack_that_does_no_damage_keeps_its_own_message(fight, monkeypatch):
     monkeypatch.setattr(effects, "change_enemy_damage", lambda amount, battle: 0)
+    monkeypatch.setattr(effects, "after_hit", lambda *args: None)     # the skill move is Shield Bash: no stun here
     answer(fight, 0.5)
     fight.next_step()
     assert texts(fight)[0] == t("enemy_misses", enemy=fight.enemy_name)

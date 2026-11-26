@@ -8,3 +8,4 @@ saves/
 .idea/
 dist/
 build_tmp/
+/build/

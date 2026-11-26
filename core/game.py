@@ -1,4 +1,5 @@
 """The game loop: read input, update, draw, 60 times a second."""
+import asyncio
 import logging
 
 import pygame
@@ -25,8 +26,7 @@ def load_font(name):
 
 class Game:
     def __init__(self, fullscreen=False):
-        # A small sound buffer (512) makes effects play right when they happen, not a moment later.
-        pygame.mixer.pre_init(44100, -16, 2, 512)
+        sound.pre_init()          # must come before pygame.init()
         pygame.init()
         sound.init()
         self.sound_notice = 0.0   # seconds left to show "Sound on/off" after F2
@@ -66,33 +66,45 @@ class Game:
     def quit(self):
         self.running = False
 
+    def frame(self):
+        """One frame: read input, update, draw. run() and run_async() both repeat it."""
+        dt = self.clock.tick(settings.FPS) / 1000   # seconds since the last frame
+        try:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.quit()
+                elif event.type == pygame.KEYDOWN and event.key == pygame.K_F2:
+                    sound.toggle_mute()   # works on every screen, so it is handled here
+                    self.sound_notice = SOUND_NOTICE_SECONDS
+                else:
+                    self.scenes.current.handle_event(event)
+            self.scenes.current.update(dt)
+            sound.follow(self.scenes.current)   # the top screen picks the music
+            self.screen.fill(settings.COLOR_BG)
+            self.scenes.current.draw(self.screen)
+            self.draw_sound_notice(dt)
+        except Exception:
+            # Exhibit rule: never crash. Save the error and go back to the title screen.
+            logging.exception("Unhandled error in %s", type(self.scenes.current).__name__)
+            self.go_to_title(t("error_returned"))
+        pygame.display.flip()
+
     def run(self, max_frames=0):
+        """The desktop loop."""
         frames = 0
         while self.running:
-            dt = self.clock.tick(settings.FPS) / 1000   # seconds since the last frame
-            try:
-                for event in pygame.event.get():
-                    if event.type == pygame.QUIT:
-                        self.quit()
-                    elif event.type == pygame.KEYDOWN and event.key == pygame.K_F2:
-                        sound.toggle_mute()   # works on every screen, so it is handled here
-                        self.sound_notice = SOUND_NOTICE_SECONDS
-                    else:
-                        self.scenes.current.handle_event(event)
-                self.scenes.current.update(dt)
-                sound.follow(self.scenes.current)   # the top screen picks the music
-                self.screen.fill(settings.COLOR_BG)
-                self.scenes.current.draw(self.screen)
-                self.draw_sound_notice(dt)
-            except Exception:
-                # Exhibit rule: never crash. Save the error and go back to the title screen.
-                logging.exception("Unhandled error in %s", type(self.scenes.current).__name__)
-                self.go_to_title(t("error_returned"))
-            pygame.display.flip()
-
+            self.frame()
             frames += 1
             if max_frames and frames >= max_frames:
                 self.quit()
+        pygame.quit()
+
+    async def run_async(self):
+        """The web loop (pygbag). A browser page must get control back after every frame, or the
+        page freezes: `await asyncio.sleep(0)` gives it back. Otherwise the same as run()."""
+        while self.running:
+            self.frame()
+            await asyncio.sleep(0)
         pygame.quit()
 
 
