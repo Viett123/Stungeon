@@ -75,16 +75,15 @@ def speech_bubble(font, string, max_width):
     return bubble
 
 
-_dim_cover = None   # made once, the first time dim() is used
+DIM_KEEP = 85   # dim() keeps 85/255 (one third) of every colour
 
 
 def dim(surface):
-    """Darken everything drawn so far, so a menu on top of the game is easy to read."""
-    global _dim_cover
-    if _dim_cover is None or _dim_cover.get_size() != surface.get_size():
-        _dim_cover = pygame.Surface(surface.get_size(), pygame.SRCALPHA)
-        _dim_cover.fill((0, 0, 0, 170))
-    surface.blit(_dim_cover, (0, 0))
+    """Darken everything drawn so far, so a menu on top of the game is easy to read.
+
+    It multiplies every colour by DIM_KEEP/255. That looks the same as laying a black
+    see-through sheet on top, but it is much faster, because nothing has to be blended."""
+    surface.fill((DIM_KEEP, DIM_KEEP, DIM_KEEP), special_flags=pygame.BLEND_RGB_MULT)
 
 
 def bar(surface, rect, value, maximum, color, back, label="", font=None, trail=None):

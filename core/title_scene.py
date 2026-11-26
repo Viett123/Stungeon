@@ -116,6 +116,13 @@ class TitleScene(MenuScene):
         self.glow = _glow((self.logo.get_width() + 200, self.logo.get_height() + 60))
         self.button_frame = pygame.Rect(0, 0, BUTTON_W + 60, len(options) * (BUTTON_H + GAP) + 40)
         self.button_frame.midtop = (settings.SCREEN_W // 2, MENU_TOP - 25)
+        # The three-part frame is drawn once into its own picture, not three times every frame.
+        self.frame_image = pygame.Surface(self.button_frame.size, pygame.SRCALPHA)
+        draw_mixed_frame(self.frame_image, self.frame_image.get_rect())
+        # Speed (it matters in the web version): RLEACCEL lets pygame jump over the see-through
+        # parts of a picture instead of blending every pixel. These three never change.
+        for image in (self.logo, self.glow, self.frame_image):
+            image.set_alpha(255, pygame.RLEACCEL)
         classes = load_data("classes.json")["classes"]
         self.heroes = []
         for class_id, x, facing_left in HERO_SPOTS:
@@ -160,12 +167,12 @@ class TitleScene(MenuScene):
     def draw_menu(self, surface):
         fonts = self.game.fonts
         cx = settings.SCREEN_W // 2
-        self.glow.set_alpha(150 + round(80 * anim.pulse(0.4)))     # the light flickers slowly
+        self.glow.set_alpha(150 + round(80 * anim.pulse(0.4)), pygame.RLEACCEL)   # the light flickers slowly
         surface.blit(self.glow, self.glow.get_rect(center=(cx, self.logo_rect.centery + 10)))
         surface.blit(self.logo, self.logo_rect)
         widgets.text(surface, fonts["normal"], t("subtitle"), theme.OUTLINE, (cx + 2, self.subtitle_y + 2), "center")
         widgets.text(surface, fonts["normal"], t("subtitle"), theme.TEXT, (cx, self.subtitle_y), "center")
-        draw_mixed_frame(surface, self.button_frame)
+        surface.blit(self.frame_image, self.button_frame)
         mouse = pygame.mouse.get_pos()
         for i, button in enumerate(self.buttons):
             button.draw(surface, fonts["normal"], mouse, selected=(i == self.selected))
