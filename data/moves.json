@@ -1,5 +1,5 @@
 {
-  "_note": "PLACEHOLDER numbers written by Claude so the game can run. Owner D: replace them and delete this line. Move names, tiers, damage and unlock levels come from docs/HANDOFF.md. cost and gain are placeholders. cost = resource spent (also when the answer is wrong); gain = resource earned on use. What a utility move does is decided in combat/effects.py.",
+  "_note": "PLACEHOLDER numbers written by Claude so the game can run. Owner D: replace them and delete this line. Move names, tiers, damage and unlock levels come from docs/HANDOFF.md. cost and gain are placeholders. cost = resource spent (also when the answer is wrong); gain = resource earned on use. What a utility move does is decided in combat/effects.py. effect (optional): \"stun\" or \"poison\", what the move adds when it hits; the numbers are move_effects in combat.json.",
   "tiers": {
     "basic":    {"difficulty": "easy",   "damage": 10, "questions": 1, "unlock_level": 1, "cost": 0,  "gain": 15},
     "skill":    {"difficulty": "medium", "damage": 25, "questions": 1, "unlock_level": 1, "cost": 15, "gain": 0},
@@ -11,7 +11,7 @@
   "moves": [
 
     {"id": "slash",            "name": "Slash",            "class": "warrior", "tier": "basic",    "damage": 16, "cost": 0,  "gain": 12, "unlock_level": 1},
-    {"id": "shield_bash",      "name": "Shield Bash",      "class": "warrior", "tier": "skill",    "damage": 28, "cost": 15, "gain": 0,  "unlock_level": 1},
+    {"id": "shield_bash",      "name": "Shield Bash",      "class": "warrior", "tier": "skill",    "damage": 28, "cost": 15, "gain": 0,  "unlock_level": 1, "effect": "stun"},
     {"id": "berserker_cleave", "name": "Berserker Cleave", "class": "warrior", "tier": "power",    "damage": 44, "cost": 30, "gain": 0,  "unlock_level": 3},
     {"id": "titans_wrath",     "name": "Titan's Wrath",    "class": "warrior", "tier": "ultimate", "damage": 70, "cost": 45, "gain": 0,  "unlock_level": 5},
     {"id": "war_cry",          "name": "War Cry",          "class": "warrior", "tier": "utility",  "damage": 0,  "cost": 12, "gain": 0,  "unlock_level": 2},
@@ -24,7 +24,7 @@
 
     {"id": "quick_shot",       "name": "Quick Shot",       "class": "archer",  "tier": "basic",    "damage": 17, "cost": 0,  "gain": 10, "unlock_level": 1},
     {"id": "piercing_arrow",   "name": "Piercing Arrow",   "class": "archer",  "tier": "skill",    "damage": 26, "cost": 14, "gain": 0,  "unlock_level": 1},
-    {"id": "poison_arrow",     "name": "Poison Arrow",     "class": "archer",  "tier": "power",    "damage": 42, "cost": 28, "gain": 0,  "unlock_level": 3},
+    {"id": "poison_arrow",     "name": "Poison Arrow",     "class": "archer",  "tier": "power",    "damage": 42, "cost": 28, "gain": 0,  "unlock_level": 3, "effect": "poison"},
     {"id": "arrow_rain",       "name": "Arrow Rain",       "class": "archer",  "tier": "ultimate", "damage": 68, "cost": 45, "gain": 0,  "unlock_level": 5},
     {"id": "evasion",          "name": "Evasion",          "class": "archer",  "tier": "utility",  "damage": 0,  "cost": 12, "gain": 0,  "unlock_level": 2}
 

@@ -219,8 +219,10 @@ class ShopScene(Scene):
         if not self.entries:
             return
         item, _ = self.entries[self.selected]
-        (name, name_color), (kind, kind_color), (text, text_color) = item_lines(item)
+        (name, name_color), (kind, kind_color), *rest = item_lines(item, self.game.run_state.player)
         widgets.text(surface, fonts["normal"], name, name_color, (self.side_x, self.inside.y + 74))
         widgets.text(surface, fonts["small"], kind, kind_color, (self.side_x, self.inside.y + 104))
-        widgets.wrapped(surface, fonts["small"], text, text_color, (self.side_x, self.inside.y + 138),
-                        self.inside.right - self.side_x)
+        y = self.inside.y + 138
+        for text, text_color in rest:     # the description, and for a weapon which class it is for
+            y = widgets.wrapped(surface, fonts["small"], text, text_color, (self.side_x, y),
+                                self.inside.right - self.side_x) + 4

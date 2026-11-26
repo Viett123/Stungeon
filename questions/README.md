@@ -10,7 +10,7 @@ Each level of a dungeon has its own file here, listed in `data/dungeons.json`:
 |---|---|---|
 | A1 | `questions_german_a1.json` | 3,943 questions (see "The A1 bank" below) |
 | A2 | `questions_german_a2.json` | Empty, to be filled |
-| B1 | `questions_german_b1.json` | 1,082 questions (below) |
+| B1 | `questions_german_b1.json` | 1,385 questions (below) |
 
 A new bank uses the same question format as B1, with `"level"` set to its own level. A level stays locked in the menu until its file has questions (`systems/dungeons.is_playable`). A test checks that every question's `subject` and `level` match the file it is in.
 
@@ -23,6 +23,7 @@ A new bank uses the same question format as B1, with `"level"` set to its own le
 | `questions_german_a1.json`, `questions_german_a1_review.csv` | The same two files for A1 |
 | `build/vocab.py` | All vocabulary: article, plural, English, Vietnamese, source |
 | `build/grammar.py` | Handwritten grammar questions for each Einheit |
+| `build/grammar_more_e1.py`, `_e2.py`, `_e3.py` | More B1 grammar questions (26 Nov 2026), added after `grammar.py`'s list so the older ids stay the same |
 | `build/vocab_a1.py`, `build/grammar_a1.py` | The same two files for A1 |
 | `build/build.py` | Generates the JSON and CSV of each level: `python build.py` (all) or `python build.py a1` |
 | `build/extract_a1_pdf.py` | One-off helper that read the A1 Vokabeln PDFs (needs `pip install pymupdf`) |
@@ -31,13 +32,13 @@ To change or add questions, edit the vocab or grammar file of the level, then ru
 
 ## What's inside the B1 bank
 
-1,082 questions in total.
+1,385 questions in total: 1,010 vocabulary, article and plural questions, and 375 grammar questions.
 
 | | Einheit 1 | Einheit 2 | Einheit 3 |
 |---|---|---|---|
 | Theme | Bildung (er)leben | Vorhang auf! | Miteinander – füreinander! |
 | Vocabulary entries | 59 | 104 | 72 |
-| Questions | 273 | 472 | 337 |
+| Questions | 380 | 581 | 424 |
 
 **Topics:**
 - `vocabulary`: German→English (easy), English→German multiple choice (medium), English→German typed (hard)
@@ -47,6 +48,8 @@ To change or add questions, edit the vocab or grammar file of the level, then ru
   - E1: `konjunktiv2_modalverben`, `irgend_woerter`, `ziemlich_sehr_besonders`, `um_zu`, `nomen_verb`, `abkuerzungen`
   - E2: `infinitiv_mit_zu`, `nebensatz_waehrend`, `verben_mit_praepositionen`, `passiv_praesens`, `wechselpraepositionen`, `nicht_sondern`
   - E3: `konjunktiv2_praesens`, `deshalb_darum_deswegen`, `komposita_artikel`, `passiv_praeteritum`, `diskussion_redemittel`
+
+**How many grammar questions, and why (26 Nov 2026):** every grammar topic has at least 8 easy, 8 medium and 6 hard questions (it was 0 to 3 before). `tools/simulate_players.py` counted how often a run asks each topic at each difficulty: a run asks about 115 questions (82 to 142), and one topic at one difficulty came up at most 13 times, in most runs fewer than 8. The engine also asks every question of a topic once before it repeats one (`QuestionEngine.asked`), so with 8 questions a topic repeats only in the rare long runs, and never twice in a row. A test keeps these minimums (`tests/test_engine_no_repeats.py`).
 
 Each topic is a mastery category for knowledge tracing, and a natural home for a themed enemy. For example, an Article Goblin uses `articles` and a Conjunctive Wraith uses the Konjunktiv II topics.
 
@@ -109,7 +112,7 @@ Still to do:
 1. **Shuffle the answer order** every time a question is shown. Correct answers are always listed first in the file.
 2. **Checking typed answers:** trim spaces and ignore upper/lower case. Count both the `answer` and anything in `accept` as correct. Optional: accept "ss" for "ß" and "ae/oe/ue" for "ä/ö/ü", since many keyboards lack umlauts.
 3. **Blind debuff:** turns multiple choice into typed. Use the question's `word` as the typed answer for vocabulary questions, and for grammar questions use the correct choice.
-4. **Mixing grammar and vocabulary:** grammar has far fewer questions (72 vs about 1,000). Pick a topic first, weighted by low mastery, and then a question within it. Otherwise grammar will almost never appear.
+4. **Mixing grammar and vocabulary:** grammar has far fewer questions (375 vs about 1,000). Pick a topic first, weighted by low mastery, and then a question within it. Otherwise grammar will almost never appear.
 5. **Bosses and cumulative floors:** floor n draws from Einheiten 1 to n. A boss draws mostly from the player's weakest topics.
 
 ## Notes on the materials
@@ -136,5 +139,5 @@ Still to do:
 | der Autokorso | parade | celebratory car parade |
 
 - **No plural questions** for words that are uncountable or rarely plural: Lust, Publikum, Lampenfieber, Pampa, Öffentlichkeit, Jugend, Zukunft, Glück, Abitur, Verhalten, Naturschutz, Naturschutzbund, Umwelt, Schutz.
-- **Please have a German speaker check** the `meaning_vi` translations and a sample of the questions using the review CSV before the demo.
+- **Please have a German speaker check** the 303 new grammar questions (ids with a number above the old ones in the review CSV, from `grammar_more_e*.py`), the `meaning_vi` translations and a sample of the questions using the review CSV before the demo.
 - **Copyright:** the questions use the textbook's vocabulary and grammar topics but are written for the game, not copied from the exercises. Keep it that way if the game is shared publicly.

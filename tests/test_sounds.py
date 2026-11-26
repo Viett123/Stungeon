@@ -137,6 +137,13 @@ def test_without_a_sound_card_nothing_happens(monkeypatch):
     assert sound.current_music() == "dungeon"   # remembered, so nothing restarts later
 
 
+def test_no_mixer_at_all_is_just_silence(monkeypatch):
+    # In a browser build pygame may have no mixer module; starting sound must not crash.
+    monkeypatch.delattr(pygame, "mixer")
+    sound.pre_init()
+    assert sound.init() is False
+
+
 def test_screens_choose_the_music(mixer):
     class Screen:
         music = None

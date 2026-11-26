@@ -34,9 +34,10 @@ def _load_icon(name):
     """Load the icon as big as possible while it still fits in a slot.
 
     Most art is 16x16 and fits at 3 times its size. Tall art (a sword is 10x21) does
-    not, so it is tried at 2 times and then at its real size.
+    not, so it is tried at 2 times and then at its real size. Tiny 8x8 art (the Reveal and
+    War Cry icons) is first tried at 6 times, so it fills the slot too.
     """
-    for factor in (3, 2, 1):
+    for factor in (6, 3, 2, 1):
         image = assets.load_sprite(name, factor)
         if image is None:
             return None

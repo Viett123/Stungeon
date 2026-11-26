@@ -216,3 +216,67 @@ def test_a_real_fight_shows_the_weak_spot_taunt_with_the_topic_name():
     assert scene.taunt_bubble is not None                     # the bubble over the enemy
     assert "I smell your weakness: Plurals!" in shown
     assert any("Article Goblin smells your weakness: Plurals!" in text for text in shown)
+
+
+# --- speed rule (rule 3) ------------------------------------------------------------------
+class HpEnemy(FakeEnemy):
+    def __init__(self):
+        super().__init__()
+        self.hp = self.max_hp = 40
+
+
+def answer_fast(habits, n, ratio=0.1, correct=True):
+    for _ in range(n):
+        habits.record_move("slash" if _ % 2 else "bash", 1, ratio, correct, topic="articles")
+        habits.adapt(HpEnemy())          # each answer its own turn, with mixed moves: no spam rule
+
+
+def test_five_fast_right_answers_make_the_next_enemy_tougher():
+    habits = HabitTracker()
+    answer_fast(habits, 5)
+    goblin = HpEnemy()
+    assert habits.adapt(goblin) == "taunt_fast"
+    assert goblin.max_hp == 50 and goblin.hp == 50       # 40 x 1.25
+    assert habits.adapt(goblin) is None                  # only once per enemy
+
+
+def test_slow_answers_or_a_wrong_one_do_not_count_as_fast():
+    slow = HabitTracker()
+    answer_fast(slow, 5, ratio=0.5)
+    assert not slow.answers_fast()
+    mistake = HabitTracker()
+    answer_fast(mistake, 4)
+    mistake.record_move("slash", 1, 0.1, False, topic="articles")
+    assert not mistake.answers_fast()
+
+
+def test_a_hurt_enemy_keeps_its_share_of_hp():
+    habits = HabitTracker()
+    answer_fast(habits, 5)
+    goblin = HpEnemy()
+    goblin.hp = 20
+    habits.adapt(goblin)
+    assert (goblin.hp, goblin.max_hp) == (25, 50)
+
+
+# --- saving -------------------------------------------------------------------------------
+def test_the_habits_are_saved_and_loaded_with_the_run():
+    from core import run as run_module
+    game_run = run_module.new_run("warrior", seed=3)
+    for _ in range(2):
+        game_run.habits.record_move("slash", "basic", 0.5, True, topic="articles")
+        game_run.habits.adapt(HpEnemy())
+    loaded = run_module.run_from_dict(run_module.run_to_dict(game_run))
+    assert loaded.habits.history == game_run.habits.history
+    assert loaded.habits.turns == ["slash", "slash"]
+    assert loaded.habits.tracker is loaded.tracker            # the weak-spot rule still works
+    game_run.habits.record_move("slash", "basic", 0.5, True)
+    loaded.habits.record_move("slash", "basic", 0.5, True)
+    assert loaded.habits.adapt(HpEnemy()) == game_run.habits.adapt(HpEnemy()) == "taunt_spam"
+
+
+def test_a_save_without_habits_still_loads():
+    from core import run as run_module
+    data = run_module.run_to_dict(run_module.new_run("mage", seed=3))
+    del data["habits"]
+    assert run_module.run_from_dict(data).habits.history == []

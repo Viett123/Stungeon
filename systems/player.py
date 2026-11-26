@@ -99,11 +99,25 @@ class Player:
         return [items[item_id] for item_id in self.equipped.values() if item_id in items]
 
     def damage_multiplier(self) -> float:
-        """Product of every equipped item's damage_multiplier (1.0 if it has none)."""
+        """Product of every equipped item's damage_multiplier (1.0 if it has none).
+        A weapon of another class counts for less (item_damage_multiplier)."""
         result = 1.0
         for item in self._equipped_items():
-            result *= item.get("damage_multiplier", 1.0)
+            result *= self.item_damage_multiplier(item)
         return result
+
+    def off_class(self, item) -> bool:
+        """True for a weapon made for another class (its "class" in items.json is not ours)."""
+        return item.get("slot") == "weapon" and item.get("class", self.class_id) != self.class_id
+
+    def item_damage_multiplier(self, item) -> float:
+        """What this one item does to our damage. A weapon of another class still helps, but its
+        bonus is multiplied by off_class_damage in data/items.json, so a mage with a mace hits
+        weaker than with a staff of the same rarity."""
+        multiplier = item.get("damage_multiplier", 1.0)
+        if self.off_class(item):
+            multiplier *= load_data("items.json")["off_class_damage"]
+        return multiplier
 
     def defense(self) -> int:
         """Total damage removed from every enemy hit by the equipped items."""

@@ -69,7 +69,7 @@ def run_to_dict(run) -> dict:
         "mastery": run.tracker.to_dict(),
         "stats": dict(run.engine.stats),
         "modifiers": dict(run.modifiers),
-        # TODO(C): the HabitTracker is not saved yet. Add to_dict/from_dict to it if it should be.
+        "habits": run.habits.to_dict(),    # how the player fights, so enemies still remember it
     }
 
 
@@ -85,6 +85,8 @@ def run_from_dict(data) -> Run:
     run = _make_run(player, data["seed"], KnowledgeTracker.from_dict(data["mastery"]), data["floor_number"],
                     subject=data["subject"], level=data["level"])
     run.modifiers = dict(data["modifiers"])
+    # Saves made before the habits were saved have no "habits": they start with a fresh tracker.
+    run.habits = HabitTracker.from_dict(data.get("habits", {}), run.tracker)
     for topic, counts in data["stats"].items():
         run.engine.stats[topic] = dict(counts)
     return run

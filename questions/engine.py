@@ -7,7 +7,7 @@ then a question inside that topic.
 """
 import json
 import random
-from collections import defaultdict
+from collections import Counter, defaultdict
 from pathlib import Path
 
 from systems.player import load_data
@@ -43,6 +43,7 @@ class QuestionEngine:
         self.tracker = tracker            # a KnowledgeTracker (ai/mastery.py), or None
         self.stats = defaultdict(lambda: {"asked": 0, "correct": 0})   # topic -> counts, for the end screen
         self.streak = 0                   # right answers in a row; a wrong answer sets it back to 0
+        self.asked = Counter()            # question id -> how often it was asked this run (no repeats)
 
     def last_einheit(self, floor) -> int:
         """The highest Einheit asked on this floor (the bank's "floor_einheiten", or the floor number)."""
@@ -98,7 +99,12 @@ class QuestionEngine:
         for topic in topics:
             weights.append(1.0 - score(topic) + REVIEW_WEIGHT)
         topic = self.rng.choices(topics, weights=weights)[0]
-        return self.rng.choice(by_topic[topic])
+        # Inside the topic, only the questions asked the fewest times: every question is asked
+        # once before any comes back (play-test, 26 Nov 2026: the same question kept repeating).
+        fewest = min(self.asked[question_key(q)] for q in by_topic[topic])
+        question = self.rng.choice([q for q in by_topic[topic] if self.asked[question_key(q)] == fewest])
+        self.asked[question_key(question)] += 1
+        return question
 
     # --- checking ----------------------------------------------------------
     def check_answer(self, question, given) -> bool:
@@ -129,6 +135,11 @@ class QuestionEngine:
         if question["topic"] == "vocabulary" and "word" in question:
             typed["answer"] = question["word"]
         return typed
+
+
+def question_key(question):
+    """What tells questions apart: the id (every bank question has one), else the text."""
+    return question.get("id") or question.get("question")
 
 
 def answer_text(question) -> str:

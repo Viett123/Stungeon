@@ -7,7 +7,8 @@ time and answer data of the current move (battle.time_limit, battle.time_used, b
 Rules that are written: critical hits and streaks (change_player_damage), the three utility
 moves (War Cry, Reveal and Evasion, mission 6: use_utility, change_question, change_player_damage
 and change_enemy_damage), the enemy skipping its turn after a miss (enemy_loses_turn), and the
-item-turn rule (item_costs_turn).
+item-turn rule (item_costs_turn), and the move effects stun (Shield Bash) and poison
+(Poison Arrow): after_hit, enemy_loses_turn and poison_tick.
 Still placeholders: the other buffs and debuffs. The v1 plan (docs/HANDOFF.md) has
 3 buffs and 4 debuffs. Which ones is a design decision.
 """
@@ -159,9 +160,45 @@ def enemy_loses_turn(battle) -> bool:
     so one miss is less frustrating. No miss in this round means no skip.
     Uses battle.rng, never the random module, so a fixed seed always gives the same result.
     """
+    if getattr(battle, "stunned", False):   # Shield Bash stunned it (after_hit): always skips
+        battle.stunned = False
+        return True
     if not battle.missed:
         return False
     return battle.rng.random() < load_data("combat.json")["enemy_skip_chance"]
+
+
+def after_hit(move, damage, battle) -> str | None:
+    """Called after a move's last answer. A move with an "effect" in data/moves.json may add it,
+    but only when it really hit (damage > 0). Returns "stun", "poison" or None (what happened).
+
+    stun   (Shield Bash): with stun_chance, the enemy loses its next turn.
+    poison (Poison Arrow): the enemy loses poison_damage HP at the start of each of its next
+           poison_turns turns. Poisoning again starts the count again; it does not add up.
+    Numbers: move_effects in data/combat.json.
+    """
+    effect = move.get("effect")
+    if not effect or damage <= 0:
+        return None
+    numbers = load_data("combat.json")["move_effects"]
+    if effect == "stun":
+        if battle.rng.random() < numbers["stun_chance"]:
+            battle.stunned = True
+            return "stun"
+        return None
+    if effect == "poison":
+        battle.poison_turns = numbers["poison_turns"]
+        return "poison"
+    return None
+
+
+def poison_tick(battle) -> int:
+    """Called at the start of the enemy's turn, also a turn it loses. Returns the HP the
+    poison took (0 if it is not poisoned). The enemy can die from it."""
+    if getattr(battle, "poison_turns", 0) <= 0:
+        return 0
+    battle.poison_turns -= 1
+    return battle.enemy.take_damage(load_data("combat.json")["move_effects"]["poison_damage"])
 
 
 def change_enemy_damage(damage, battle) -> int:
@@ -180,5 +217,6 @@ def change_enemy_damage(damage, battle) -> int:
 
 
 def end_of_round(battle) -> None:
-    """Called once after the enemy's turn."""
-    # TODO(B): e.g. poison damage, count down how many rounds an effect has left.
+    """Called once after the enemy's turn. (Poison is not here: it hurts at the START of the
+    enemy's turn, see poison_tick, so it also hurts a stunned enemy and a poisoned enemy that
+    dies does not attack first.)"""
