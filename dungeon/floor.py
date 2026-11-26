@@ -8,7 +8,14 @@ L-shaped corridors, so every room is reachable. Every room has a KIND:
   treasure  a mini-boss guarding extra chests.
   trap      spikes on the floor (the middle row and column stay free, so there is a safe way through).
   den       a room crowded with monsters.
-  normal    everything else.
+  pillars   a hall with stone pillars to walk around (and monsters).
+  storeroom no monsters, but a chest.
+  merchant  a wandering merchant who sells things (no monsters, no chests). Not on every floor.
+  normal    a plain room with monsters.
+
+How often pillars, storerooms, merchants and normal rooms appear is in data/rooms.json.
+Monsters are spread out: every normal and pillar room gets one before any room gets a second,
+so the player does not walk through many empty rooms.
 
 Some rooms have their four corners cut off, so not every room is a plain rectangle.
 Same floor_number + seed + modifiers = the same floor every time.
@@ -17,6 +24,7 @@ import random
 from dataclasses import dataclass, field
 
 from systems.enemies import elite_rules, floor_spawns
+from systems.player import load_data
 
 FLOOR = 0
 WALL = 1
@@ -32,6 +40,7 @@ CUT_CORNER_CHANCE = 0.4     # share of rooms that get their corners cut off
 DEN_ENEMIES = 3             # monsters that are put into the den first
 TREASURE_CHESTS = 2         # extra chests in the treasure room
 SPECIAL_KINDS = ["treasure", "trap", "den"]   # handed out to the middle rooms, in this order
+KINDS = ["start", "boss", "treasure", "trap", "den", "pillars", "storeroom", "merchant", "normal"]
 
 
 @dataclass
@@ -50,9 +59,12 @@ class Floor:
     rooms: list = field(default_factory=list)     # [(x, y, w, h)]
     room_kinds: list = field(default_factory=list)   # one kind per room, same order as rooms
     traps: set = field(default_factory=set)       # {(x, y)} floor cells with spikes
+    merchant: tuple | None = None                 # (x, y) of the wandering merchant, or None on this floor
 
     def is_walkable(self, x, y):
-        return 0 <= x < self.width and 0 <= y < self.height and self.grid[y][x] != WALL
+        """True if a player or monster may stand here: inside the map, not a wall, not the merchant."""
+        inside = 0 <= x < self.width and 0 <= y < self.height and self.grid[y][x] != WALL
+        return inside and (x, y) != self.merchant
 
     def room_at(self, x, y):
         """The number of the room this cell is in, or None in a corridor."""
@@ -106,15 +118,37 @@ def _carve_corridor(grid, a, b, rng):
                 grid[y][x] = FLOOR
 
 
-def _room_kinds(count, rng):
-    """One kind per room: start, boss, and the special kinds spread over the middle rooms."""
+def _room_kinds(count, rng, rules):
+    """One kind per room: start, boss, the special kinds, then the extra kinds from data/rooms.json."""
     kinds = ["normal"] * count
     kinds[0], kinds[-1] = "start", "boss"
     middle = list(range(1, count - 1))
     rng.shuffle(middle)
     for index, kind in zip(middle, SPECIAL_KINDS):
         kinds[index] = kind
+    rest = middle[len(SPECIAL_KINDS):]               # the middle rooms that are still "normal"
+    if rest and rng.random() < rules["merchant_chance"]:
+        kinds[rest.pop()] = "merchant"
+    names, weights = list(rules["extra_kinds"]), list(rules["extra_kinds"].values())
+    for index in rest:
+        kinds[index] = rng.choices(names, weights)[0]   # a weighted pick: bigger weight = more likely
     return kinds
+
+
+def _carve_pillars(grid, room, min_size):
+    """Stone pillars on every second cell inside the room.
+
+    Each pillar is one wall cell with floor all around it, so a pillar can never cut the room
+    in two. The middle row and column stay free, because the corridors come in there.
+    """
+    x, y, w, h = room
+    if w < min_size or h < min_size:
+        return
+    center_x, center_y = _center(room)
+    for row in range(y + 1, y + h - 1, 2):
+        for col in range(x + 1, x + w - 1, 2):
+            if col != center_x and row != center_y:
+                grid[row][col] = WALL
 
 
 def _open_cells(grid, room):
@@ -142,11 +176,15 @@ def generate_floor(floor_number, seed, demo=False, modifiers=None) -> Floor:
     """modifiers: changes chosen between floors, e.g. {"elite_bonus": 0.2, "extra_chests": 2, "extra_enemies": 3}."""
     modifiers = modifiers or {}
     rng = random.Random(f"{seed}-{floor_number}")   # only use this rng, so floors repeat exactly
+    rules = load_data("rooms.json")
     grid = [[WALL] * WIDTH for _ in range(HEIGHT)]
     rooms = _place_rooms(rng)
-    kinds = _room_kinds(len(rooms), rng)
-    for room in rooms:
+    kinds = _room_kinds(len(rooms), rng, rules)
+    for room, kind in zip(rooms, kinds):
         _carve_room(grid, room, cut_corners=rng.random() < CUT_CORNER_CHANCE)
+        if kind == "pillars":
+            _carve_pillars(grid, room, rules["pillar_min_size"])
+    # Corridors are carved last, so a corridor always gets through (it removes a pillar in its way).
     for a, b in zip(rooms, rooms[1:]):
         _carve_corridor(grid, _center(a), _center(b), rng)
 
@@ -160,10 +198,14 @@ def generate_floor(floor_number, seed, demo=False, modifiers=None) -> Floor:
             traps |= _spikes(grid, room)
 
     # Free cells per room kind. Nothing is ever placed in the start room or on spikes.
-    cells = {kind: [] for kind in ["normal", "boss", "treasure", "trap", "den"]}
+    cells = {kind: [] for kind in KINDS}
+    room_cells = []                       # the free cells of each room, for spreading monsters out
     for room, kind in zip(rooms, kinds):
-        if kind != "start":
-            cells[kind] += [c for c in _open_cells(grid, room) if c not in traps]
+        free = [c for c in _open_cells(grid, room) if c not in traps] if kind != "start" else []
+        cells[kind] += free
+        room_cells.append(free)
+
+    merchant = _center(rooms[kinds.index("merchant")]) if "merchant" in kinds else None
 
     spawns = floor_spawns(floor_number)
     enemies = [{"id": spawns["boss"], "pos": stairs, "boss": True, "elite": False, "guard": True}]
@@ -175,8 +217,17 @@ def generate_floor(floor_number, seed, demo=False, modifiers=None) -> Floor:
 
     count = max(1, spawns["count"] // 2) if demo else spawns["count"] + modifiers.get("extra_enemies", 0)
     den_spots = _take(rng, cells["den"], min(DEN_ENEMIES, count))
-    anywhere = cells["normal"] + cells["boss"] + cells["trap"] + cells["den"]
-    spots = den_spots + _take(rng, anywhere, count - len(den_spots))
+    # Monsters may stand in these rooms. Storerooms and the merchant's room stay peaceful.
+    anywhere = cells["normal"] + cells["pillars"] + cells["boss"] + cells["trap"] + cells["den"]
+    spots = list(den_spots)
+    if rules["spread_enemies"]:
+        # One monster in every normal and pillar room first (as long as there are monsters left).
+        for room_free, kind in zip(room_cells, kinds):
+            if kind in ("normal", "pillars") and room_free and len(spots) < count:
+                pos = rng.choice(room_free)
+                spots.append(pos)
+                anywhere.remove(pos)
+    spots += _take(rng, anywhere, count - len(spots))
     elite_chance = elite_rules()["chance"] + modifiers.get("elite_bonus", 0)
     for pos in spots:
         enemies.append({"id": rng.choice(spawns["pool"]), "pos": pos, "boss": False,
@@ -186,7 +237,10 @@ def generate_floor(floor_number, seed, demo=False, modifiers=None) -> Floor:
     golden_spots = _take(rng, cells["treasure"], TREASURE_CHESTS if treasure_rooms else 0)
     anywhere = [c for c in anywhere if c not in spots]
     plain_spots = _take(rng, anywhere, spawns.get("chests", 0) + modifiers.get("extra_chests", 0))
+    for room_free, kind in zip(room_cells, kinds):
+        if kind == "storeroom":
+            plain_spots += _take(rng, room_free, rules["storeroom_chests"])
     chests = [{"pos": pos, "opened": False, "golden": True} for pos in golden_spots]
     chests += [{"pos": pos, "opened": False, "golden": False} for pos in plain_spots]
 
-    return Floor(floor_number, WIDTH, HEIGHT, grid, start, stairs, enemies, chests, rooms, kinds, traps)
+    return Floor(floor_number, WIDTH, HEIGHT, grid, start, stairs, enemies, chests, rooms, kinds, traps, merchant)

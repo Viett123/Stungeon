@@ -99,8 +99,7 @@ def test_hit_never_goes_below_the_minimum_from_data():
 def test_real_ultimate_uses_the_numbers_in_moves_json():
     player = Player("warrior", level=5)
     move = next(m for m in player.unlocked_moves() if m["tier"] == "ultimate")
-    tier = load_data("moves.json")["tiers"]["ultimate"]
-    expected = tier["damage"] * 3 + tier["bonus_damage"]
+    expected = move["damage"] * 3 + move["bonus_damage"]
     assert damage.player_damage(move, [True, True, True], player, None) == expected
 
 
@@ -112,6 +111,8 @@ def test_real_enemy_hits_for_its_damage_in_enemies_json():
 
 class RightEngine:
     """Asks one question and always marks the answer right."""
+
+    streak = 0      # the crit and streak rule reads engine.streak; 0 = no streak bonus
 
     def next_question(self, floor, difficulty, topic=None, weakest=False):
         return {"topic": "articles", "type": "multiple_choice", "difficulty": difficulty,
@@ -130,7 +131,8 @@ def test_a_real_fight_uses_the_formula():
     battle = Battle(player, enemy, RightEngine(), floor=1)
     slash = next(m for m in battle.moves() if m["id"] == "slash")
     battle.choose_move(slash["id"])
-    out = battle.answer("die", seconds=3)
+    # Answer slowly (half the time limit), so it is not a critical hit and the damage is the plain formula.
+    out = battle.answer("die", seconds=battle.time_limit * 0.5)
     assert out["damage"] == slash["damage"]
     assert enemy.hp == enemy.max_hp - slash["damage"]
     battle.enemy_turn()

@@ -34,7 +34,7 @@ In the order that matters most for the exhibit.
 | 13 | Scrolls (hint, skip) | D | Consumables work; `systems/item_effects.py` has two effects | New effect types and items |
 | 14 | Questions checked by a German speaker | C + team | `questions/data/questions_german_b1_review.csv` | The check itself, and `meaning_vi` |
 | 15 | Own look: font, repainted art | D | Drop-in PNG names in `assets/README.md`; themes per floor | A CC0 pixel font; our own repaints |
-| 16 | Sound | D | Nothing yet | Needs CC0 sound files first; then a small loader |
+| 16 | Sound | D | Done, basic: 19 effects and 4 music loops made in code (`tools/make_sounds.py`, recipes in `data/sounds.json`); F2 turns sound off | Better recipes or tunes, if the team wants |
 | 17 | Does an item cost your turn in a fight? | B | `effects.item_costs_turn()` (placeholder: yes) | The decision |
 | 18 | Elites, mini-bosses, traps, choices: real content | D | All in `data/` as placeholders: `enemies.json` (elite, miniboss), `choices.json`, `progression.json` (trap_damage) | Names, numbers, more choices |
 | 19 | Room kinds and their weights | A | `dungeon/floor.py`: start, boss, treasure, trap, den, normal; cut corners | Tuning, more kinds |
@@ -67,7 +67,7 @@ In the order that matters most for the exhibit.
 | 10 | Weapons as damage multipliers with effects and looks | Looks done, effects Now (D + B) | The equipped weapon is held and swung. See Now 8 |
 | 11 | Armour reduces damage or gives time; special skills on high tiers | Slots done, effects Now (D + B) | Head, body, legs, shoes, two accessories. See Now 8 |
 | 12 | Rarity tiers; loot from monsters, bosses and chests | Done | Common to Legendary. Mythical: Later. End-of-floor reward chest: Later |
-| 13 | Gold, shop between floors; selling; wandering traders | Buying done | Selling has its rule (`shop.sell`) but no screen yet: small, could be Now. Traders: Later |
+| 13 | Gold, shop between floors; selling; wandering traders | Done | Buying and selling (Tab). A wandering merchant appears in a room on about half the floors |
 | 14 | HP potions, buff potions, hint and skip scrolls, gamble scroll | Potions done | Potions can be used in a fight (I). Scrolls: Now 13. Buff potions need buffs (Now 9). Gamble scroll: Later |
 
 ### Buffs and debuffs
@@ -119,7 +119,7 @@ In the order that matters most for the exhibit.
 | # | Answer | Status | Notes |
 |---|---|---|---|
 | 34 | Pixel art | Done | Three CC0 packs, credited in assets/CREDITS.md. See Now 15 |
-| 35 | Music and sound | Now 16, if files are found | |
+| 35 | Music and sound | Done, basic | Made in code, see Now 16 |
 | 36 | English, German or Vietnamese UI | English done | All text is in `core/strings_en.json`, so another language is one more file. Later |
 | 37 | Name: Stungeon | Done | |
 
@@ -159,6 +159,15 @@ These were not in the 37 answers. They were added because dungeon crawlers usual
 | Name your hero | Done | Shown in the HUD; letters the font cannot draw become the nearest plain letter (Việt -> Viet) |
 | Choose a dungeon | Done | German is open; English, Math and History are placeholders shown as "In development" (`data/dungeons.json`) |
 | Welcome + choose a level | Done | German A1, A2, B1. Each level has its own bank in `questions/data/`. A1 and A2 are empty, so they show "Coming soon" and cannot be started |
-| A1 and A2 questions | Not started (C) | Fill `questions_german_a1.json` / `_a2.json`; the level opens by itself once its bank has questions |
+| A1 questions | Done | 3,943 questions from Das Leben A1, Einheiten 1–16: 883 words from the class lists and 153 grammar questions. Floor 1 asks Einheiten 1–5, floor 2 asks 1–10, floor 3 asks 1–16. See questions/README.md |
+| A2 questions | Not started (C) | Fill `questions_german_a2.json`; the level opens by itself once its bank has questions |
 | A look for every move | Done, basic | Each of the 15 moves has its own effect, made in code: arcs (warrior), orbs and a meteor rain (mage), streaks and an arrow rain (archer), a ring for utility moves. Change them in `data/skill_looks.json`; add a new kind in `combat/skill_looks.py`. Pictures only, no rules |
-| Sound, tutorial fight | Not started | Suggested for before the exhibit |
+| Sound and music | Done, basic | Made in code from `data/sounds.json`, no downloaded files. Effects for menus, moves, hits, answers, chests, traps, stairs, level ups; music for the title, the dungeon, fights and bosses. F2: sound on/off |
+| Tutorial fight | Not started | Suggested for before the exhibit |
+| Drawn title logo | Hook ready | Drop `assets/sprites/logo.png` in; it is scaled to fit. Without it the font logo stays |
+| More room kinds | Done, placeholder weights (A) | Pillar halls, storerooms, a wandering merchant; monsters spread so fewer rooms are empty. `data/rooms.json` |
+| Wandering merchant | Done | A shop in a room on about half the floors; stock in `data/shop.json` (wandering_stock) |
+| Selling in shops | Done | Tab: Buy / Sell. Worn equipment is not sold |
+| Throw items away | Done | Delete twice in the bag |
+| Streak display | Done | Bonus and boxes, in fights and on the map |
+| Music per floor look and boss room | Done | Stone, jungle, desert and a boss-room tune, made in code |

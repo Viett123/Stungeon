@@ -59,7 +59,7 @@ def test_every_level_of_every_dungeon_has_a_bank_file_with_matching_subject_and_
 
 def test_only_levels_with_questions_in_open_dungeons_can_be_played():
     assert dungeons.is_playable("german", "B1")
-    assert not dungeons.is_playable("german", "A1")        # empty for now
+    assert dungeons.is_playable("german", "A1")
     assert not dungeons.is_playable("german", "A2")        # empty for now
     assert not dungeons.is_playable("english", "A1")       # in development, no levels
     assert not dungeons.is_playable("klingon", "B1")       # not a dungeon at all
@@ -117,7 +117,9 @@ def test_the_longest_name_fits_in_the_hud_panel(game):
     player = new_run("warrior", name="W" * NAME_LENGTH).player
     width = hud.PLAYER_PANEL.width - 28                          # the inside of the panel's frame
     left, right = hud.name_line(game.fonts, player, width)
-    assert left.endswith("...")                                  # too long, so it was shortened
+    full = game.fonts["normal"].size(player.name)[0] + game.fonts["small"].size(right)[0]
+    if full > width:                                             # with a wide font the name is too long...
+        assert left.endswith("...")                              # ...so it was shortened
     assert game.fonts["normal"].size(left)[0] + game.fonts["small"].size(right)[0] <= width
     short = new_run("warrior", name="Mia").player
     assert hud.name_line(game.fonts, short, width)[0] == "Mia"   # short names are not touched
@@ -134,11 +136,11 @@ def test_new_game_goes_name_class_dungeon_level_then_floor_one(game):
     send(game, pygame.K_RETURN)                                  # German
     level_screen = game.scenes.current
     assert isinstance(level_screen, LevelSelectScene)
-    assert level_screen.levels[level_screen.selected] == "B1"    # the first playable level is picked
+    assert level_screen.levels[level_screen.selected] == "A1"    # the first playable level is picked
     send(game, pygame.K_RETURN)
     assert isinstance(game.scenes.current, DungeonScene)
     run = game.run_state
-    assert (run.player.name, run.player.class_id, run.subject, run.level) == ("Mia", "archer", "german", "B1")
+    assert (run.player.name, run.player.class_id, run.subject, run.level) == ("Mia", "archer", "german", "A1")
     assert save.has_save()
 
 
@@ -179,7 +181,7 @@ def test_an_empty_level_cannot_be_started(game):
     flow.class_chosen(game, "mage")
     flow.dungeon_chosen(game, "german")
     screen = game.scenes.current
-    send(game, pygame.K_1, pygame.K_RETURN)                      # A1 has no questions yet
+    send(game, pygame.K_2, pygame.K_RETURN)                      # A2 has no questions yet
     assert game.scenes.current is screen and screen.message
     assert game.run_state is None
 

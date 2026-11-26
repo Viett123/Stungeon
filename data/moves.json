@@ -9,22 +9,24 @@
                  "weakest_topics": true, "unlock_level": 5, "cost": 60, "gain": 0}
   },
   "moves": [
-    {"id": "slash",            "name": "Slash",            "class": "warrior", "tier": "basic"},
-    {"id": "shield_bash",      "name": "Shield Bash",      "class": "warrior", "tier": "skill"},
-    {"id": "berserker_cleave", "name": "Berserker Cleave", "class": "warrior", "tier": "power"},
-    {"id": "titans_wrath",     "name": "Titan's Wrath",    "class": "warrior", "tier": "ultimate"},
-    {"id": "war_cry",          "name": "War Cry",          "class": "warrior", "tier": "utility"},
 
-    {"id": "arcane_bolt",      "name": "Arcane Bolt",      "class": "mage",    "tier": "basic"},
-    {"id": "frost_lance",      "name": "Frost Lance",      "class": "mage",    "tier": "skill"},
-    {"id": "fireball",         "name": "Fireball",         "class": "mage",    "tier": "power"},
-    {"id": "meteor_storm",     "name": "Meteor Storm",     "class": "mage",    "tier": "ultimate"},
-    {"id": "reveal",           "name": "Reveal",           "class": "mage",    "tier": "utility"},
+    {"id": "slash",            "name": "Slash",            "class": "warrior", "tier": "basic",    "damage": 16, "cost": 0,  "gain": 12, "unlock_level": 1},
+    {"id": "shield_bash",      "name": "Shield Bash",      "class": "warrior", "tier": "skill",    "damage": 28, "cost": 15, "gain": 0,  "unlock_level": 1},
+    {"id": "berserker_cleave", "name": "Berserker Cleave", "class": "warrior", "tier": "power",    "damage": 44, "cost": 30, "gain": 0,  "unlock_level": 3},
+    {"id": "titans_wrath",     "name": "Titan's Wrath",    "class": "warrior", "tier": "ultimate", "damage": 70, "cost": 45, "gain": 0,  "unlock_level": 5},
+    {"id": "war_cry",          "name": "War Cry",          "class": "warrior", "tier": "utility",  "damage": 0,  "cost": 12, "gain": 0,  "unlock_level": 2},
 
-    {"id": "quick_shot",       "name": "Quick Shot",       "class": "archer",  "tier": "basic"},
-    {"id": "piercing_arrow",   "name": "Piercing Arrow",   "class": "archer",  "tier": "skill"},
-    {"id": "poison_arrow",     "name": "Poison Arrow",     "class": "archer",  "tier": "power"},
-    {"id": "arrow_rain",       "name": "Arrow Rain",       "class": "archer",  "tier": "ultimate"},
-    {"id": "evasion",          "name": "Evasion",          "class": "archer",  "tier": "utility"}
+    {"id": "arcane_bolt",      "name": "Arcane Bolt",      "class": "mage",    "tier": "basic",    "damage": 15, "cost": 0,  "gain": 15, "unlock_level": 1},
+    {"id": "frost_lance",      "name": "Frost Lance",      "class": "mage",    "tier": "skill",    "damage": 30, "cost": 18, "gain": 0,  "unlock_level": 1},
+    {"id": "fireball",         "name": "Fireball",         "class": "mage",    "tier": "power",    "damage": 48, "cost": 32, "gain": 0,  "unlock_level": 3},
+    {"id": "meteor_storm",     "name": "Meteor Storm",     "class": "mage",    "tier": "ultimate", "damage": 75, "cost": 50, "gain": 0,  "unlock_level": 5},
+    {"id": "reveal",           "name": "Reveal",           "class": "mage",    "tier": "utility",  "damage": 0,  "cost": 15, "gain": 0,  "unlock_level": 2},
+
+    {"id": "quick_shot",       "name": "Quick Shot",       "class": "archer",  "tier": "basic",    "damage": 17, "cost": 0,  "gain": 10, "unlock_level": 1},
+    {"id": "piercing_arrow",   "name": "Piercing Arrow",   "class": "archer",  "tier": "skill",    "damage": 26, "cost": 14, "gain": 0,  "unlock_level": 1},
+    {"id": "poison_arrow",     "name": "Poison Arrow",     "class": "archer",  "tier": "power",    "damage": 42, "cost": 28, "gain": 0,  "unlock_level": 3},
+    {"id": "arrow_rain",       "name": "Arrow Rain",       "class": "archer",  "tier": "ultimate", "damage": 68, "cost": 45, "gain": 0,  "unlock_level": 5},
+    {"id": "evasion",          "name": "Evasion",          "class": "archer",  "tier": "utility",  "damage": 0,  "cost": 12, "gain": 0,  "unlock_level": 2}
+
   ]
 }

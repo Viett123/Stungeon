@@ -1,9 +1,18 @@
 {
   "_note": "PLACEHOLDER numbers written by Claude so the game can run. Owner D: replace them and delete this line. Nothing heals the player except items (team decision, 11 Nov 2026). expected_answer_seconds is used to tell the HabitTracker if an answer was fast (owner C).",
-  "xp_for_level": {"2": 40, "3": 100, "4": 180, "5": 280},
+  "xp_for_level": {"2": 50, "3": 130, "4": 300, "5": 560},
   "max_level": 5,
   "hp_per_level": 20,
   "last_floor": 3,
   "trap_damage": 8,
-  "expected_answer_seconds": 20
+  "expected_answer_seconds": 20,
+  "mastery": {
+    "_note": "Knowledge tracing numbers chosen by C (ai/mastery.py, questions/engine.py). Not placeholders.",
+    "p_init": 0.2,
+    "p_slip": 0.1,
+    "p_learn": 0.15,
+    "review_weight": 0.15,
+    "guess_multi_select": 0.1,
+    "guess_typed": 0.02
+  }
 }

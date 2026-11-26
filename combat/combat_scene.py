@@ -13,7 +13,7 @@ import pygame
 from combat import effects
 from combat.battle import Battle
 from combat.skill_looks import AURA_SECONDS, SkillLook
-from core import assets, settings
+from core import assets, settings, sound
 from core.scene import Scene
 from core.strings import t
 from dungeon.actor import make_actor
@@ -43,6 +43,7 @@ WIND_UP_PIXELS = 6          # how far the player leans back before striking
 LUNGE_PIXELS = 18           # how far a melee fighter jumps towards the enemy
 KNOCKBACK_PIXELS = 10       # how far the player is pushed back when hurt
 HOP_PIXELS = 10             # how high the player hops when using an item
+CRIT_LIFT = -42             # "CRIT!" starts this far BELOW the damage number (above it, it would cover the HP bar)
 ATTACK_SECONDS = 0.6      # how long the weapon swing and the hit sparks last
 FIGHTER_SCALE = settings.TILE_SCALE + 1   # fighters are drawn 4 times the art size, like bosses
 CONTENT = pygame.Rect(140, 236, 1000, 384)     # the big panel: move details, question or feedback
@@ -62,6 +63,7 @@ class CombatScene(Scene):
         self.player = player
         self.enemy = enemy
         self.on_end = on_end   # called once with the result dict, see finish()
+        self.music = "boss" if enemy.boss else "fight"      # core/sound.py plays it while this screen is on top
         self.battle = Battle(player, enemy, run.engine, run.floor_number, habits=run.habits, rng=run.rng)
         # In a fight both fighters are drawn big and animated. They stand still, so the
         # tile they are "on" does not matter; the player faces left, towards the enemy.
@@ -77,6 +79,7 @@ class CombatScene(Scene):
         self.floating = []      # damage numbers that rise and fade
         self.using = 0.0        # seconds left of the "use an item" animation
         self.pending_damage = 0 # damage of an attack that is on its way and has not landed yet
+        self.pending_crit = False   # show "CRIT!" when that attack lands
         self.spark = 0.0        # seconds left of the hit sparks on the enemy
         self.enemy_center = ENEMY_PANEL.center     # where arrows and bolts fly to (set when the enemy is drawn)
         self.player_hand = PLAYER_ART.center       # where the player's skills start (set when the player is drawn)
@@ -111,10 +114,10 @@ class CombatScene(Scene):
         self.question_lines = []
         self.choice_buttons = []
 
-    def float_text(self, string, color, panel):
-        """Show a rising, fading text over one of the fighter panels."""
+    def float_text(self, string, color, panel, lift=0):
+        """Show a rising, fading text over one of the fighter panels. lift: start this many pixels higher (negative = lower)."""
         font = self.game.fonts["big"]
-        self.floating.append(FloatingText(font, string, color, (panel.centerx + 60, panel.centery)))
+        self.floating.append(FloatingText(font, string, color, (panel.centerx + 60, panel.centery - lift)))
 
     # --- flow --------------------------------------------------------------
     def finish(self, won, fled=False):
@@ -151,6 +154,7 @@ class CombatScene(Scene):
         if result.get("utility"):
             # Only a picture: what the move really does is decided in combat/effects.py.
             self.skill = SkillLook(move["id"], self.player_center, self.player_center, AURA_SECONDS)
+            sound.play(sound.skill_sound("aura"))
             # TODO(B): once combat/effects.py has real effects, show what the move did here.
             self.show_message([(t("utility_used", move=move["name"]), theme.GOLD)], self.enemy_turn)
         else:
@@ -178,6 +182,7 @@ class CombatScene(Scene):
             self.notice = t("item_no_effect", item=item["name"])     # e.g. a potion at full HP: keep it
             return
         self.using = USE_SECONDS
+        sound.play("potion")
         lines = [(t("item_used", item=item["name"]), theme.GOLD)]
         # TODO(B): whether an item costs the turn is decided in combat/effects.py.
         self.show_message(lines, self.enemy_turn if effects.item_costs_turn(self.battle) else self.back_to_choose)
@@ -253,6 +258,7 @@ class CombatScene(Scene):
         question = out["question"]
         lines = [first_line] if first_line else []
         lines.append((t("correct"), theme.GOOD) if out["correct"] else (t("wrong"), theme.BAD))
+        sound.play("correct" if out["correct"] else "wrong")
         if not out["correct"]:
             lines.append((t("the_answer", answer=answer_text(question)), theme.TEXT))
         if question.get("explanation"):
@@ -261,12 +267,16 @@ class CombatScene(Scene):
             self.show_message(lines, self.start_question)
             return
         lines.append((t("damage_dealt", damage=out["damage"]) if out["damage"] else t("miss"), theme.GOLD))
+        self.pending_crit = out.get("crit", False)
+        if self.pending_crit:
+            lines.append((t("crit_line"), theme.GOLD))       # explain WHY it hit harder: a fast answer
         if out["damage"]:
             # Start the attack animation. The hit itself lands a moment later (see land_hit).
             self.attack = ATTACK_SECONDS
             self.pending_damage = out["damage"]
             # The move's own look (arcs, orb, meteors...) plays with the same timing as the swing.
             self.skill = SkillLook(move_id, self.player_hand, self.enemy_center, ATTACK_SECONDS)
+            sound.play(sound.skill_sound(self.skill.look["kind"]))     # swing, shoot or rain
         self.show_message(lines, self.victory if self.battle.won else self.enemy_turn)
 
     def attack_progress(self):
@@ -276,7 +286,11 @@ class CombatScene(Scene):
     def land_hit(self):
         """The moment the weapon, arrow or bolt reaches the enemy: shake, flash, sparks, damage number."""
         self.float_text(f"-{self.pending_damage}", theme.GOLD, ENEMY_PANEL)
+        if self.pending_crit:
+            self.float_text(t("crit_float"), theme.BAD, ENEMY_PANEL, lift=CRIT_LIFT)   # "CRIT!" under the number
+            self.pending_crit = False
         self.pending_damage = 0
+        sound.play("hit")
         strength = self.skill.look["shake"] if self.skill else 6     # stronger moves shake the screen harder
         self.shake.start(strength=strength, seconds=0.25)
         self.freeze = HIT_PAUSE
@@ -318,11 +332,14 @@ class CombatScene(Scene):
 
     def enemy_turn(self):
         out = self.battle.enemy_turn()
-        if out["damage"] == 0:   # e.g. an effect cancelled the attack
+        if out.get("skipped"):   # after your miss, the enemy was caught off guard (effects.enemy_loses_turn)
+            lines = [(t("enemy_loses_turn", enemy=self.enemy_name), theme.GOOD)]
+        elif out["damage"] == 0:   # e.g. an effect cancelled the attack
             lines = [(t("enemy_misses", enemy=self.enemy_name), theme.GOOD)]
         else:
             lines = [(t("enemy_hits", enemy=self.enemy_name, damage=out["damage"]), theme.BAD)]
             self.hurt = HURT_SECONDS
+            sound.play("hurt")
             self.shake.start(strength=10, seconds=0.3)
             self.float_text(f"-{out['damage']}", theme.BAD, PLAYER_ART)
         if out["taunt"]:
@@ -330,11 +347,13 @@ class CombatScene(Scene):
         self.show_message(lines, self.defeat if self.battle.lost else self.back_to_choose)
 
     def victory(self):
+        sound.play("victory")
         self.show_message([(t("victory_fight", enemy=self.enemy_name), theme.GOOD)],
                           lambda: self.finish(won=True))
 
     def defeat(self):
         self.dying = 0.0
+        sound.play("defeat")
         self.show_message([(t("defeat_fight", enemy=self.enemy_name), theme.BAD)],
                           lambda: self.finish(won=False))
 
@@ -366,6 +385,7 @@ class CombatScene(Scene):
             elif event.key == pygame.K_i:
                 self.open_items()
             elif event.key == pygame.K_ESCAPE and not self.enemy.boss:
+                sound.play("flee")
                 self.finish(won=False, fled=True)
         elif event.type == pygame.MOUSEMOTION:
             hovered = self.hotbar.index_at(event.pos)
@@ -462,9 +482,8 @@ class CombatScene(Scene):
             self.draw_question(surface, fonts)
         else:
             self.draw_message(surface, fonts)
-        if self.battle.engine.streak >= 2:
-            widgets.text(surface, fonts["normal"], t("streak", n=self.battle.engine.streak), anim.glow_gold(),
-                         (CONTENT.left + 4, CONTENT.top - 6), "bottomleft")   # in the gap under the status panel
+        # The streak sits under the status panel: how many right answers in a row, and what it adds.
+        hud.draw_streak(surface, fonts, self.battle.engine.streak, (hud.PLAYER_PANEL.x + 4, hud.PLAYER_PANEL.bottom + 12))
         choosing = self.state == "choose"
         self.hotbar.draw(surface, fonts, pygame.mouse.get_pos(),
                          selected=self.selected if choosing else None, active=choosing)

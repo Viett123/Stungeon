@@ -184,5 +184,71 @@ def test_battle_remembers_answer_times_and_the_enemy_can_be_made_to_skip_its_tur
     battle.answer("definitely wrong", seconds=7.5)
     assert battle.seconds == [7.5]
     monkeypatch.setattr(effects, "enemy_loses_turn", lambda b: True)
-    assert battle.enemy_turn() == {"damage": 0, "taunt": None}
+    assert battle.enemy_turn() == {"damage": 0, "taunt": None, "skipped": True}
     assert player.hp == player.max_hp
+
+
+def test_a_better_weapon_means_a_bigger_multiplier():
+    weapons = [i for i, item in ALL.items() if item.get("slot") == "weapon"]
+    best = max(weapons, key=lambda i: ALL[i].get("damage_multiplier", 1.0))
+    player = Player("warrior")
+    base = player.damage_multiplier()
+    player.equipped["weapon"] = best
+    assert player.damage_multiplier() > base
+
+
+def test_armour_adds_up_defense():
+    player = Player("mage")
+    player.equipped = {"head": "cloth_hood", "body": "leather_vest"}
+    assert player.defense() == ALL["cloth_hood"]["defense"] + ALL["leather_vest"]["defense"]
+
+
+def test_no_item_still_says_it_does_nothing():
+    assert not [i for i, item in ALL.items() if "does nothing yet" in item["text"]]
+
+
+def test_items_with_bonus_seconds_give_more_time_to_answer():
+    """Worn Boots say "+2 seconds to answer": the time limit of every question must really grow."""
+    player = Player("warrior")
+    plain = Battle(player, make_enemy("article_goblin"), QuestionEngine(rng=random.Random(5)), floor=1)
+    plain.choose_move(plain.moves()[0]["id"])
+    player.equipped["shoes"] = "worn_boots"
+    player.equipped["accessory_1"] = "lucky_charm"
+    assert player.bonus_seconds() == ALL["worn_boots"]["bonus_seconds"] + ALL["lucky_charm"]["bonus_seconds"]
+    booted = Battle(player, make_enemy("article_goblin"), QuestionEngine(rng=random.Random(5)), floor=1)
+    booted.choose_move(booted.moves()[0]["id"])
+    assert booted.time_limit == plain.time_limit + player.bonus_seconds()
+
+
+def test_every_item_that_promises_more_time_has_bonus_seconds():
+    for item_id, item in ALL.items():
+        if "+" in item["text"] and ("s answer time" in item["text"] or "seconds to answer" in item["text"]):
+            assert item.get("bonus_seconds", 0) != 0, item_id
+
+
+def test_heavy_weapons_hit_harder_but_give_less_time_and_light_ones_the_opposite():
+    """Each weapon is compared with the normal weapons of the same rarity."""
+    weapons = {i: item for i, item in ALL.items() if item.get("slot") == "weapon"}
+    assert {item["weight"] for item in weapons.values()} == {"heavy", "light", "normal"}
+    for item_id, item in weapons.items():
+        normal = [w["damage_multiplier"] for w in weapons.values()
+                  if w["weight"] == "normal" and w["rarity"] == item["rarity"]]
+        average = sum(normal) / len(normal) if normal else None
+        seconds = item.get("bonus_seconds", 0)
+        if item["weight"] == "heavy":
+            assert seconds < 0, item_id
+            assert average is None or item["damage_multiplier"] > average, item_id
+        elif item["weight"] == "light":
+            assert seconds > 0, item_id
+            assert average is None or item["damage_multiplier"] < average, item_id
+        else:
+            assert seconds == 0, item_id
+
+
+def test_a_question_never_gets_less_time_than_the_minimum():
+    player = Player("warrior")
+    player.equipped["weapon"] = "sledgehammer"
+    player.bonus_seconds = lambda: -100                                # far more than any weapon takes away
+    battle = Battle(player, make_enemy("article_goblin"), QuestionEngine(rng=random.Random(5)), floor=1)
+    battle.choose_move(battle.moves()[0]["id"])
+    assert battle.time_limit == load_data("combat.json")["min_time_limit_seconds"]

@@ -128,8 +128,9 @@ def test_walking_lifts_the_fog_and_hidden_monsters_are_not_on_the_minimap(dungeo
     assert hidden                                               # most of the floor is still in the fog
     scene.floor.enemies[:] = []                                 # nobody interrupts the walk
     scene.floor.chests[:] = []
-    # Put the player just inside a normal room and take one step there.
-    room = scene.floor.rooms[scene.floor.room_kinds.index("normal")]
+    # Put the player just inside a plain room (no pillars, spikes or merchant) and take one step there.
+    plain = next(i for i, kind in enumerate(scene.floor.room_kinds) if kind in ("normal", "den", "storeroom", "treasure"))
+    room = scene.floor.rooms[plain]
     x, y = room[0] + 1, room[1] + 1
     scene.player_pos = (x, y)
     scene.try_move(x + 1, y)

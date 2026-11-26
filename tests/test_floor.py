@@ -24,6 +24,7 @@ def reachable(floor):
 def test_every_floor_tile_and_enemy_is_reachable(number, seed):
     floor = generate_floor(number, seed)
     walkable = {(x, y) for y in range(floor.height) for x in range(floor.width) if floor.grid[y][x] != WALL}
+    walkable.discard(floor.merchant)     # the wandering merchant stands on his tile: you bump into him
     assert reachable(floor) == walkable
     assert all(e["pos"] in walkable for e in floor.enemies)
 

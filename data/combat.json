@@ -1,12 +1,14 @@
 {
-  "_note": "Numbers invented for the damage, time, crit, streak and enemy-skip rules (owner B, missions 2-5). Check them. min_enemy_damage: an enemy hit never does less than this. rounding: round = half goes up, floor = always down, ceil = always up. time_limit_seconds: seconds per question by difficulty. typed_extra_seconds: extra seconds for a typed answer. crit_tiers: an answer that uses at most this share of its time limit is a crit; checked from the fastest. streak: bonus_per_right for each right answer in a row, up to max_multiplier. enemy_skip_chance: chance the enemy skips its turn after a miss. utility (mission 6): war_cry_bonus is the extra damage of the next attack (0.5 = +50 %); reveal_wrong_choices_removed: wrong answers taken out of the next multiple-choice question; evasion_attacks: how many enemy attacks Evasion covers; evasion_miss_chance: chance that each of them misses. Tier damage and bonus_damage are in moves.json; enemy damage is in enemies.json.",
+  "_note": "Numbers invented for damage, time, crit, streak, enemy-skip and utility rules. min_enemy_damage: an enemy hit never does less than this. rounding: round = half goes up, floor = always down, ceil = always up. time_limit_seconds: seconds per question by difficulty. typed_extra_seconds: extra seconds for a typed answer. min_time_limit_seconds: a question never gets less time than this after equipment adjustments. crit_difficulties: only these difficulties can critically hit. crit_tiers: a fast answer can deal more damage; the share is measured against the normal time limit, before item bonuses. streak: bonus_per_right for each right answer in a row, up to max_multiplier. enemy_skip_chance: chance the enemy skips its turn after a miss. utility: war_cry_bonus boosts the next attack; reveal_wrong_choices_removed removes wrong choices from the next multiple-choice question; evasion_attacks sets how many enemy attacks are covered; evasion_miss_chance is the chance a covered attack misses. Tier damage and bonus_damage are in moves.json; enemy damage is in enemies.json.",
   "min_enemy_damage": 1,
   "rounding": "round",
   "time_limit_seconds": {"easy": 15, "medium": 20, "hard": 30},
   "typed_extra_seconds": 10,
+  "min_time_limit_seconds": 8,
+  "crit_difficulties": ["medium", "hard"],
   "crit_tiers": [
-    {"within": 0.15, "multiplier": 2.0},
-    {"within": 0.30, "multiplier": 1.5}
+    {"within": 0.08, "multiplier": 2.0},
+    {"within": 0.18, "multiplier": 1.5}
   ],
   "streak": {"bonus_per_right": 0.10, "max_multiplier": 1.5},
   "enemy_skip_chance": 0.25,

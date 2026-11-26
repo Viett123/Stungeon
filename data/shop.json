@@ -1,7 +1,17 @@
 {
   "_note": "PLACEHOLDER written by Claude. Owner D: replace it and delete this line. stock = what the shop sells after each floor (the key is the floor you just cleared). A floor with no entry has no shop.",
   "stock": {
-    "1": ["small_potion", "tonic", "cloth_hood", "worn_boots", "copper_ring"],
-    "2": ["small_potion", "big_potion", "tonic", "leather_vest", "wool_trousers", "war_axe", "oak_staff"]
+    "1": ["small_potion", "tonic", "cloth_hood", "worn_boots", "copper_ring", "gold_ring"],
+    "2": ["small_potion", "big_potion", "tonic", "leather_vest", "wool_trousers", "war_axe", "oak_staff", "iron_helmet", "iron_armor"]
+  },
+  "_wandering_note": "The wandering merchant (met in a room, see data/rooms.json for how often) sells a RANDOM mix every run. always = items he always has. items = how many more he picks from all items in items.json. rarity_weights = for each floor you are ON, how likely each rarity is (a bigger number = more often; a rarity left out is never picked). The pick uses the run's seed, so leaving and coming back shows the same items.",
+  "wandering": {
+    "always": ["small_potion"],
+    "items": 4,
+    "rarity_weights": {
+      "1": {"common": 6, "uncommon": 3, "rare": 1},
+      "2": {"common": 3, "uncommon": 5, "rare": 2, "epic": 0.5},
+      "3": {"common": 2, "uncommon": 4, "rare": 3, "epic": 1, "legendary": 0.3}
+    }
   }
 }

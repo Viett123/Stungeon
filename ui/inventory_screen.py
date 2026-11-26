@@ -1,4 +1,4 @@
-"""The bag: look at items, use potions, put equipment on and take it off (owner: B).
+"""The bag: look at items, use potions, put equipment on and take it off, throw things away (owner: B).
 
 The rules are in systems/inventory.py. This file only draws and reads input.
 The selection is one number: 0 .. size-1 are the bag slots, the numbers after that
@@ -19,7 +19,8 @@ EQUIP_COLUMNS = 4          # equipment slots per row
 EQUIP_STEP_X = 112
 EQUIP_STEP_Y = 100
 ENTER_KEYS = (pygame.K_RETURN, pygame.K_KP_ENTER)
-TAKE_OFF_KEYS = (pygame.K_x, pygame.K_BACKSPACE, pygame.K_DELETE)
+TAKE_OFF_KEYS = (pygame.K_x,)
+DROP_KEYS = (pygame.K_DELETE, pygame.K_BACKSPACE)   # in the bag: throw away; on a worn item: take it off
 
 
 class InventoryScene(Scene):
@@ -30,6 +31,7 @@ class InventoryScene(Scene):
         self.size = items.inventory_size()
         self.selected = 0
         self.message = ""
+        self.drop_armed = None    # the bag slot that will be thrown away if Delete is pressed again
         inside = theme.inner(PANEL)
         step = slots.SLOT + GAP
         self.bag_rects = [pygame.Rect(inside.x + (i % COLUMNS) * step, inside.y + 60 + (i // COLUMNS) * step,
@@ -43,7 +45,10 @@ class InventoryScene(Scene):
     def refresh(self):
         """Read the bag again. Called after every change, so draw() never reads data files."""
         font = self.game.fonts["small"]
-        self.bag = [items.get_item(item_id) for item_id in self.player.inventory]
+        # One entry per slot: 12 potions are two slots, of 10 and 2 (systems/inventory.py, stacks()).
+        bag_slots = inventory.stacks(self.player)
+        self.bag = [items.get_item(item_id) for item_id, _ in bag_slots]
+        self.counts = [count for _, count in bag_slots]
         self.worn = [items.get_item(self.player.equipped[slot]) if slot in self.player.equipped else None
                      for slot in inventory.EQUIP_SLOTS]
         self.icons = {item["id"]: item_icon(item, font) for item in self.bag + [w for w in self.worn if w]}
@@ -83,6 +88,23 @@ class InventoryScene(Scene):
         self.message = t("inv_unequipped", item=item["name"]) if done else t("inv_bag_full")
         self.refresh()
 
+    def drop(self):
+        """Delete in the bag: the first press asks, the second press throws the item away for good.
+
+        Asking first means one wrong key press can never cost the player a good item.
+        """
+        item = self.selected_item()
+        if item is None:
+            return
+        if self.drop_armed != self.selected:
+            self.drop_armed = self.selected
+            self.message = t("inv_drop_ask", item=item["name"])
+            return
+        self.drop_armed = None
+        inventory.remove_item(self.player, item["id"])
+        self.message = t("inv_dropped", item=item["name"])
+        self.refresh()
+
     def switch_side(self):
         """Tab jumps between the bag and the equipment slots."""
         self.selected = 0 if self.on_equipment() else self.size
@@ -90,6 +112,15 @@ class InventoryScene(Scene):
     def handle_event(self, event):
         total = self.size + len(inventory.EQUIP_SLOTS)
         if event.type == pygame.KEYDOWN:
+            if event.key in DROP_KEYS:
+                if self.on_equipment():
+                    self.take_off()
+                else:
+                    self.drop()
+                return
+            if self.drop_armed is not None:
+                self.drop_armed = None          # any other key: the player changed their mind
+                self.message = ""
             if event.key in (pygame.K_ESCAPE, pygame.K_i):
                 self.game.scenes.pop()
             elif event.key in ENTER_KEYS:
@@ -107,6 +138,7 @@ class InventoryScene(Scene):
             elif event.key in (pygame.K_DOWN, pygame.K_s):
                 self.move_rows(1)
         elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+            self.drop_armed = None
             for i, rect in enumerate(self.bag_rects + self.equip_rects):
                 if rect.collidepoint(event.pos):
                     if i == self.selected:
@@ -139,6 +171,9 @@ class InventoryScene(Scene):
         for i, rect in enumerate(self.bag_rects):
             item = self.bag[i] if i < len(self.bag) else None
             slots.draw_slot(surface, rect, self.icons[item["id"]] if item else None, highlighted=(i == self.selected))
+            if item and self.counts[i] > 1:          # how many are in this stack, bottom right
+                widgets.text(surface, small, str(self.counts[i]), theme.TEXT, (rect.right - 6, rect.bottom - 4),
+                             "bottomright")
         for i, (rect, slot, item) in enumerate(zip(self.equip_rects, inventory.EQUIP_SLOTS, self.worn)):
             widgets.text(surface, small, t(f"slot_{slot}"), theme.TEXT_DIM, (rect.x, rect.y - 24))
             slots.draw_slot(surface, rect, self.icons[item["id"]] if item else None,

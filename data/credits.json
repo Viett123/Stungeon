@@ -5,8 +5,10 @@
      "pack": "16x16 DungeonTileset II", "author": "0x72 (Robert)", "license": "CC0"},
     {"what": "Torches, golden chests, the merchant, the bat and more weapons",
      "pack": "16x16 Dungeon Tileset", "author": "0x72 (Robert)", "license": "CC0"},
-    {"what": "The gold frames around the panels",
-     "pack": "DungeonUI", "author": "0x72 (Robert)", "license": "CC0"},
+    {"what": "Potions, rings, armour, boots, the helmet and the lucky charm",
+     "pack": "Drawn for this game", "author": "conchuotbiluoc", "license": ""},
+    {"what": "The stone, jungle and desert frames around the panels",
+     "pack": "Drawn for this game", "author": "Viet", "license": ""},
     {"what": "Jungle and desert floors",
      "pack": "Custom dungeon 16x16 tileset", "author": "Omniboy, based on 0x72's tileset", "license": "CC0"},
     {"what": "The hunting bow and the hit sparks",
@@ -18,6 +20,8 @@
      "license": "reference only"},
     {"what": "German questions, from Das Leben B1, Einheiten 1 to 3",
      "pack": "Written for this game", "author": "The Stungeon team", "license": ""},
+    {"what": "Pixel fonts",
+     "pack": "Tiny5 and VT323 (Google Fonts)", "author": "The Tiny5 and VT323 Project Authors", "license": "OFL"},
     {"what": "Game engine",
      "pack": "pygame-ce", "author": "The pygame community", "license": "LGPL"}
   ]

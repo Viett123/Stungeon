@@ -12,6 +12,7 @@ from core import flow, settings                    # noqa: E402
 from core.game import Game                         # noqa: E402
 from dungeon import chase                          # noqa: E402
 from dungeon.actor import Actor, Animation         # noqa: E402
+from systems.player import load_data  # noqa: E402
 from dungeon.floor import TREASURE_CHESTS, WALL, generate_floor     # noqa: E402
 from systems.enemies import chase_rules, floor_spawns   # noqa: E402
 
@@ -107,6 +108,7 @@ def test_a_real_path_from_astar_is_used_when_there_is_one(monkeypatch):
 def test_chests_are_on_free_floor_cells(number):
     floor = generate_floor(number, seed=11)
     extra = TREASURE_CHESTS if "treasure" in floor.room_kinds else 0     # the treasure room adds its own
+    extra += floor.room_kinds.count("storeroom") * load_data("rooms.json")["storeroom_chests"]   # so does a storeroom
     assert len(floor.chests) == floor_spawns(number)["chests"] + extra
     taken = {e["pos"] for e in floor.enemies} | {floor.start, floor.stairs}
     for chest in floor.chests:

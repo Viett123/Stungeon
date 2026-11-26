@@ -33,3 +33,29 @@ Read this first in any new chat or Claude Code session about Stungeon.
 - The run remembers the hero's name, the subject and the level. SAVE_VERSION is 4, so saves from older builds no longer load.
 - The demo (F1) skips the new screens and plays German B1.
 - Every move has its own simple look in a fight (combat/skill_looks.py): arcs, flying orbs or streaks, falling meteors or arrows, or a ring for utility moves. Colours, sizes, counts and screen shake are in data/skill_looks.json. They are pictures only: a green Poison Arrow does not poison anything until B writes that rule. A basic start, meant to be improved by the team.
+
+## Updates (24-25 Nov 2026, C)
+- Knowledge tracing (BKT) is in ai/mastery.py and topic choice in QuestionEngine._choose (C). Every topic now starts at 20% on the Progress screen.
+- Contract: KnowledgeTracker.update(topic, correct) gained a third argument, guess=0.25 (the chance of a lucky right answer). Old calls still work. The engine passes 1/choices for multiple choice, and lower values for tick-all and typed answers.
+- The BKT numbers and the review weight are in data/progression.json, under "mastery".
+
+## Updates (25 Nov 2026)
+- German A1 is playable: questions/data/questions_german_a1.json, 3,943 questions from Das Leben A1, Einheiten 1–16. It is the first level on the level screen now. A2 is still empty.
+- A bank can now say which Einheiten each floor asks ("floor_einheiten"). A1: floor 1 = Einheiten 1–5, floor 2 = 1–10, floor 3 = 1–16. B1 has no such entry and works as before. New method: QuestionEngine.last_einheit(floor).
+- questions/build/build.py builds every level (python build.py, or python build.py a1). The B1 output is unchanged.
+- D: the bosses ask B1 grammar topics, which A1 doesn't have, so in A1 they ask any topic. A1 boss topics could be added later.
+
+## Updates (25 Nov 2026, sound)
+- Sound and music are in, all made in code: tools/make_sounds.py turns the recipes in data/sounds.json into assets/sounds/*.wav. No downloaded sounds, so no licences.
+- Play an effect from any screen with sound.play("name") (core/sound.py). A screen picks its music with a class attribute: music = "dungeon"; None keeps the current track; "off" is silence.
+- F2 turns sound on and off on every screen. With no sound card, the game just stays quiet.
+
+## Updates (26 Nov 2026, play-test changes)
+- Title logo: put a drawn assets/sprites/logo.png in, and the title uses it (see assets/README.md). Without it, the logo is made from the font.
+- Rooms: new kinds pillars (a hall with pillars), storeroom (a chest, no monsters) and merchant (a wandering shop). Monsters are spread so every normal and pillar room gets one first. Weights and chances are in data/rooms.json (A can tune them).
+- Wandering merchant: on about half the floors one room has a merchant. Walk into him to trade; Esc goes back to the dungeon. His stock is wandering_stock in data/shop.json. Nobody can walk through his tile (Floor.is_walkable).
+- Shops can sell now: Tab switches Buy / Sell. Worn equipment is not sold (take it off first). The shopkeeper breathes and hops after a sale (ui/merchant.py).
+- Bag: Delete (or Backspace) on a bag item asks first, a second press throws it away. On a worn item it still takes it off.
+- Streak: "Streak x3 +30% damage" with boxes up to the biggest bonus, in fights and on the map.
+- Music: each floor look has its own tune (data/themes.json, music: stone, jungle, desert) and the boss room has its own (boss_room). DungeonScene.music is now a property.
+

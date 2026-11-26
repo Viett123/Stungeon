@@ -31,6 +31,10 @@ is changed: it is the pack's plain floor with the pack's skull drawn on top.
 | `enemy_vocab_slime_idle_N` | `swampy_anim_fN` |
 | `enemy_article_goblin_idle_N`, `_run_N` | `goblin_idle_anim_fN`, `goblin_run_anim_fN` |
 | `enemy_grammar_ghost_idle_N` | `necromancer_anim_fN` |
+| `enemy_abbrev_imp_idle_N`, `_run_N` | `imp_idle_anim_fN`, `imp_run_anim_fN` |
+| `enemy_while_wisp_idle_N` | `ice_zombie_anim_fN` |
+| `npc_merchant_idle_N` (the shop owner) | `dwarf_m_idle_anim_fN` |
+| `enemy_debate_gargoyle_idle_N`, `_run_N` | `masked_orc_idle_anim_fN`, `masked_orc_run_anim_fN` |
 | `enemy_boss_floor_1_idle_N`, `_run_N` | `doc_idle_anim_fN`, `doc_run_anim_fN` |
 | `enemy_boss_floor_2_idle_N`, `_run_N` | `orc_shaman_idle_anim_fN`, `orc_shaman_run_anim_fN` |
 | `enemy_boss_floor_3_idle_N`, `_run_N` | `chort_idle_anim_fN`, `chort_run_anim_fN` |
@@ -38,8 +42,6 @@ is changed: it is the pack's plain floor with the pack's skull drawn on top.
 | `enemy_mini_floor_2_idle_N`, `_run_N` | `ogre_idle_anim_fN`, `ogre_run_anim_fN` |
 | `enemy_mini_floor_3_idle_N`, `_run_N` | `big_demon_idle_anim_fN`, `big_demon_run_anim_fN` |
 | `tile_spikes.png` | `floor_spikes_anim_f3.png` |
-| `item_small_potion.png` | `flask_red.png` |
-| `item_tonic.png` | `flask_blue.png` |
 | `item_old_sword.png`, `weapon_old_sword.png` | `weapon_rusty_sword.png` |
 | `item_apprentice_staff.png`, `weapon_apprentice_staff.png` | `weapon_red_magic_staff.png` |
 | `item_katana`, `item_mace`, `item_spear`, `item_cleaver`, `item_golden_sword`, `item_lavish_sword`, `item_duel_sword` (and the same with `weapon_`) | `weapon_katana`, `weapon_mace`, `weapon_spear`, `weapon_cleaver`, `weapon_golden_sword`, `weapon_lavish_sword`, `weapon_duel_sword` |
@@ -47,7 +49,6 @@ is changed: it is the pack's plain floor with the pack's skull drawn on top.
 | `item_knight_sword.png`, `weapon_knight_sword.png` | `weapon_knight_sword.png` |
 | `item_war_axe.png`, `weapon_war_axe.png` | `weapon_axe.png` |
 | `item_oak_staff.png`, `weapon_oak_staff.png` | `weapon_green_magic_staff.png` |
-| `item_big_potion.png` | `flask_big_red.png` |
 
 ## Pixel Art Sprite Mixer by KingBell (reference only)
 
@@ -70,11 +71,31 @@ is changed: it is the pack's plain floor with the pack's skull drawn on top.
 - Link: https://0x72.itch.io/dungeonui
 - License checked on 14 Nov 2026.
 
-| File in `assets/sprites/` | Part of `dungeonui.v1.png` |
-|---|---|
-| `ui_frame.png` | The small square frame under "Parts" (24 x 24 pixels, at x 24, y 72) |
+No file from this pack is in the game any more. `ui_frame.png` used to be its small square frame
+(24 x 24 pixels, at x 24, y 72 of `dungeonui.v1.png`); it was replaced by our own frames (see below).
 
-Not used yet: the other frames, hearts, coloured buttons, small icons and the font.
+## Item icons: drawn by us
+
+Drawn mainly by **conchuotbiluoc** (GitHub: ahihilili299-wq), 16 x 16 each; handed over as
+`new_asset.zip` and `potion.zip` on 26 Nov 2026, plus the new Big Potion and Tonic drawings.
+`item_cloth_hood.png` came from the first art branch (`c/new_asset`, commit d8717a9 by Tien Le).
+Also on the in-game Credits screen (`data/credits.json`).
+They replace the 0x72 pictures where an item already had one. Nothing to license.
+
+| File in `assets/sprites/` | Drawn as |
+|---|---|
+| `item_small_potion.png`, `item_big_potion.png`, `item_tonic.png` | `potion/small_potion.png`, `potion/big_potion.png`, and a later Tonic drawing |
+| `item_copper_ring.png`, `item_gold_ring.png` | `copper_ring.png`, `gold_ring.png` |
+| `item_leather_vest.png`, `item_wool_trousers.png`, `item_worn_boots.png` | `leather_vest.png`, `wool_trousers.png`, `worn boots.png` |
+| `item_lucky_charm.png` | `lucky_charm.png` |
+| `item_iron_armor.png`, `item_iron_helmet.png` (new items) | `armor.png`, `armor_head.png` |
+| `item_cloth_hood.png` | `cloth_hood.png` |
+
+## UI frames: drawn by us
+
+- `assets/sprites/ui_frame.png` (stone floors), `assets/sprites/desert/ui_frame.png` and
+  `assets/sprites/jungle/ui_frame.png`: drawn by Viet (project lead), 24 x 24 pixels each, in the same
+  layout as 0x72's frame. Nothing to license.
 
 ## 16x16 Dungeon Tileset (v5) by 0x72
 
@@ -87,7 +108,7 @@ Not used yet: the other frames, hearts, coloured buttons, small icons and the fo
 |---|---|
 | `torch_0.png` to `torch_7.png` | `torch_1.png` to `torch_8.png` |
 | `chest_golden_0.png`, `chest_golden_1.png` | `chest_golden_closed.png`, `chest_golden_open_full.png` |
-| `npc_merchant.png` | `npc_merchant.png` |
+| `npc_merchant.png` | `npc_merchant.png` (only used if the dwarf's animation is missing) |
 | `enemy_plural_bat.png` | `monster_bat.png` |
 | `item_ruby_sword.png`, `weapon_ruby_sword.png` | `weapon_sword_ruby.png` |
 | `item_golden_dagger.png`, `weapon_golden_dagger.png` | `weapon_dagger_golden.png` |
@@ -131,7 +152,22 @@ Not used yet from these sheets: fountains, totems, the wall monster.
 
 ## Still drawn in code (no art file yet)
 
-- All armour and accessory items (hood, vest, trousers, boots, ring, charm): none of the packs has such art.
 - All move icons.
 - Bars, slots and buttons (`ui/theme.py`). The panel borders now come from `ui_frame.png`.
-- The font is pygame's built-in font.
+- Nothing else: the font is now a real pixel font (see Fonts).
+
+## Fonts
+
+Both are from Google Fonts' GitHub (https://github.com/google/fonts), downloaded on 26 Nov 2026.
+License: SIL Open Font License 1.1 (free to use and ship with a game; the license file must go with
+the font, so it is in `assets/fonts/` next to it). Both can draw English, German and Vietnamese.
+
+| File in `assets/fonts/` | Font | Author | License file |
+|---|---|---|---|
+| `Tiny5.ttf` (the file `Tiny5[BLED,JITT,ROND,wdth,wght].ttf`, renamed) | Tiny5 | The Tiny5 Project Authors (Stefan Schmidt), https://github.com/Gissio/font_tiny5 | `OFL-Tiny5.txt` |
+| `VT323-Regular.ttf` | VT323 | The VT323 Project Authors (Peter Hull) | `OFL-VT323.txt` |
+
+## Sound and music: made by us, in code
+
+Every file in `assets/sounds/` (19 effects and 4 music loops) is made by `tools/make_sounds.py`
+from the recipes in `data/sounds.json`. Nothing is downloaded, so there is nothing to license or credit.

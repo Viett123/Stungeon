@@ -111,3 +111,31 @@ def test_time_out_in_a_three_question_move_asks_the_next_question():
     assert not first["done"]
     assert battle.remaining == 2
     assert battle.question is not None
+
+
+def test_the_fight_screen_says_time_is_up():
+    """When the timer runs out in a real fight, the first line says so, then "Wrong."."""
+    import os
+    os.environ.setdefault("SDL_VIDEODRIVER", "dummy")
+    os.environ.setdefault("SDL_AUDIODRIVER", "dummy")
+    pytest.importorskip("pygame")
+    from core import flow
+    from core.game import Game
+    from core.strings import t
+
+    game = Game()
+    flow.begin_new_game(game)
+    flow.name_chosen(game, "Mia")
+    flow.class_chosen(game, "warrior")
+    flow.dungeon_chosen(game, "german")
+    flow.level_chosen(game, "B1")
+    dungeon = game.scenes.current
+    dungeon.start_fight(next(e for e in dungeon.floor.enemies if not e["boss"] and not e["guard"]))
+    fight = game.scenes.current
+    fight.pick_move(0)
+    limit = fight.battle.time_limit
+    for _ in range(int(limit * 60) + 30):      # a little more than the time limit, 60 frames a second
+        fight.update(1 / 60)
+    assert fight.state == "message"
+    assert fight.lines[0][0] == t("time_up")
+    assert fight.lines[1][0] == t("wrong")

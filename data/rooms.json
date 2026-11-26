@@ -1,0 +1,8 @@
+{
+  "_note": "Room variety (dungeon/floor.py, owner A). Every floor has a start room, a boss room, and if there is space a treasure, a trap and a den room. The other middle rooms get a kind picked with these weights (a bigger number = more often). normal: plain room with monsters. pillars: a hall with stone pillars to walk around. storeroom: no monsters, storeroom_chests chests. merchant_chance: chance that one middle room holds a wandering merchant (no monsters, no chests) who sells wandering_stock from data/shop.json. pillar_min_size: rooms smaller than this (width or height) never get pillars. spread_enemies: true = every normal and pillar room gets at least one monster before any room gets a second one, so fewer rooms are empty.",
+  "extra_kinds": {"normal": 3, "pillars": 3, "storeroom": 2},
+  "merchant_chance": 0.5,
+  "storeroom_chests": 1,
+  "pillar_min_size": 5,
+  "spread_enemies": true
+}

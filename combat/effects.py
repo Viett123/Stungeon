@@ -72,13 +72,14 @@ def _remove_wrong_choices(question, how_many, rng) -> list:
     return choices
 
 
-def change_time_limit(seconds, question, battle) -> float:
-    """Called when a question is shown. `seconds` is the time it gets (by difficulty, plus extra for typed).
+def change_time_limit(seconds, question, battle) -> int:
+    """Called after the default time limit is chosen for a question.
 
-    Return the time the question really gets.
+    Equipment can give more time: every worn item's "bonus_seconds" (data/items.json) is added,
+    e.g. Worn Boots +2 s. A player without that method (a test's fake player) gets no bonus.
     """
-    # TODO(B/D): e.g. an armour piece that gives extra seconds -> return seconds + 5
-    return seconds
+    bonus = getattr(battle.player, "bonus_seconds", lambda: 0)()     # heavy weapons give a minus number
+    return max(load_data("combat.json")["min_time_limit_seconds"], seconds + bonus)
 
 
 def change_player_damage(damage, battle) -> int:
@@ -88,9 +89,10 @@ def change_player_damage(damage, battle) -> int:
       - a fast answer is a critical hit (the faster, the bigger), numbers in data/combat.json
       - a streak of right answers in a row adds damage, numbers in data/combat.json
       - War Cry: the next attack deals more, number in data/combat.json (utility move, mission 6)
+    Critical hits are limited to the difficulties listed in crit_difficulties.
     """
     numbers = load_data("combat.json")
-    crit = crit_multiplier(battle.time_used, numbers["crit_tiers"])
+    crit = crit_multiplier(battle.time_used, numbers["crit_tiers"]) if can_crit(battle, numbers) else 1.0
     streak = streak_multiplier(battle.engine.streak, numbers["streak"])
     war_cry = _use_war_cry(battle, numbers["utility"])
     battle.last_crit = crit > 1      # so the screen can show "CRIT!"
@@ -99,10 +101,21 @@ def change_player_damage(damage, battle) -> int:
 
 def _use_war_cry(battle, utility_numbers) -> float:
     """Normally 1.0. After War Cry: the bonus for this attack, and War Cry is used up (hit or miss)."""
-    if not battle.war_cry:
+    if not getattr(battle, "war_cry", False):
         return 1.0
     battle.war_cry = False
     return 1 + utility_numbers["war_cry_bonus"]
+
+
+def can_crit(battle, numbers) -> bool:
+    """Can this move's questions be a crit? Easy ones (the basic move) cannot.
+
+    A battle without a move (a test's stand-in) is allowed to crit.
+    """
+    move = getattr(battle, "move", None)
+    if not move:
+        return True
+    return move.get("difficulty") in numbers.get("crit_difficulties", ["easy", "medium", "hard"])
 
 
 def crit_multiplier(time_used, tiers) -> float:
