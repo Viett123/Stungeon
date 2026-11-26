@@ -23,8 +23,13 @@ def change_question(question, battle) -> dict:
 
 
 def change_time_limit(seconds, question, battle) -> int:
-    """Called after the default time limit is chosen for a question."""
-    return seconds
+    """Called after the default time limit is chosen for a question.
+
+    Equipment can give more time: every worn item's "bonus_seconds" (data/items.json) is added,
+    e.g. Worn Boots +2 s. A player without that method (a test's fake player) gets no bonus.
+    """
+    bonus = getattr(battle.player, "bonus_seconds", lambda: 0)()
+    return seconds + bonus
 
 
 def change_player_damage(damage, battle) -> int:

@@ -108,3 +108,7 @@ class Player:
     def defense(self) -> int:
         """Total damage removed from every enemy hit by the equipped items."""
         return sum(item.get("defense", 0) for item in self._equipped_items())
+
+    def bonus_seconds(self) -> int:
+        """Extra seconds to answer every question, from the equipped items ("bonus_seconds" in items.json)."""
+        return sum(item.get("bonus_seconds", 0) for item in self._equipped_items())
