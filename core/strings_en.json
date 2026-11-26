@@ -52,7 +52,10 @@
   "time_up": "Time is up!",
   "press_continue": "Press Enter to continue",
 
-  "utility_used": "You use {move}. (It has no effect yet.)",
+  "utility_used": "You use {move}.",
+  "utility_war_cry": "Your next attack hits harder.",
+  "utility_reveal": "Your next multiple-choice question loses one wrong answer.",
+  "utility_evasion": "The enemy's next attacks may miss.",
 
   "enemy_hits": "The {enemy} hits you for {damage}.",
   "enemy_misses": "The {enemy} attacks, but it does no damage!",
@@ -85,6 +88,7 @@
   "pause_quit": "Quit to title",
   "chest_gold": "You open the chest: +{gold} gold.",
   "loot_found": "You found: {item}.",
+  "loot_rare_banner": "{rarity} find!",
   "loot_bag_full": "You found {item}, but your bag is full.",
   "inv_title": "Bag",
   "inv_count": "{n} / {size}",
@@ -146,6 +150,9 @@
   "stats_hint": "Each box is 10% mastery. Weakest topics are at the top.  -  Esc or M to close",
   "streak": "Streak x{n}",
   "streak_bonus": "Streak x{n}  +{bonus}% damage",
+  "streak_popup": "{n} in a row!",
+  "learned_title": "What you practised in this fight (how sure the game is that you know it):",
+  "learned_change": "{before}% -> {after}%",
 
   "elite_name": "Elite {name}",
   "trap_hit": "Spikes! You lose {damage} HP.",
@@ -235,5 +242,9 @@
   "level_german_B1_text": "Intermediate. Das Leben B1, Einheiten 1-3.",
   "level_questions": "{n} questions",
   "level_coming_soon": "Coming soon",
-  "level_locked": "Level {level} has no questions yet."
+  "level_locked": "Level {level} has no questions yet.",
+  "taunt_spam": "{enemy}: The same move again? I saw that coming! (it hits harder now - mix your moves)",
+  "taunt_weak_spot": "{enemy} smells your weakness: {topic}! (its next questions are about {topic})",
+  "taunt_spam_bubble": "Same move again? I saw that coming!",
+  "taunt_weak_spot_bubble": "I smell your weakness: {topic}!"
 }

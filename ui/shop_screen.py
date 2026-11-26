@@ -138,8 +138,9 @@ class ShopScene(Scene):
                 index = self.top + i
                 if row.hit(event.pos) and index < len(self.entries):
                     if index == self.selected:
-                        self.act()   # clicking the selected row again buys or sells it
-                    self.selected = index
+                        self.act()
+                    else:
+                        self.selected = index
 
     # --- drawing -----------------------------------------------------------------
     def draw(self, surface):

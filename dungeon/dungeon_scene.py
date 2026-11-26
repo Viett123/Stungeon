@@ -21,7 +21,7 @@ from systems import inventory, items
 from systems.enemies import chase_rules, floor_theme, make_enemy
 from systems.loot import roll_chest_gold, roll_loot
 from systems.player import load_data
-from ui import hud, move_info, theme
+from ui import hud, loot_banner, move_info, theme
 from ui import theme as ui_theme      # "theme" is also the floor look in make_pictures()
 from ui.hotbar import Hotbar
 from ui.merchant import Merchant
@@ -58,6 +58,7 @@ class DungeonScene(Scene):
         self.enemy_info = {e["id"]: make_enemy(e["id"]) for e in self.floor.enemies}
         self.seen = set()           # cells the player has seen (fog of war)
         self.messages = []          # [[text, seconds left]]
+        self.banners = []           # rare loot banners waiting to be shown, one after another (ui/loot_banner.py)
         for m in messages or []:
             self.say(m)
         if self.run.floor_number == 1:
@@ -232,9 +233,14 @@ class DungeonScene(Scene):
 
     def give_items(self, item_ids):
         for item_id in item_ids:
-            name = items.get_item(item_id)["name"]
+            item = items.get_item(item_id)
+            name = item["name"]
             added = inventory.add_item(self.run.player, item_id)
             self.say(t("loot_found", item=name) if added else t("loot_bag_full", item=name))
+            if added and loot_banner.is_rare(item):
+                # A rare find gets a banner and a fanfare, so it feels like a reward.
+                self.banners.append(loot_banner.LootBanner(item, self.game.fonts))
+                sound.play("rare_loot")
 
     # --- monsters ----------------------------------------------------------
     def update_enemies(self, dt):
@@ -265,7 +271,8 @@ class DungeonScene(Scene):
         """Move one monster one tile. Returns True if it reached the player and a fight started."""
         blocked = {other["pos"] for other in self.floor.enemies if other is not e}
         blocked |= {c["pos"] for c in self.floor.chests if not c["opened"]}
-        target = chase.next_step(self.floor, e["pos"], self.player_pos, blocked)
+        use_astar = e["id"] in self.chase["astar_enemies"]      # only the listed monsters walk around walls
+        target = chase.next_step(self.floor, e["pos"], self.player_pos, blocked, use_astar=use_astar)
         if target == self.player_pos:
             e["actor"].face(self.player_pos)
             self.start_fight(e)
@@ -316,6 +323,10 @@ class DungeonScene(Scene):
         for m in self.messages:
             m[1] -= dt
         self.messages = [m for m in self.messages if m[1] > 0]
+        if self.banners:
+            self.banners[0].update(dt)
+            if not self.banners[0].alive():
+                self.banners.pop(0)             # the next rare item (if any) gets its turn
         for chest in self.floor.chests:
             if chest["opened"]:
                 chest["time"] += dt
@@ -372,3 +383,5 @@ class DungeonScene(Scene):
         hud.draw_messages(surface, fonts, lines, bottom=self.hotbar.rects[0].top - 20)
         self.minimap.draw(surface, self.seen, self.player_pos)
         self.hotbar.draw(surface, fonts, pygame.mouse.get_pos())
+        if self.banners:
+            self.banners[0].draw(surface)

@@ -37,6 +37,9 @@ class Battle:
         self.time_limit = 0
         self.base_time_limit = 1     # the time limit before items change it (set for each question)
         self.missed = False
+        self.war_cry = False
+        self.reveal = False
+        self.evasion_attacks = 0
         self.last_crit = False # set by effects.change_player_damage: was the last hit a critical hit?
 
     # --- state -------------------------------------------------------------
@@ -51,6 +54,11 @@ class Battle:
     @property
     def over(self):
         return self.won or self.lost
+
+    def start(self) -> dict:
+        """Called once when the fight opens. The enemy may already change because of how the
+        player fought before (ai/habits.py). Returns {"taunt": key or None, "taunt_values": {...}}."""
+        return self._adapt()
 
     def moves(self) -> list[dict]:
         """The player's moves, each with "affordable": can the player pay for it now?"""
@@ -109,7 +117,7 @@ class Battle:
     def _record_answer(self, question, correct, seconds) -> dict:
         self.engine.report_answer(question, correct, seconds)
         if self.habits:
-            self.habits.record_move(self.move["id"], self.move["tier"], seconds / self.expected_seconds, correct)
+            self.habits.record_move(self.move["id"], self.move["tier"], seconds / self.expected_seconds, correct, question.get("topic"))
 
         self.results.append(correct)
         self.seconds.append(seconds)
@@ -134,14 +142,21 @@ class Battle:
     # --- 3. enemy turn -----------------------------------------------------
     def enemy_turn(self) -> dict:
         """Returns {"damage": hp the player lost, "taunt": a strings key or None,
+        "taunt_values": what fills the taunt's {placeholders} (e.g. {"topic": "articles"}),
         "skipped": True if the enemy lost its turn (see effects.enemy_loses_turn)}."""
         if effects.enemy_loses_turn(self):
             self.missed = False
-            return {"damage": 0, "taunt": None, "skipped": True}
+            return {"damage": 0, "skipped": True, **self._adapt()}
         amount = damage.enemy_damage(self.enemy, self.player)
         amount = effects.change_enemy_damage(amount, self)
         lost = self.player.take_damage(amount)
         self.missed = False
         effects.end_of_round(self)
-        taunt = self.habits.adapt(self.enemy) if self.habits else None
-        return {"damage": lost, "taunt": taunt, "skipped": False}
+        return {"damage": lost, "skipped": False, **self._adapt()}
+
+    def _adapt(self) -> dict:
+        """Let ai/habits.py change the enemy. {"taunt": key or None, "taunt_values": {...}}."""
+        if not self.habits:
+            return {"taunt": None, "taunt_values": {}}
+        taunt = self.habits.adapt(self.enemy)
+        return {"taunt": taunt, "taunt_values": dict(self.habits.taunt_values) if taunt else {}}

@@ -44,6 +44,13 @@
     "level_up":  {"volume": 0.45, "layers": [
       {"wave": "square", "notes": ["C5", "D5", "E5", "G5", "C6", "E6", "G6"], "step": 0.05, "seconds": 0.08, "duty": 0.125},
       {"wave": "triangle", "freq": 523.3, "seconds": 0.5, "delay": 0.35, "vibrato": 6}]},
+    "taunt":     {"volume": 0.40, "layers": [
+      {"wave": "saw", "notes": ["A3", "E3"], "step": 0.12, "seconds": 0.16, "vibrato": 9},
+      {"wave": "square", "freq": 220, "to": 160, "seconds": 0.3, "delay": 0.22, "duty": 0.25}]},
+    "rare_loot": {"volume": 0.50, "layers": [
+      {"wave": "square", "notes": ["G5", "C6", "E6", "G6"], "step": 0.08, "seconds": 0.12, "duty": 0.25},
+      {"wave": "square", "notes": ["C6", "G6"], "step": 0.12, "seconds": 0.5, "delay": 0.36, "duty": 0.125, "vibrato": 6},
+      {"wave": "triangle", "notes": ["C4", "G4", "C5"], "step": 0.12, "seconds": 0.4, "delay": 0.36}]},
 
     "chest":     {"volume": 0.45, "layers": [
       {"wave": "square", "notes": ["G5", "C6"], "step": 0.07, "seconds": 0.1, "duty": 0.25},

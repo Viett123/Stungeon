@@ -117,7 +117,7 @@ def _picture(font, char):
     return pygame.image.tobytes(font.render(char, False, (255, 255, 255)), "RGBA")
 
 
-@pytest.mark.parametrize("name", ["title", "big", "normal", "small"])
+@pytest.mark.parametrize("name", ["title", "big", "normal", "small", "question", "question_small", "answer"])
 def test_the_pixel_fonts_can_draw_german_and_vietnamese(game, name):
     from core import settings
     file_name, size = settings.FONTS[name]

@@ -62,7 +62,7 @@ add it to `data/themes.json`.
 
 Each theme folder may have its own `ui_frame.png`: every panel then uses that frame while the player is on
 such a floor (`ui/theme.py`). The bars and slots of the menus are still drawn in code.
-Fonts are in `assets/fonts/` and chosen in `core/settings.py` (FONTS): Tiny5 for titles, VT323 for the rest.
+Fonts are in `assets/fonts/` and chosen in `core/settings.py` (FONTS): VT323 for every text (Tiny5 is no longer used).
 Without the files the game falls back to pygame's built-in font.
 
 A broken image file does not crash the game: it is written to `logs/error.log` and the placeholder is used.

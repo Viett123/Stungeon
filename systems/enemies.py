@@ -26,6 +26,7 @@ class Enemy:
     loot_table: str = "enemy"   # which table in data/loot_tables.json this enemy drops from
     elite: bool = False         # a stronger version of a normal enemy with better loot
     large_art: bool = False     # its pictures are 32 pixels wide, so it is never drawn extra big
+    adapted: bool = False          # has the enemy already changed in this fight? (for habits.py)
 
     @property
     def alive(self):
@@ -67,7 +68,7 @@ def floor_spawns(floor_number) -> dict:
 
 
 def chase_rules() -> dict:
-    """How monsters on the map chase the player: {"wake_radius", "sleep_radius", "seconds_per_step", "rest_after_flee"}."""
+    """How monsters chase: radii, speed, flee rest, and ids in ``astar_enemies`` that route around walls."""
     return _data()["chase"]
 
 
