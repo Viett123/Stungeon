@@ -37,7 +37,7 @@ def _make_run(player, seed, tracker, floor_number=1, demo=False, subject=None, l
     rng = random.Random(f"{seed}-{floor_number}")
     # Each level has its own question bank, so the engine loads that level's file.
     engine = QuestionEngine(dungeons.bank_path(subject, level), rng=rng, tracker=tracker)
-    return Run(player=player, engine=engine, tracker=tracker, habits=HabitTracker(),
+    return Run(player=player, engine=engine, tracker=tracker, habits=HabitTracker(tracker),
                seed=seed, floor_number=floor_number, rng=rng, demo=demo, subject=subject, level=level)
 
 
