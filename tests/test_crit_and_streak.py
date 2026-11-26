@@ -97,19 +97,23 @@ class RightEngine:
         self.streak = self.streak + 1 if correct else 0
 
 
-def answer_slash(seconds):
-    """A real warrior fight: one right answer with the basic move, after `seconds` seconds."""
+def answer_slash(seconds, move_id="shield_bash"):
+    """A real warrior fight: one right answer after `seconds` seconds.
+
+    Shield Bash is a skill (medium questions, 20 s), because easy questions can never crit.
+    """
     player = Player("warrior")
     player.resource = player.max_resource
     battle = Battle(player, make_enemy("article_goblin"), RightEngine(), floor=1)
-    slash = next(m for m in battle.moves() if m["id"] == "slash")
+    battle.enemy.hp = battle.enemy.max_hp = 1000      # so a big hit is not cut short by the enemy's HP
+    slash = next(m for m in battle.moves() if m["id"] == move_id)
     battle.choose_move(slash["id"])
     result = battle.answer("die", seconds)
     return battle, slash, result
 
 
 def test_a_fast_real_attack_is_a_crit_and_sets_last_crit():
-    # Basic questions are easy: 15 s. 0.9 s is 6 % of that, so x2.
+    # Skill questions are medium: 20 s. 0.9 s is 4.5 % of that, so x2.
     # One right answer is a streak of 1, which adds x1.1 on top.
     battle, slash, result = answer_slash(seconds=0.9)
     expected = round(slash["damage"] * 2 * 1.1)
@@ -119,7 +123,7 @@ def test_a_fast_real_attack_is_a_crit_and_sets_last_crit():
 
 
 def test_a_slow_real_attack_is_not_a_crit():
-    # 10 s is about 67 % of 15 s, so no crit. Only the streak of 1 (x1.1) applies.
+    # 10 s is 50 % of 20 s, so no crit. Only the streak of 1 (x1.1) applies.
     battle, slash, result = answer_slash(seconds=10)
     assert battle.last_crit is False
     assert result["damage"] == round(slash["damage"] * 1.1)
@@ -146,3 +150,11 @@ def test_crit_windows_are_tight():
     """After the play-test: a x2 crit needs under 10 % of the time, any crit under 20 %."""
     assert max(rule["within"] for rule in CRIT_TIERS) <= 0.2
     assert min(rule["within"] for rule in CRIT_TIERS) <= 0.1
+
+
+def test_easy_questions_are_never_a_crit():
+    """The basic move asks easy questions: even a very fast right answer is no crit."""
+    battle, slash, result = answer_slash(seconds=0.1, move_id="slash")
+    assert slash["difficulty"] == "easy"
+    assert battle.last_crit is False
+    assert result["damage"] == round(slash["damage"] * 1.1)          # only the streak of 1

@@ -36,14 +36,26 @@ def change_player_damage(damage, battle) -> int:
     """Called after combat/damage.py worked out the player's damage. Return the final number.
 
     Two rules, both numbers in data/combat.json:
-      - a fast answer is a critical hit (the faster, the bigger)
+      - a fast answer is a critical hit (the faster, the bigger), but only on the
+        difficulties listed in crit_difficulties: an easy question is never a crit
       - a streak of right answers in a row adds damage
     """
     numbers = load_data("combat.json")
-    crit = crit_multiplier(battle.time_used, numbers["crit_tiers"])
+    crit = crit_multiplier(battle.time_used, numbers["crit_tiers"]) if can_crit(battle, numbers) else 1.0
     streak = streak_multiplier(battle.engine.streak, numbers["streak"])
     battle.last_crit = crit > 1      # so the screen can show "CRIT!"
     return round_damage(damage * crit * streak)
+
+
+def can_crit(battle, numbers) -> bool:
+    """Can this move's questions be a crit? Easy ones (the basic move) cannot.
+
+    A battle without a move (a test's stand-in) is allowed to crit.
+    """
+    move = getattr(battle, "move", None)
+    if not move:
+        return True
+    return move.get("difficulty") in numbers.get("crit_difficulties", ["easy", "medium", "hard"])
 
 
 def crit_multiplier(time_used, tiers) -> float:

@@ -29,8 +29,9 @@ def texts(scene):
 
 
 def answer(scene, share_of_time, right=True):
-    """Pick the first move and answer after `share_of_time` of the time limit (0.05 = very fast)."""
-    scene.pick_move(0)
+    """Pick the skill move (medium questions: easy ones never crit) and answer after
+    `share_of_time` of the time limit (0.05 = very fast)."""
+    scene.pick_move(1)
     scene.elapsed = scene.battle.time_limit * share_of_time
     question = scene.battle.question
     scene.submit(question["answer"] if right else "certainly not the answer")

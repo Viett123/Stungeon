@@ -5,7 +5,7 @@
   "stack_size": {"consumable": 10, "equipment": 1},
   "sell_ratio": 0.5,
   "items": {
-    "small_potion": {"name": "Small Potion", "kind": "consumable", "rarity": "common", "price": 15, "effect": {"type": "heal", "amount": 40}, "text": "Restores 40 HP.", "color": [170, 50, 44]},
+    "small_potion": {"name": "Small Potion", "kind": "consumable", "rarity": "common", "price": 25, "effect": {"type": "heal", "amount": 40}, "text": "Restores 40 HP.", "color": [170, 50, 44]},
     "big_potion": {"name": "Big Potion", "kind": "consumable", "rarity": "uncommon", "price": 35, "effect": {"type": "heal", "amount": 100}, "text": "Restores 100 HP.", "color": [200, 60, 50]},
     "tonic": {"name": "Tonic", "kind": "consumable", "rarity": "common", "price": 15, "effect": {"type": "resource", "amount": 40}, "text": "Restores 40 of your class resource.", "color": [62, 104, 178]},
 
