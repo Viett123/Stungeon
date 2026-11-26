@@ -56,6 +56,9 @@
 
   "enemy_hits": "The {enemy} hits you for {damage}.",
   "enemy_misses": "The {enemy} attacks, but it does no damage!",
+  "enemy_loses_turn": "The {enemy} is caught off guard and loses its turn!",
+  "crit_line": "Critical hit! Your fast answer made it stronger.",
+  "crit_float": "CRIT!",
 
   "victory_fight": "You defeated the {enemy}!",
   "defeat_fight": "You were defeated by the {enemy}...",

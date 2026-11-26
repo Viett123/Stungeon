@@ -36,6 +36,7 @@ class Battle:
         self.time_used = []    # share of each question's time limit used
         self.time_limit = 0
         self.missed = False
+        self.last_crit = False # set by effects.change_player_damage: was the last hit a critical hit?
 
     # --- state -------------------------------------------------------------
     @property
@@ -72,6 +73,7 @@ class Battle:
         self.seconds = []
         self.time_used = []
         self.missed = False
+        self.last_crit = False
         self._next_question()
         return {"ok": True, "utility": False}
 
@@ -110,7 +112,7 @@ class Battle:
         self.time_used.append(min(seconds / self.time_limit, 1.0))
         self.missed = self.missed or not correct
         self.remaining -= 1
-        result = {"correct": correct, "question": question, "done": False, "damage": 0}
+        result = {"correct": correct, "question": question, "done": False, "damage": 0, "crit": False}
         if self.remaining > 0:
             self._next_question()
             return result
@@ -119,20 +121,23 @@ class Battle:
         amount = effects.change_player_damage(amount, self)
         result["done"] = True
         result["damage"] = self.enemy.take_damage(amount)
+        # Only a hit that does damage can be critical (a fast WRONG answer is not a crit).
+        result["crit"] = bool(result["damage"]) and self.last_crit
         self.move = None
         self.question = None
         return result
 
     # --- 3. enemy turn -----------------------------------------------------
     def enemy_turn(self) -> dict:
-        """Returns {"damage": hp the player lost, "taunt": a strings key or None}."""
+        """Returns {"damage": hp the player lost, "taunt": a strings key or None,
+        "skipped": True if the enemy lost its turn (see effects.enemy_loses_turn)}."""
         if effects.enemy_loses_turn(self):
             self.missed = False
-            return {"damage": 0, "taunt": None}
+            return {"damage": 0, "taunt": None, "skipped": True}
         amount = damage.enemy_damage(self.enemy, self.player)
         amount = effects.change_enemy_damage(amount, self)
         lost = self.player.take_damage(amount)
         self.missed = False
         effects.end_of_round(self)
         taunt = self.habits.adapt(self.enemy) if self.habits else None
-        return {"damage": lost, "taunt": taunt}
+        return {"damage": lost, "taunt": taunt, "skipped": False}

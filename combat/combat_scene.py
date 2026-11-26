@@ -43,6 +43,7 @@ WIND_UP_PIXELS = 6          # how far the player leans back before striking
 LUNGE_PIXELS = 18           # how far a melee fighter jumps towards the enemy
 KNOCKBACK_PIXELS = 10       # how far the player is pushed back when hurt
 HOP_PIXELS = 10             # how high the player hops when using an item
+CRIT_LIFT = -42             # "CRIT!" starts this far BELOW the damage number (above it, it would cover the HP bar)
 ATTACK_SECONDS = 0.6      # how long the weapon swing and the hit sparks last
 FIGHTER_SCALE = settings.TILE_SCALE + 1   # fighters are drawn 4 times the art size, like bosses
 CONTENT = pygame.Rect(140, 236, 1000, 384)     # the big panel: move details, question or feedback
@@ -78,6 +79,7 @@ class CombatScene(Scene):
         self.floating = []      # damage numbers that rise and fade
         self.using = 0.0        # seconds left of the "use an item" animation
         self.pending_damage = 0 # damage of an attack that is on its way and has not landed yet
+        self.pending_crit = False   # show "CRIT!" when that attack lands
         self.spark = 0.0        # seconds left of the hit sparks on the enemy
         self.enemy_center = ENEMY_PANEL.center     # where arrows and bolts fly to (set when the enemy is drawn)
         self.player_hand = PLAYER_ART.center       # where the player's skills start (set when the player is drawn)
@@ -112,10 +114,10 @@ class CombatScene(Scene):
         self.question_lines = []
         self.choice_buttons = []
 
-    def float_text(self, string, color, panel):
-        """Show a rising, fading text over one of the fighter panels."""
+    def float_text(self, string, color, panel, lift=0):
+        """Show a rising, fading text over one of the fighter panels. lift: start this many pixels higher (negative = lower)."""
         font = self.game.fonts["big"]
-        self.floating.append(FloatingText(font, string, color, (panel.centerx + 60, panel.centery)))
+        self.floating.append(FloatingText(font, string, color, (panel.centerx + 60, panel.centery - lift)))
 
     # --- flow --------------------------------------------------------------
     def finish(self, won, fled=False):
@@ -265,6 +267,9 @@ class CombatScene(Scene):
             self.show_message(lines, self.start_question)
             return
         lines.append((t("damage_dealt", damage=out["damage"]) if out["damage"] else t("miss"), theme.GOLD))
+        self.pending_crit = out.get("crit", False)
+        if self.pending_crit:
+            lines.append((t("crit_line"), theme.GOLD))       # explain WHY it hit harder: a fast answer
         if out["damage"]:
             # Start the attack animation. The hit itself lands a moment later (see land_hit).
             self.attack = ATTACK_SECONDS
@@ -281,6 +286,9 @@ class CombatScene(Scene):
     def land_hit(self):
         """The moment the weapon, arrow or bolt reaches the enemy: shake, flash, sparks, damage number."""
         self.float_text(f"-{self.pending_damage}", theme.GOLD, ENEMY_PANEL)
+        if self.pending_crit:
+            self.float_text(t("crit_float"), theme.BAD, ENEMY_PANEL, lift=CRIT_LIFT)   # "CRIT!" under the number
+            self.pending_crit = False
         self.pending_damage = 0
         sound.play("hit")
         strength = self.skill.look["shake"] if self.skill else 6     # stronger moves shake the screen harder
@@ -324,7 +332,9 @@ class CombatScene(Scene):
 
     def enemy_turn(self):
         out = self.battle.enemy_turn()
-        if out["damage"] == 0:   # e.g. an effect cancelled the attack
+        if out.get("skipped"):   # after your miss, the enemy was caught off guard (effects.enemy_loses_turn)
+            lines = [(t("enemy_loses_turn", enemy=self.enemy_name), theme.GOOD)]
+        elif out["damage"] == 0:   # e.g. an effect cancelled the attack
             lines = [(t("enemy_misses", enemy=self.enemy_name), theme.GOOD)]
         else:
             lines = [(t("enemy_hits", enemy=self.enemy_name, damage=out["damage"]), theme.BAD)]

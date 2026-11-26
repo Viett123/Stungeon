@@ -184,5 +184,5 @@ def test_battle_remembers_answer_times_and_the_enemy_can_be_made_to_skip_its_tur
     battle.answer("definitely wrong", seconds=7.5)
     assert battle.seconds == [7.5]
     monkeypatch.setattr(effects, "enemy_loses_turn", lambda b: True)
-    assert battle.enemy_turn() == {"damage": 0, "taunt": None}
+    assert battle.enemy_turn() == {"damage": 0, "taunt": None, "skipped": True}
     assert player.hp == player.max_hp
