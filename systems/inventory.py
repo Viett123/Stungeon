@@ -1,6 +1,9 @@
 """Adding, removing, using and equipping items (owner: D). No pygame here.
 
 player.inventory is a list of item ids (the bag). The same id can be in it more than once.
+The bag has inventory_size SLOTS. Copies of the same item share a slot, up to its stack size
+(10 potions in one slot, see stack_size in data/items.json), so the list itself can be longer
+than the number of slots. stacks() says how the list is laid out in slots.
 player.equipped is a dict from slot name to item id, e.g. {"weapon": "old_sword", "head": "cloth_hood"}.
 
 An equipment item names the KIND of slot it fits in its "slot" field (data/items.json):
@@ -13,13 +16,44 @@ EQUIP_SLOTS = ["weapon", "head", "body", "legs", "shoes"] + ACCESSORY_SLOTS
 SLOT_KINDS = ["weapon", "head", "body", "legs", "shoes", "accessory"]   # what an item's "slot" may say
 
 
+def stacks(player) -> list[tuple[str, int]]:
+    """The bag as slots: [(item id, how many), ...], each item in the order it was first picked up.
+
+    Example with a stack size of 10: 12 small potions and a sword are
+    [("small_potion", 10), ("small_potion", 2), ("old_sword", 1)]: three slots.
+    """
+    order = []
+    for item_id in player.inventory:
+        if item_id not in order:
+            order.append(item_id)
+    result = []
+    for item_id in order:
+        left, size = player.inventory.count(item_id), items.stack_size(item_id)
+        while left > 0:
+            result.append((item_id, min(size, left)))
+            left -= size
+    return result
+
+
+def slots_used(player) -> int:
+    return len(stacks(player))
+
+
 def is_full(player) -> bool:
-    return len(player.inventory) >= items.inventory_size()
+    """True if every slot is taken. (A potion may still fit on top of a stack that is not full: see can_add.)"""
+    return slots_used(player) >= items.inventory_size()
+
+
+def can_add(player, item_id) -> bool:
+    """Is there room for one more of this item: a stack of it with space left, or an empty slot?"""
+    if player.inventory.count(item_id) % items.stack_size(item_id):
+        return True                      # its last stack is not full yet
+    return not is_full(player)
 
 
 def add_item(player, item_id) -> bool:
-    """Put an item in the bag. Returns False if the bag is full."""
-    if is_full(player):
+    """Put an item in the bag. Returns False if there is no room for it."""
+    if not can_add(player, item_id):
         return False
     player.inventory.append(item_id)
     return True
@@ -69,7 +103,7 @@ def equip(player, item_id) -> bool:
     player.inventory.remove(item_id)
     old = player.equipped.get(slot)
     if old:
-        player.inventory.append(old)   # always fits: we just took one item out
+        player.inventory.append(old)   # always fits: the item we took out freed its own slot
     player.equipped[slot] = item_id
     return True
 

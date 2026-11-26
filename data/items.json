@@ -1,9 +1,11 @@
 {
   "_note": "PLACEHOLDER items, texts and numbers written by Claude so the bag and shop can be tried. Owner D: replace them and delete this line. kind is consumable or equipment. Equipment needs a slot: weapon, head, body, legs, shoes or accessory (there are two accessory slots). A weapon has a weight: heavy (more damage, minus answer seconds), light (plus answer seconds, a bit less damage) or normal (no time change). A weapon may have attack: bow or staff; that only changes how its attack LOOKS (an arrow or a bolt flies to the enemy instead of a swing). Equipment has no effect yet: that rule is for D and B to write. effect is read by systems/item_effects.py. Rarities from docs/HANDOFF.md: common, uncommon, rare, epic, legendary.",
   "inventory_size": 20,
+  "_stack_note": "How many of one item fit in ONE bag slot, by kind (like Minecraft stacks). 10 potions share a slot; the 11th starts a new slot. Equipment never stacks.",
+  "stack_size": {"consumable": 10, "equipment": 1},
   "sell_ratio": 0.5,
   "items": {
-    "small_potion": {"name": "Small Potion", "kind": "consumable", "rarity": "common", "price": 15, "effect": {"type": "heal", "amount": 40}, "text": "Restores 40 HP.", "color": [170, 50, 44]},
+    "small_potion": {"name": "Small Potion", "kind": "consumable", "rarity": "common", "price": 25, "effect": {"type": "heal", "amount": 40}, "text": "Restores 40 HP.", "color": [170, 50, 44]},
     "big_potion": {"name": "Big Potion", "kind": "consumable", "rarity": "uncommon", "price": 35, "effect": {"type": "heal", "amount": 100}, "text": "Restores 100 HP.", "color": [200, 60, 50]},
     "tonic": {"name": "Tonic", "kind": "consumable", "rarity": "common", "price": 15, "effect": {"type": "resource", "amount": 40}, "text": "Restores 40 of your class resource.", "color": [62, 104, 178]},
 
@@ -36,7 +38,10 @@
     "worn_boots": {"name": "Worn Boots", "kind": "equipment", "slot": "shoes", "rarity": "common", "price": 30, "bonus_seconds": 2, "text": "They have walked many floors. Gives +2 seconds to answer.", "color": [100, 80, 60]},
 
     "copper_ring": {"name": "Copper Ring", "kind": "equipment", "slot": "accessory", "rarity": "common", "price": 35, "damage_multiplier": 1.05, "text": "Your attacks do 5% more damage.", "color": [180, 110, 70]},
-    "lucky_charm": {"name": "Lucky Charm", "kind": "equipment", "slot": "accessory", "rarity": "uncommon", "price": 60, "bonus_seconds": 3, "text": "Someone believed in it once. Gives +3 seconds to answer.", "color": [200, 180, 80]}
+    "lucky_charm": {"name": "Lucky Charm", "kind": "equipment", "slot": "accessory", "rarity": "uncommon", "price": 60, "bonus_seconds": 3, "text": "Someone believed in it once. Gives +3 seconds to answer.", "color": [200, 180, 80]},
+    "iron_helmet": {"name": "Iron Helmet", "kind": "equipment", "slot": "head", "rarity": "uncommon", "price": 65, "defense": 2, "text": "A knight's helmet with a red plume. Enemy hits do 2 less damage.", "color": [170, 170, 180]},
+    "iron_armor": {"name": "Iron Armour", "kind": "equipment", "slot": "body", "rarity": "rare", "price": 110, "defense": 4, "text": "Heavy plates with a red cross. Enemy hits do 4 less damage.", "color": [120, 120, 130]},
+    "gold_ring": {"name": "Gold Ring", "kind": "equipment", "slot": "accessory", "rarity": "uncommon", "price": 70, "damage_multiplier": 1.1, "text": "Shiny and heavy. Your attacks do 10% more damage.", "color": [220, 180, 60]}
 
   }
 }
