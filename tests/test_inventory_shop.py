@@ -14,9 +14,10 @@ WEAPONS = [i for i, item in ALL.items() if item.get("slot") == "weapon"]
 def test_bag_has_a_size_limit():
     player = Player("warrior")
     for _ in range(items.inventory_size()):
-        assert inventory.add_item(player, CONSUMABLE)
+        assert inventory.add_item(player, WEAPONS[0])             # equipment: one per slot
     assert inventory.is_full(player)
-    assert not inventory.add_item(player, CONSUMABLE)
+    assert not inventory.add_item(player, WEAPONS[0])
+    assert not inventory.add_item(player, CONSUMABLE)            # no slot left for a new kind
 
 
 def test_healing_item_is_used_up_only_if_it_heals():
@@ -68,7 +69,7 @@ def test_buy_needs_gold_and_space():
     assert shop.buy(player, CONSUMABLE) == "ok"
     assert player.gold == 0 and player.inventory == [CONSUMABLE]
     player.gold = price
-    player.inventory = [CONSUMABLE] * items.inventory_size()
+    player.inventory = [CONSUMABLE] * (items.inventory_size() * items.stack_size(CONSUMABLE))   # every stack full
     assert shop.buy(player, CONSUMABLE) == "full"
     assert player.gold == price                                  # nothing was paid
 
@@ -92,3 +93,31 @@ def test_shop_stock_and_loot_tables_only_name_real_items():
 def test_loot_is_the_same_for_the_same_seed():
     assert roll_loot("boss", random.Random(5)) == roll_loot("boss", random.Random(5))
     assert roll_loot("no_such_table", random.Random(5)) == []
+
+
+# --- stacks: 10 potions share one slot --------------------------------------------------
+def test_ten_potions_share_one_slot_and_the_eleventh_starts_a_new_one():
+    player = Player("warrior")
+    player.inventory[:] = []
+    size = items.stack_size("small_potion")
+    assert size == load_data("items.json")["stack_size"]["consumable"] == 10
+    for _ in range(size):
+        assert inventory.add_item(player, "small_potion")
+    assert inventory.stacks(player) == [("small_potion", size)]
+    inventory.add_item(player, "small_potion")
+    inventory.add_item(player, "old_sword")
+    assert inventory.stacks(player) == [("small_potion", size), ("small_potion", 1), ("old_sword", 1)]
+
+
+def test_a_full_bag_still_takes_a_potion_if_its_stack_has_room():
+    player = Player("warrior")
+    slots = items.inventory_size()
+    player.inventory[:] = ["small_potion"] + ["old_sword"] * (slots - 1)    # every slot is taken
+    assert inventory.is_full(player)
+    assert inventory.add_item(player, "small_potion")                        # on top of the potion stack
+    assert not inventory.add_item(player, "tonic")                           # a new kind needs a new slot
+    assert not inventory.add_item(player, "old_sword")                       # equipment never stacks
+
+
+def test_equipment_never_stacks():
+    assert items.stack_size("old_sword") == 1

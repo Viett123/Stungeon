@@ -42,7 +42,6 @@ is changed: it is the pack's plain floor with the pack's skull drawn on top.
 | `enemy_mini_floor_2_idle_N`, `_run_N` | `ogre_idle_anim_fN`, `ogre_run_anim_fN` |
 | `enemy_mini_floor_3_idle_N`, `_run_N` | `big_demon_idle_anim_fN`, `big_demon_run_anim_fN` |
 | `tile_spikes.png` | `floor_spikes_anim_f3.png` |
-| `item_small_potion.png` | `flask_red.png` |
 | `item_tonic.png` | `flask_blue.png` |
 | `item_old_sword.png`, `weapon_old_sword.png` | `weapon_rusty_sword.png` |
 | `item_apprentice_staff.png`, `weapon_apprentice_staff.png` | `weapon_red_magic_staff.png` |
@@ -51,7 +50,6 @@ is changed: it is the pack's plain floor with the pack's skull drawn on top.
 | `item_knight_sword.png`, `weapon_knight_sword.png` | `weapon_knight_sword.png` |
 | `item_war_axe.png`, `weapon_war_axe.png` | `weapon_axe.png` |
 | `item_oak_staff.png`, `weapon_oak_staff.png` | `weapon_green_magic_staff.png` |
-| `item_big_potion.png` | `flask_big_red.png` |
 
 ## Pixel Art Sprite Mixer by KingBell (reference only)
 
@@ -76,6 +74,21 @@ is changed: it is the pack's plain floor with the pack's skull drawn on top.
 
 No file from this pack is in the game any more. `ui_frame.png` used to be its small square frame
 (24 x 24 pixels, at x 24, y 72 of `dungeonui.v1.png`); it was replaced by our own frames (see below).
+
+## Item icons: drawn by us
+
+Drawn by the team (16 x 16 each); handed over as `new_asset.zip` and `potion.zip` on 26 Nov 2026.
+`item_cloth_hood.png` came from the first art branch (`c/new_asset`, commit d8717a9 by Tien Le).
+They replace the 0x72 pictures where an item already had one. Nothing to license.
+
+| File in `assets/sprites/` | Drawn as |
+|---|---|
+| `item_small_potion.png`, `item_big_potion.png` | `potion/small_potion.png`, `potion/big_potion.png` |
+| `item_copper_ring.png`, `item_gold_ring.png` | `copper_ring.png`, `gold_ring.png` |
+| `item_leather_vest.png`, `item_wool_trousers.png`, `item_worn_boots.png` | `leather_vest.png`, `wool_trousers.png`, `worn boots.png` |
+| `item_lucky_charm.png` | `lucky_charm.png` |
+| `item_iron_armor.png`, `item_iron_helmet.png` (new items) | `armor.png`, `armor_head.png` |
+| `item_cloth_hood.png` | `cloth_hood.png` |
 
 ## UI frames: drawn by us
 
@@ -138,7 +151,6 @@ Not used yet from these sheets: fountains, totems, the wall monster.
 
 ## Still drawn in code (no art file yet)
 
-- All armour and accessory items (hood, vest, trousers, boots, ring, charm): none of the packs has such art.
 - All move icons.
 - Bars, slots and buttons (`ui/theme.py`). The panel borders now come from `ui_frame.png`.
 - Nothing else: the font is now a real pixel font (see Fonts).

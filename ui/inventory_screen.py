@@ -45,7 +45,10 @@ class InventoryScene(Scene):
     def refresh(self):
         """Read the bag again. Called after every change, so draw() never reads data files."""
         font = self.game.fonts["small"]
-        self.bag = [items.get_item(item_id) for item_id in self.player.inventory]
+        # One entry per slot: 12 potions are two slots, of 10 and 2 (systems/inventory.py, stacks()).
+        bag_slots = inventory.stacks(self.player)
+        self.bag = [items.get_item(item_id) for item_id, _ in bag_slots]
+        self.counts = [count for _, count in bag_slots]
         self.worn = [items.get_item(self.player.equipped[slot]) if slot in self.player.equipped else None
                      for slot in inventory.EQUIP_SLOTS]
         self.icons = {item["id"]: item_icon(item, font) for item in self.bag + [w for w in self.worn if w]}
@@ -168,6 +171,9 @@ class InventoryScene(Scene):
         for i, rect in enumerate(self.bag_rects):
             item = self.bag[i] if i < len(self.bag) else None
             slots.draw_slot(surface, rect, self.icons[item["id"]] if item else None, highlighted=(i == self.selected))
+            if item and self.counts[i] > 1:          # how many are in this stack, bottom right
+                widgets.text(surface, small, str(self.counts[i]), theme.TEXT, (rect.right - 6, rect.bottom - 4),
+                             "bottomright")
         for i, (rect, slot, item) in enumerate(zip(self.equip_rects, inventory.EQUIP_SLOTS, self.worn)):
             widgets.text(surface, small, t(f"slot_{slot}"), theme.TEXT_DIM, (rect.x, rect.y - 24))
             slots.draw_slot(surface, rect, self.icons[item["id"]] if item else None,
