@@ -186,3 +186,23 @@ def test_battle_remembers_answer_times_and_the_enemy_can_be_made_to_skip_its_tur
     monkeypatch.setattr(effects, "enemy_loses_turn", lambda b: True)
     assert battle.enemy_turn() == {"damage": 0, "taunt": None, "skipped": True}
     assert player.hp == player.max_hp
+def test_a_better_weapon_means_a_bigger_multiplier():
+    weapons = [i for i, item in ALL.items() if item.get("slot") == "weapon"]
+    best = max(weapons, key=lambda i: ALL[i].get("damage_multiplier", 1.0))
+    player = Player("warrior")
+    base = player.damage_multiplier()
+    player.equipped["weapon"] = best
+    assert player.damage_multiplier() > base
+
+def test_armour_adds_up_defense():
+    player = Player("mage")
+    player.equipped = {"head": "cloth_hood", "body": "leather_vest"}
+    assert player.defense() == ALL["cloth_hood"]["defense"] + ALL["leather_vest"]["defense"]
+
+def test_no_item_still_says_it_does_nothing():
+    assert not [i for i, item in ALL.items() if "does nothing yet" in item["text"]]
+def player_damage(move, results, player, enemy) -> int:
+    return round(move["damage"] * sum(results) * player.damage_multiplier())
+
+def enemy_damage(enemy, player) -> int:
+    return max(1, enemy.damage - player.defense())

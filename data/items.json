@@ -6,29 +6,37 @@
     "small_potion": {"name": "Small Potion", "kind": "consumable", "rarity": "common", "price": 15, "effect": {"type": "heal", "amount": 40}, "text": "Restores 40 HP.", "color": [170, 50, 44]},
     "big_potion": {"name": "Big Potion", "kind": "consumable", "rarity": "uncommon", "price": 35, "effect": {"type": "heal", "amount": 100}, "text": "Restores 100 HP.", "color": [200, 60, 50]},
     "tonic": {"name": "Tonic", "kind": "consumable", "rarity": "common", "price": 15, "effect": {"type": "resource", "amount": 40}, "text": "Restores 40 of your class resource.", "color": [62, 104, 178]},
-    "old_sword": {"name": "Old Sword", "kind": "equipment", "slot": "weapon", "rarity": "common", "price": 40, "text": "A worn blade with a chipped edge. It does nothing yet.", "color": [130, 130, 136]},
-    "knight_sword": {"name": "Knight Sword", "kind": "equipment", "slot": "weapon", "rarity": "rare", "price": 120, "text": "A well-kept sword from the castle guard. It does nothing yet.", "color": [150, 160, 180]},
-    "ruby_sword": {"name": "Ruby Sword", "kind": "equipment", "slot": "weapon", "rarity": "epic", "price": 220, "text": "A blade with a red stone that is warm to the touch. It does nothing yet.", "color": [190, 60, 70]},
-    "golden_dagger": {"name": "Golden Dagger", "kind": "equipment", "slot": "weapon", "rarity": "rare", "price": 110, "text": "Too pretty to be practical. It does nothing yet.", "color": [220, 180, 70]},
-    "katana": {"name": "Katana", "kind": "equipment", "slot": "weapon", "rarity": "rare", "price": 130, "text": "Thin, sharp and very fast. It does nothing yet.", "color": [170, 180, 190]},
-    "mace": {"name": "Mace", "kind": "equipment", "slot": "weapon", "rarity": "uncommon", "price": 85, "text": "A heavy head on a short handle. It does nothing yet.", "color": [130, 120, 110]},
-    "spear": {"name": "Spear", "kind": "equipment", "slot": "weapon", "rarity": "uncommon", "price": 75, "text": "Keeps monsters at a polite distance. It does nothing yet.", "color": [150, 120, 80]},
-    "cleaver": {"name": "Cleaver", "kind": "equipment", "slot": "weapon", "rarity": "common", "price": 45, "text": "Borrowed from a kitchen. It does nothing yet.", "color": [150, 150, 160]},
-    "golden_sword": {"name": "Golden Sword", "kind": "equipment", "slot": "weapon", "rarity": "epic", "price": 240, "text": "Heavy, soft and beautiful. It does nothing yet.", "color": [230, 190, 80]},
-    "lavish_sword": {"name": "Lavish Sword", "kind": "equipment", "slot": "weapon", "rarity": "legendary", "price": 400, "text": "Made for a king who never used it. It does nothing yet.", "color": [200, 120, 220]},
-    "duel_sword": {"name": "Duel Sword", "kind": "equipment", "slot": "weapon", "rarity": "rare", "price": 125, "text": "A slim blade for fair fights. It does nothing yet.", "color": [160, 170, 200]},
-    "short_bow": {"attack": "bow", "name": "Short Bow", "kind": "equipment", "slot": "weapon", "rarity": "uncommon", "price": 80, "text": "Quick to draw in tight corridors. It does nothing yet.", "color": [140, 100, 60]},
-    "emerald_sword": {"name": "Emerald Sword", "kind": "equipment", "slot": "weapon", "rarity": "epic", "price": 230, "text": "A green stone glows in the hilt. It does nothing yet.", "color": [70, 170, 110]},
-    "sledgehammer": {"name": "Sledgehammer", "kind": "equipment", "slot": "weapon", "rarity": "rare", "price": 135, "text": "Slow. Very convincing. It does nothing yet.", "color": [110, 130, 150]},
-    "war_axe": {"name": "War Axe", "kind": "equipment", "slot": "weapon", "rarity": "uncommon", "price": 80, "text": "Heavy, and not at all subtle. It does nothing yet.", "color": [140, 110, 90]},
-    "apprentice_staff": {"attack": "staff", "name": "Apprentice Staff", "kind": "equipment", "slot": "weapon", "rarity": "common", "price": 40, "text": "A beginner's staff with a red stone. It does nothing yet.", "color": [150, 60, 60]},
-    "oak_staff": {"attack": "staff", "name": "Oak Staff", "kind": "equipment", "slot": "weapon", "rarity": "uncommon", "price": 80, "text": "Old oak with a green stone that hums. It does nothing yet.", "color": [70, 130, 80]},
-    "hunting_bow": {"attack": "bow", "name": "Hunting Bow", "kind": "equipment", "slot": "weapon", "rarity": "common", "price": 40, "text": "A simple bow for small game. It does nothing yet.", "color": [150, 100, 50]},
-    "cloth_hood": {"name": "Cloth Hood", "kind": "equipment", "slot": "head", "rarity": "common", "price": 30, "text": "Keeps the dungeon dust out of your hair. It does nothing yet.", "color": [110, 100, 130]},
-    "leather_vest": {"name": "Leather Vest", "kind": "equipment", "slot": "body", "rarity": "common", "price": 40, "text": "Stiff leather that smells of the last owner. It does nothing yet.", "color": [120, 90, 60]},
-    "wool_trousers": {"name": "Wool Trousers", "kind": "equipment", "slot": "legs", "rarity": "common", "price": 30, "text": "Warm and itchy. It does nothing yet.", "color": [90, 100, 120]},
-    "worn_boots": {"name": "Worn Boots", "kind": "equipment", "slot": "shoes", "rarity": "common", "price": 30, "text": "They have walked many floors. It does nothing yet.", "color": [100, 80, 60]},
-    "copper_ring": {"name": "Copper Ring", "kind": "equipment", "slot": "accessory", "rarity": "common", "price": 35, "text": "A plain ring that turns your finger green. It does nothing yet.", "color": [180, 110, 70]},
-    "lucky_charm": {"name": "Lucky Charm", "kind": "equipment", "slot": "accessory", "rarity": "uncommon", "price": 60, "text": "Someone believed in it once. It does nothing yet.", "color": [200, 180, 80]}
+
+    "old_sword": {"name": "Old Sword", "kind": "equipment", "slot": "weapon", "rarity": "common", "price": 40, "damage_multiplier": 1.05, "text": "A worn blade with a chipped edge. Increases damage by 5%.", "color": [130, 130, 136]},
+    "cleaver": {"name": "Cleaver", "kind": "equipment", "slot": "weapon", "rarity": "common", "price": 45, "damage_multiplier": 1.08, "text": "Borrowed from a kitchen. Increases damage by 8%.", "color": [150, 150, 160]},
+    "apprentice_staff": {"attack": "staff", "name": "Apprentice Staff", "kind": "equipment", "slot": "weapon", "rarity": "common", "price": 40, "damage_multiplier": 1.05, "bonus_seconds": 1, "text": "A beginner's staff with a red stone. +5% damage and +1s answer time.", "color": [150, 60, 60]},
+    "hunting_bow": {"attack": "bow", "name": "Hunting Bow", "kind": "equipment", "slot": "weapon", "rarity": "common", "price": 40, "damage_multiplier": 1.06, "text": "A simple bow for small game. Increases damage by 6%.", "color": [150, 100, 50]},
+
+    "spear": {"name": "Spear", "kind": "equipment", "slot": "weapon", "rarity": "uncommon", "price": 75, "damage_multiplier": 1.12, "text": "Keeps monsters at a polite distance. Increases damage by 12%.", "color": [150, 120, 80]},
+    "war_axe": {"name": "War Axe", "kind": "equipment", "slot": "weapon", "rarity": "uncommon", "price": 80, "damage_multiplier": 1.15, "text": "Heavy, and not at all subtle. Increases damage by 15%.", "color": [140, 110, 90]},
+    "mace": {"name": "Mace", "kind": "equipment", "slot": "weapon", "rarity": "uncommon", "price": 85, "damage_multiplier": 1.16, "text": "A heavy head on a short handle. Increases damage by 16%.", "color": [130, 120, 110]},
+    "short_bow": {"attack": "bow", "name": "Short Bow", "kind": "equipment", "slot": "weapon", "rarity": "uncommon", "price": 80, "damage_multiplier": 1.12, "bonus_seconds": 1, "text": "Quick to draw in tight corridors. +12% damage and +1s answer time.", "color": [140, 100, 60]},
+    "oak_staff": {"attack": "staff", "name": "Oak Staff", "kind": "equipment", "slot": "weapon", "rarity": "uncommon", "price": 80, "damage_multiplier": 1.12, "bonus_seconds": 2, "text": "Old oak with a green stone that hums. +12% damage and +2s answer time.", "color": [70, 130, 80]},
+
+    "golden_dagger": {"name": "Golden Dagger", "kind": "equipment", "slot": "weapon", "rarity": "rare", "price": 110, "damage_multiplier": 1.18, "bonus_seconds": 2, "text": "Too pretty to be practical. +18% damage and +2s answer time.", "color": [220, 180, 70]},
+    "knight_sword": {"name": "Knight Sword", "kind": "equipment", "slot": "weapon", "rarity": "rare", "price": 120, "damage_multiplier": 1.22, "text": "A well-kept sword from the castle guard. Increases damage by 22%.", "color": [150, 160, 180]},
+    "duel_sword": {"name": "Duel Sword", "kind": "equipment", "slot": "weapon", "rarity": "rare", "price": 125, "damage_multiplier": 1.20, "bonus_seconds": 1, "text": "A slim blade for fair fights. +20% damage and +1s answer time.", "color": [160, 170, 200]},
+    "katana": {"name": "Katana", "kind": "equipment", "slot": "weapon", "rarity": "rare", "price": 130, "damage_multiplier": 1.24, "text": "Thin, sharp and very fast. Increases damage by 24%.", "color": [170, 180, 190]},
+    "sledgehammer": {"name": "Sledgehammer", "kind": "equipment", "slot": "weapon", "rarity": "rare", "price": 135, "damage_multiplier": 1.26, "text": "Slow. Very convincing. Increases damage by 26%.", "color": [110, 130, 150]},
+
+    "ruby_sword": {"name": "Ruby Sword", "kind": "equipment", "slot": "weapon", "rarity": "epic", "price": 220, "damage_multiplier": 1.32, "text": "A blade with a red stone that is warm to the touch. Increases damage by 32%.", "color": [190, 60, 70]},
+    "emerald_sword": {"name": "Emerald Sword", "kind": "equipment", "slot": "weapon", "rarity": "epic", "price": 230, "damage_multiplier": 1.30, "bonus_seconds": 2, "text": "A green stone glows in the hilt. +30% damage and +2s answer time.", "color": [70, 170, 110]},
+    "golden_sword": {"name": "Golden Sword", "kind": "equipment", "slot": "weapon", "rarity": "epic", "price": 240, "damage_multiplier": 1.35, "text": "Heavy, soft and beautiful. Increases damage by 35%.", "color": [230, 190, 80]},
+
+    "lavish_sword": {"name": "Lavish Sword", "kind": "equipment", "slot": "weapon", "rarity": "legendary", "price": 400, "damage_multiplier": 1.50, "bonus_seconds": 2, "text": "Made for a king who never used it. +50% damage and +2s answer time.", "color": [200, 120, 220]},
+
+    "cloth_hood": {"name": "Cloth Hood", "kind": "equipment", "slot": "head", "rarity": "common", "price": 30, "defense": 1, "text": "Keeps the dungeon dust out of your hair. Enemy hits do 1 less damage.", "color": [110, 100, 130]},
+    "leather_vest": {"name": "Leather Vest", "kind": "equipment", "slot": "body", "rarity": "common", "price": 40, "defense": 2, "text": "Stiff leather. Enemy hits do 2 less damage.", "color": [120, 90, 60]},
+    "wool_trousers": {"name": "Wool Trousers", "kind": "equipment", "slot": "legs", "rarity": "common", "price": 30, "defense": 1, "text": "Warm and itchy. Enemy hits do 1 less damage.", "color": [90, 100, 120]},
+    "worn_boots": {"name": "Worn Boots", "kind": "equipment", "slot": "shoes", "rarity": "common", "price": 30, "bonus_seconds": 2, "text": "They have walked many floors. Gives +2 seconds to answer.", "color": [100, 80, 60]},
+
+    "copper_ring": {"name": "Copper Ring", "kind": "equipment", "slot": "accessory", "rarity": "common", "price": 35, "damage_multiplier": 1.05, "text": "Your attacks do 5% more damage.", "color": [180, 110, 70]},
+    "lucky_charm": {"name": "Lucky Charm", "kind": "equipment", "slot": "accessory", "rarity": "uncommon", "price": 60, "bonus_seconds": 3, "text": "Someone believed in it once. Gives +3 seconds to answer.", "color": [200, 180, 80]}
+
   }
 }
