@@ -18,6 +18,9 @@ import sys
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT))
+from core import version  # noqa: E402
+
 OUT = ROOT / "build" / "web_dist"
 APP = OUT / "stungeon"
 FOLDERS = ["ai", "combat", "core", "data", "dungeon", "systems", "ui", "assets"]
@@ -37,6 +40,8 @@ def copy_game():
         shutil.copy2(file, APP / "questions" / file.name)
     for file in (ROOT / "questions" / "data").glob("*.json"):
         shutil.copy2(file, APP / "questions" / "data" / file.name)
+    # The browser has no git, so the version's patch number is counted now (core/version.py).
+    version.write_stamp(APP / "core" / "build_stamp.json")
 
 
 def sounds_to_ogg():
@@ -66,7 +71,8 @@ def main():
     build(serve=False)
     web = APP / "build" / "web"
     zip_file = shutil.make_archive(str(ROOT / "build" / "stungeon_web"), "zip", web)
-    print("Built", web, "and", zip_file)
+    print("Built version", version.number(version.read_stamp(APP / "core" / "build_stamp.json")),
+          ":", web, "and", zip_file)
 
 
 if __name__ == "__main__":
