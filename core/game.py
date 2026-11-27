@@ -4,11 +4,13 @@ import logging
 
 import pygame
 
-from core import settings, sound
+from core import settings, sound, version
 from core.scene import SceneManager
 from core.strings import t
 
 SOUND_NOTICE_SECONDS = 1.5
+VERSION_ALPHA = 140       # the version label is half see-through, so it never draws attention
+VERSION_MARGIN = 6        # pixels between the version label and the screen's edges
 
 
 
@@ -39,6 +41,11 @@ class Game:
 
         # Load fonts once here, never inside draw().
         self.fonts = {name: load_font(name) for name in settings.FONTS}
+        # The version in the bottom-right corner (core/version.py), e.g. "v1.0.84 web".
+        # Made once: it can't change while the game runs.
+        label = t("version_label", number=version.number(), kind=t(f"version_kind_{version.kind()}"))
+        self.version_image = self.fonts["small"].render(label, True, settings.COLOR_TEXT)
+        self.version_image.set_alpha(VERSION_ALPHA)
         self.run_state = None   # the current playthrough (core/run.py), set when floor 1 starts
         self.new_game = {}      # name, class, dungeon picked so far on the new-game screens (core/flow.py)
 
@@ -63,6 +70,13 @@ class Game:
         image = self.fonts["small"].render(text, True, settings.COLOR_TEXT)
         self.screen.blit(image, (12, settings.SCREEN_H - 30))
 
+    def draw_version(self):
+        """The version, small and dim in the bottom-right corner of every screen, so a tester's
+        screenshot always shows which build it came from."""
+        rect = self.version_image.get_rect(bottomright=(settings.SCREEN_W - VERSION_MARGIN,
+                                                        settings.SCREEN_H - VERSION_MARGIN))
+        self.screen.blit(self.version_image, rect)
+
     def quit(self):
         self.running = False
 
@@ -83,6 +97,7 @@ class Game:
             self.screen.fill(settings.COLOR_BG)
             self.scenes.current.draw(self.screen)
             self.draw_sound_notice(dt)
+            self.draw_version()
         except Exception:
             # Exhibit rule: never crash. Save the error and go back to the title screen.
             logging.exception("Unhandled error in %s", type(self.scenes.current).__name__)
